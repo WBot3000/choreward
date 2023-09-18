@@ -6,4 +6,11 @@ To successfully implement this project, there are several features that need to 
 
 Walker Bove, Rongda Kang
 
+## Tech Stach
+
+TBD
+
+## Usage
+
+TBD
 (Initial commit to Choreward repository. Currently copies the Project Overview of the Wiki. Will update with more relevant info later.)
