@@ -4,7 +4,7 @@ In order to maintain a household, there are lots of tasks that need to be done t
 To successfully implement this project, there are several features that need to be dealt with. For starters, users need to be able to create groups (called households), which are used to group all the chores needed for a certain location together. They also need to be able to create chores (both the list chores and the object chores described above) that users can accomplish. After, the household owner needs to be able to invite other users to these groups. Finally, points must be awarded to users who do these chores, and these points must be redeemable for in-site items and out-of-site rewards (determined by the household owner). If these features are implemented, then the project will be considered a success. If we have extra time, then the ability to host competitions where people can compete to see who can do the most chores within a set time period might also be added.
 ## Team member:
 
-Walker Bove, Rongda Kang
+Walker Bove, Rongda Kang, Ruchita Paithankar
 
 ## Tech Stach
 
