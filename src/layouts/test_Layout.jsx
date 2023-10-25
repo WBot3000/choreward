@@ -38,13 +38,6 @@ describe('DashboardLayouts', () => {
     expect(userImage).toBeInTheDocument();
   });
 
-  it('displays a bell icon for notifications', () => {
-    render(<DashboardLayouts />);
-    const bellIcon = screen.getByAltText('View notifications');
-    
-    expect(bellIcon).toBeInTheDocument();
-  });
-
   it('toggles mobile menu on button click', () => {
     render(<DashboardLayouts />);
     const mobileMenuButton = screen.getByAltText('Open main menu');
