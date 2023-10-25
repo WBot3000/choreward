@@ -1,35 +1,55 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Route, Routes,  Link } from 'react-router-dom';
+import DashboardLayout from './layouts/dashboardLayouts';
+import awsmobile from '../aws-exports';
+import Amplify from 'aws-amplify';
 
-function App() {
-  const [count, setCount] = useState(0)
+Amplify.configure(awsmobile);
+// This is a mock authentication function.
+// You can replace this with your authentication logic.
+const isAuthenticated = () => {
+  // This example always returns true. In a real-world scenario,
+  // you'll check if the user is authenticated or not.
+  return true;
+};
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+// ProtectRoute component to guard routes that require authentication.
+// eslint-disable-next-line react/prop-types
+function ProtectedRoute({ children }) {
+  if (isAuthenticated()) {
+    return children;
+  }
+
+  // Redirect to login or show a message if not authenticated.
+  return <div>You are not authenticated. <Link to="/login">Login</Link></div>;
 }
 
-export default App
+function signOut() {
+  // Clear authentication-related data
+  localStorage.removeItem("authToken");
+  // TODO: Add any other cleanup logic if necessary
+
+  // Redirect to login page
+  window.location.href = "/login";
+}
+
+function App() {
+  return (
+    <>
+    <Router>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>} />
+      </Routes>
+      <button onClick={signOut}>Sign Out</button>
+    </Router>
+    </>
+  );
+}
+
+function Login() {
+  // Mock login page. In a real-world scenario,
+  // you'll have a form and authentication logic here.
+  return <div>Login Page</div>;
+}
+
+export default App;
