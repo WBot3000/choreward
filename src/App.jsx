@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes,  Link } from 'react-router-dom';
 import DashboardLayout from './layouts/dashboardLayouts';
-import awsmobile from '../aws-exports';
-import Amplify from 'aws-amplify';
+import awsmobile from './aws-exports';
+import {Amplify} from 'aws-amplify';
 
 Amplify.configure(awsmobile);
 // This is a mock authentication function.
