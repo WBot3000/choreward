@@ -2,15 +2,17 @@ import { BrowserRouter as Router, Route, Routes,  Link } from 'react-router-dom'
 import DashboardLayout from './layouts/dashboardLayouts';
 import awsmobile from './aws-exports';
 import {Amplify,} from 'aws-amplify';
-import { Auth } from 'aws-amplify';
+// import { Auth } from 'aws-amplify';
 import Login from './components/login';
+
+
 Amplify.configure(awsmobile);
 // This is a mock authentication function.
 // You can replace this with your authentication logic.
 const isAuthenticated = () => {
   // This example always returns true. In a real-world scenario,
   // you'll check if the user is authenticated or not.
-  return false;
+  return true;
 };
 
 // ProtectRoute component to guard routes that require authentication.
