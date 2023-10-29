@@ -1,4 +1,7 @@
 import React from 'react'
+import Members from './Members';
+import FamilyUploads from './FamilyUploads';
+import SelectedFamily from './SelectedFamily';
 
 function MyFamilies() {
     const items = [
@@ -27,6 +30,10 @@ function MyFamilies() {
 
   return (
     <div>
+        {/* <h4>Members</h4> */}
+        <SelectedFamily/>
+        <Members/>
+        <FamilyUploads/>
         <h4>Rewards</h4>
         <table>
         {items.map((item) => (
