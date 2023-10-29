@@ -4,6 +4,7 @@ import Foot from './Components/Foot';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import FamilyFights from './Components/FamilyFights';
 import Weekly from './Components/Weekly';
+import MyFamilies from './Components/MyFamilies';
 import './App.css'
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route exact path='/' element={<Weekly/>} />
           <Route exact path='/FamilyFights/*' element={<FamilyFights/>} />
+          <Route exact path='/MyFamilies' element={<MyFamilies/>} />
         </Routes>
       </div>
       <div>
