@@ -14,6 +14,9 @@ function FamilyUploads() {
                 <th><a href="#" role="button" class="outline">Upload</a></th>
                 <th><a href="#" role="button" class="outline">Upload</a></th>
                 <th><a href="#" role="button" class="outline">Upload</a></th>
+                <th><a href="#" role="button" class="outline">Upload</a></th>
+                <th><a href="#" role="button" class="outline">Upload</a></th>
+                <th><a href="#" role="button" class="outline">Upload</a></th>
         </table>
       </figure>
       {/* <Tab.Group>
