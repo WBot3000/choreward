@@ -80,7 +80,7 @@ function ValidatePage() {
                     </div>
                   </div>
                 </form>
-                <div>
+                <div className='mt-10'>
                   <button
                     type="submit"
                     onClick={handleRegisterConfirmation}

@@ -124,7 +124,7 @@ function RegisterPage() {
                 </div>
               </form>
   
-              <div>
+              {/* <div>
                 <div className="relative mt-10">
                   <div className="absolute inset-0 flex items-center" aria-hidden="true">
                     <div className="w-full border-t border-gray-200" />
@@ -159,7 +159,7 @@ function RegisterPage() {
                     <span className="text-sm font-semibold leading-6">GitHub</span>
                   </a>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

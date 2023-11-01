@@ -133,7 +133,7 @@ export default function LoginPage(props) {
                 </button>
               </div>
             </form>
-
+{/* 
             <div>
               <div className="relative mt-10">
                 <div className="absolute inset-0 flex items-center" aria-hidden="true">
@@ -169,7 +169,7 @@ export default function LoginPage(props) {
                   <span className="text-sm font-semibold leading-6">GitHub</span>
                 </a>
               </div>
-            </div>
+            </div> */}
           </div>
 
           <p className="mt-10 text-center text-sm text-gray-500">

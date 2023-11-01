@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes,  Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import DashboardLayout from './layouts/dashboardLayouts';
 import awsmobile from './aws-exports';
 import {Amplify,} from 'aws-amplify';
