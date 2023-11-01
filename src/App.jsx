@@ -7,12 +7,11 @@ import ValidatePage from './components/ValidatePage';
 import { useState } from 'react';
 import SignUpPage from './components/SignUpPage';
 import Success from './layouts/UserDashBoard';
-import '@picocss/pico'
-import Navbar from './Components/NavBar';
-import Foot from './Components/Foot';
-import FamilyFights from './Components/FamilyFights';
-import Weekly from './Components/Weekly';
-import MyFamilies from './Components/MyFamilies';
+// import Navbar from './components/NavBar';
+// import Foot from './components/Foot';
+// import FamilyFights from './components/FamilyFights';
+// import Weekly from './components/Weekly';
+// import MyFamilies from './components/MyFamilies';
 
 
 Amplify.configure(awsmobile);
@@ -37,9 +36,9 @@ Amplify.configure(awsmobile);
         <Route path='/register' element={<SignUpPage />} />
         <Route path='/validate' element={<ValidatePage />} />
         <Route path='/success' element={<Success />} />
-        <Route exact path='/Weekly' element={<Weekly/>} />
+        {/* <Route exact path='/Weekly' element={<Weekly/>} />
         <Route exact path='/FamilyFights/*' element={<FamilyFights/>} />
-        <Route exact path='/MyFamilies' element={<MyFamilies/>} />
+        <Route exact path='/MyFamilies' element={<MyFamilies/>} /> */}
         {/* <Route path='/contacts' element={<Contacts isAuthenticated={isAuthenticated} />} /> */}
       </Routes>
     </Router>
