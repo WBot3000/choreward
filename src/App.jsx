@@ -7,6 +7,13 @@ import ValidatePage from './components/ValidatePage';
 import { useState } from 'react';
 import SignUpPage from './components/SignUpPage';
 import Success from './layouts/UserDashBoard';
+import '@picocss/pico'
+import Navbar from './Components/NavBar';
+import Foot from './Components/Foot';
+import FamilyFights from './Components/FamilyFights';
+import Weekly from './Components/Weekly';
+import MyFamilies from './Components/MyFamilies';
+
 
 Amplify.configure(awsmobile);
 // This is a mock authentication function.
@@ -30,6 +37,9 @@ Amplify.configure(awsmobile);
         <Route path='/register' element={<SignUpPage />} />
         <Route path='/validate' element={<ValidatePage />} />
         <Route path='/success' element={<Success />} />
+        <Route exact path='/Weekly' element={<Weekly/>} />
+        <Route exact path='/FamilyFights/*' element={<FamilyFights/>} />
+        <Route exact path='/MyFamilies' element={<MyFamilies/>} />
         {/* <Route path='/contacts' element={<Contacts isAuthenticated={isAuthenticated} />} /> */}
       </Routes>
     </Router>
