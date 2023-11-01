@@ -1,35 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import DashboardLayout from './layouts/dashboardLayouts';
+import awsmobile from './aws-exports';
+import {Amplify,} from 'aws-amplify';
+import LoginPage from './components/LoginPage';
+import ValidatePage from './components/ValidatePage';
+import { useState } from 'react';
+import SignUpPage from './components/SignUpPage';
+import Success from './layouts/UserDashBoard';
 
-function App() {
-  const [count, setCount] = useState(0)
+Amplify.configure(awsmobile);
+// This is a mock authentication function.
+// You can replace this with your authentication logic.
+
+
+  function App() {
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
+  
+    function updateAuthStatus(authStatus) {
+      setIsAuthenticated(authStatus)
+    }
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <Router>
+      <Routes>
+        <Route path='*' element={<DashboardLayout isAuthenticated={isAuthenticated} />} />
+        <Route path='/' exact={true} element={<DashboardLayout isAuthenticated={isAuthenticated} />} />
+        <Route path='/login' element={<LoginPage updateAuthStatus={updateAuthStatus} />} />
+        <Route path='/register' element={<SignUpPage />} />
+        <Route path='/validate' element={<ValidatePage />} />
+        <Route path='/success' element={<Success />} />
+        {/* <Route path='/contacts' element={<Contacts isAuthenticated={isAuthenticated} />} /> */}
+      </Routes>
+    </Router>
     </>
-  )
+  );
 }
 
-export default App
+
+export default App;
