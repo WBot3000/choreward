@@ -1,9 +1,7 @@
-import { useState } from 'react';
-import { AuthContext } from './AuthContext.js'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import DashboardLayout from './layouts/dashboardLayouts';
 import awsmobile from './aws-exports';
-import { Amplify, Auth } from 'aws-amplify';
+import { Amplify } from 'aws-amplify';
 import LoginPage from './components/LoginPage';
 import ValidatePage from './components/ValidatePage';
 import SignUpPage from './components/SignUpPage';
@@ -18,22 +16,6 @@ Amplify.configure(awsmobile);
 // You can replace this with your authentication logic.
 
 function App() {
-    //const [isAuthenticated, setIsAuthenticated] = useState(false)
-    //console.log("user is authenticated:", Auth.currentAuthenticatedUser())
-
-    //Auth.currentAuthenticatedUser().then(() => { setIsAuthenticated(true) }).catch(() => { setIsAuthenticated(false) })
-
-    // Auth.signIn()
-
-    // function updateAuthStatus(authStatus) {
-    //   setIsAuthenticated(authStatus)
-    // }
-    
-    // function for sign out 
-
-    // Auth.signOut()
-    // set IsAuthgenticated to false
-
   return (
     <>
         <Router>

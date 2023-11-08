@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+
 function BottomNav() {
   return (
     <div className="fixed bottom-0 left-0 y-10 z-50 w-full h-16 bg-white border-t border-gray-200 dark:bg-gray-700 dark:border-gray-600">

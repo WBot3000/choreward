@@ -1,5 +1,4 @@
 import React from 'react'
-import { AuthContext } from '../AuthContext'
 import useLoginCheck from './hooks/useLoginCheck'
 import BottomNav from './BottomNav'
 import TopNav from './TopNav'
@@ -11,7 +10,7 @@ import Rewards from './Rewards'
 function MyFamily() {
 
     useLoginCheck({
-        failureRedirect: "/Login"
+        redirect: "/Login"
     });
 
   return (

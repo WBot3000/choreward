@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { AuthContext } from '../AuthContext'
 import useLoginCheck from './hooks/useLoginCheck'
 import BottomNav from './BottomNav'
 import TopNav from './TopNav'

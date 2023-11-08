@@ -17,7 +17,6 @@
 import { useState } from 'react';
 import { useNavigate, } from 'react-router-dom';
 import useLoginCheck from './hooks/useLoginCheck';
-import { AuthContext } from '../AuthContext';
 
 import { Auth } from 'aws-amplify';
 import logo from "../assets/Choreward-logos_black.png"
