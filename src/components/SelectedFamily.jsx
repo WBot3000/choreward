@@ -17,7 +17,7 @@ export default function Example() {
 
   return (
     <div>
-        <h2 class="text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl dark:text-white">Selected Family</h2>
+        <h2 class="text-1xl font-extrabold leading-none tracking-tight text-gray-900 md:text-2xl dark:text-white">Selected Family</h2>
     <div className="mt-5">
         
       <Listbox value={selected} onChange={setSelected}>

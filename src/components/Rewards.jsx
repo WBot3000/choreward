@@ -28,7 +28,7 @@ function Rewards() {
   return (
     <div>
         <h2 class="mb-2 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl dark:text-white ml-10 mt-10">Rewards</h2>
-    <div class="flex">
+    <div class="flex pb-40">
     {items.map((item) => (
     <article key={item.id}>
            <div class="flex justify-center items-center pt-10 pl-10">
