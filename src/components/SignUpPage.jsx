@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, } from 'react-router-dom';
+import useLoginCheck from './hooks/useLoginCheck';
 
 import { Auth } from 'aws-amplify';
 import logo from "../assets/Choreward-logos_black.png"
@@ -10,6 +11,11 @@ function RegisterPage() {
     const [username, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
+
+    useLoginCheck({
+        redirect: "/WeeklyTasks",
+        shouldBeLoggedOut: true
+    })
 
     const handleRegister = async () => {
         try {
