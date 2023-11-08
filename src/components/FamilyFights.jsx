@@ -36,10 +36,10 @@ function FamilyFights() {
     const [selectedFamilyFight, setSelectedFamilyFight] = useState(null);
     const [portalIsOpen, setPortalIsOpen] = useState(false);
 
-    // useLoginCheck({
-    //     authContext: AuthContext,
-    //     failureRedirect: "/Login"
-    // });
+    useLoginCheck({
+        authContext: AuthContext,
+        failureRedirect: "/Login"
+    });
 
     function openPortalModal(fight) {
         setSelectedFamilyFight(fight);

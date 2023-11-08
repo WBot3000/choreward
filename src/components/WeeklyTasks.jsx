@@ -28,10 +28,10 @@ function WeeklyTasks() {
     const [portalIsOpen, setPortalIsOpen] = useState(false);
     const [uploadIsOpen, setUploadIsOpen] = useState(false);
 
-    // useLoginCheck({
-    //     authContext: AuthContext,
-    //     failureRedirect: "/Login"
-    // });
+    useLoginCheck({
+        authContext: AuthContext,
+        failureRedirect: "/Login"
+    });
 
     function openPortalModal(task) {
         setSelectedWeeklyTask(task);
