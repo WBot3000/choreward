@@ -10,10 +10,10 @@ import Rewards from './Rewards'
 
 function MyFamily() {
 
-    useLoginCheck({
-        authContext: AuthContext,
-        failureRedirect: "/Login"
-    });
+    // useLoginCheck({
+    //     authContext: AuthContext,
+    //     failureRedirect: "/Login"
+    // });
 
   return (
     <div>

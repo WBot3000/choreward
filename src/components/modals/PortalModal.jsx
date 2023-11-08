@@ -33,7 +33,7 @@ function PortalModal({ isOpen, onClose, title="Portal", videos=[] }) {
     //const [videos, setVideos] = useState(generatedVidData);
     const [selectedVidData, setSelectedVidData] = useState(null);
 
-    console.log(selectedVidData)
+    // console.log(selectedVidData)
 
     function VideoLink({ videoData }) {
         return <div className="w-64 h-36 mx-8 my-4" onClick={() => {setSelectedVidData(videoData)}}>

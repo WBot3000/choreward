@@ -32,8 +32,9 @@ export default function LoginPage(props) {
     
     useLoginCheck({
         authContext: AuthContext,
-        failureRedirect: "/WeeklyTasks",
-        checkForLoggedOut: true
+        redirect: "/WeeklyTasks",
+
+        // checkForLoggedOut: true
     })
     // const loggedIn = useContext(AuthContext);
 

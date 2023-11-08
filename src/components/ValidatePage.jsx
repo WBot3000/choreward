@@ -12,11 +12,11 @@ function ValidatePage() {
     const [username, setUserName] = useState('');
     const [authenticationCode, setAuthenticationCode] = useState('');
 
-    useLoginCheck({
-        authContext: AuthContext,
-        failureRedirect: "/WeeklyTasks",
-        checkForLoggedOut: true
-    })
+    // useLoginCheck({
+    //     authContext: AuthContext,
+    //     failureRedirect: "/WeeklyTasks",
+    //     checkForLoggedOut: true
+    // })
 
     const handleRegisterConfirmation = async () => {
         try {

@@ -12,17 +12,28 @@ import NavBar from './components/TopNav';
 import WeeklyTasks from './components/WeeklyTasks';
 import MyFamily from './components/MyFamily';
 import FamilyFights from './components/FamilyFights';
+import {Auth} from 'aws-amplify';
 
 Amplify.configure(awsmobile);
 // This is a mock authentication function.
 // You can replace this with your authentication logic.
 
 function App() {
-    const [isAuthenticated, setIsAuthenticated] = useState(false)
-  
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+    console.log("user is authenticated:", Auth.currentAuthenticatedUser())
+
+    Auth.currentAuthenticatedUser().then(() => { setIsAuthenticated(true) }).catch(() => { setIsAuthenticated(false) })
+
+    // Auth.signIn()
+
     function updateAuthStatus(authStatus) {
       setIsAuthenticated(authStatus)
     }
+    
+    // function for sign out 
+
+    // Auth.signOut()
+    // set IsAuthgenticated to false
 
   return (
     <>
