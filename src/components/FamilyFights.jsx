@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import { AuthContext } from '../AuthContext'
-import useLoginCheck from '../useLoginCheck'
+import useLoginCheck from './hooks/useLoginCheck'
 import BottomNav from './BottomNav'
 import TopNav from './TopNav'
 import FamilyCard from './FamilyCard'
@@ -37,8 +37,7 @@ function FamilyFights() {
     const [portalIsOpen, setPortalIsOpen] = useState(false);
 
     useLoginCheck({
-        authContext: AuthContext,
-        failureRedirect: "/Login"
+        redirect: "/Login"
     });
 
     function openPortalModal(fight) {

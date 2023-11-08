@@ -4,7 +4,7 @@ import Modal from "./Modal";
 function UploadModal({ isOpen, onClose, submissionFor }) {
 
     const [uploadName, setUploadName] = useState("")
-    const [selectedFile, setSelectedFile] = useState(null);
+    const [selectedFile, setSelectedFile] = useState("");
     const [uploadStatusMessage, setUploadStatusMessage] = useState("");
 
     //Function responsible for closing the modal, also nullifies the currently selected file

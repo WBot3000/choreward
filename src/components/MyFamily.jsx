@@ -1,6 +1,6 @@
 import React from 'react'
 import { AuthContext } from '../AuthContext'
-import useLoginCheck from '../useLoginCheck'
+import useLoginCheck from './hooks/useLoginCheck'
 import BottomNav from './BottomNav'
 import TopNav from './TopNav'
 // import SelectedFamily from './SelectedFamily'
@@ -10,10 +10,9 @@ import Rewards from './Rewards'
 
 function MyFamily() {
 
-    // useLoginCheck({
-    //     authContext: AuthContext,
-    //     failureRedirect: "/Login"
-    // });
+    useLoginCheck({
+        failureRedirect: "/Login"
+    });
 
   return (
     <div>

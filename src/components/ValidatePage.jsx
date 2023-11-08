@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { AuthContext } from '../AuthContext';
-import useLoginCheck from '../useLoginCheck';
+import useLoginCheck from './hooks/useLoginCheck';
 import { useNavigate,} from 'react-router-dom';
 import logo from "../assets/Choreward-logos_black.png"
 import { Auth } from 'aws-amplify';
@@ -12,11 +11,10 @@ function ValidatePage() {
     const [username, setUserName] = useState('');
     const [authenticationCode, setAuthenticationCode] = useState('');
 
-    // useLoginCheck({
-    //     authContext: AuthContext,
-    //     failureRedirect: "/WeeklyTasks",
-    //     checkForLoggedOut: true
-    // })
+    useLoginCheck({
+        redirect: "/WeeklyTasks",
+        shouldBeLoggedOut: true
+    });
 
     const handleRegisterConfirmation = async () => {
         try {

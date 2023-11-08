@@ -16,7 +16,7 @@
 
 import { useState } from 'react';
 import { useNavigate, } from 'react-router-dom';
-import useLoginCheck from '../useLoginCheck';
+import useLoginCheck from './hooks/useLoginCheck';
 import { AuthContext } from '../AuthContext';
 
 import { Auth } from 'aws-amplify';
@@ -31,18 +31,9 @@ export default function LoginPage(props) {
     const [password, setPassword] = useState('');
     
     useLoginCheck({
-        authContext: AuthContext,
         redirect: "/WeeklyTasks",
-
-        // checkForLoggedOut: true
+        shouldBeLoggedOut: true
     })
-    // const loggedIn = useContext(AuthContext);
-
-    // useEffect(() => {
-    //     if(loggedIn) {
-    //         navigate('/WeeklyTasks')
-    //     }
-    // }, []);
 
     const handleLogin = async () => {
         try {
@@ -52,7 +43,7 @@ export default function LoginPage(props) {
 
             await Auth.signIn(username, password)
 
-            props.updateAuthStatus(true)
+            //props.updateAuthStatus(true)
             navigate('/WeeklyTasks')
         } catch (err) { console.log(err) }
     }
