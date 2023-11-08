@@ -1,9 +1,17 @@
 import React from 'react'
+import { AuthContext } from '../AuthContext'
+import useLoginCheck from '../useLoginCheck'
 import BottomNav from './BottomNav'
 import TopNav from './TopNav'
 import FamilyCards from './familyCards'
 
 function FamilyFights() {
+
+    useLoginCheck({
+        authContext: AuthContext,
+        failureRedirect: "/Login"
+    });
+    
   return (
     <div>
         <TopNav/>

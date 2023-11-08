@@ -16,6 +16,8 @@
 
 import { useState } from 'react';
 import { useNavigate, } from 'react-router-dom';
+import useLoginCheck from '../useLoginCheck';
+import { AuthContext } from '../AuthContext';
 
 import { Auth } from 'aws-amplify';
 import logo from "../assets/Choreward-logos_black.png"
@@ -27,6 +29,19 @@ export default function LoginPage(props) {
     
     const [username, setUserName] = useState('');
     const [password, setPassword] = useState('');
+    
+    useLoginCheck({
+        authContext: AuthContext,
+        failureRedirect: "/WeeklyTasks",
+        checkForLoggedOut: true
+    })
+    // const loggedIn = useContext(AuthContext);
+
+    // useEffect(() => {
+    //     if(loggedIn) {
+    //         navigate('/WeeklyTasks')
+    //     }
+    // }, []);
 
     const handleLogin = async () => {
         try {
@@ -37,7 +52,7 @@ export default function LoginPage(props) {
             await Auth.signIn(username, password)
 
             props.updateAuthStatus(true)
-            navigate('/success')
+            navigate('/WeeklyTasks')
         } catch (err) { console.log(err) }
     }
     const handleSubmit = (event) => {

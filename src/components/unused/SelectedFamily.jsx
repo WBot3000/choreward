@@ -12,6 +12,8 @@ const people = [
   { name: 'Hellen Schmidt' },
 ]
 
+//Currently unused because users can only be part of one family right now. 
+//However, might get used in a future version.
 export default function Example() {
   const [selected, setSelected] = useState(people[0])
 

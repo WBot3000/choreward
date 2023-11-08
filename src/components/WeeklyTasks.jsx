@@ -1,9 +1,21 @@
 import React from 'react'
+import { AuthContext } from '../AuthContext'
+import useLoginCheck from '../useLoginCheck'
 import BottomNav from './BottomNav'
 import TopNav from './TopNav'
+import TrashIcon from "../assets/images/trash.svg"
+import BedIcon from "../assets/images/bed.svg"
+
+import { useNavigate, } from 'react-router-dom';
 
 
 function WeeklyTasks() {
+
+    useLoginCheck({
+        authContext: AuthContext,
+        failureRedirect: "/Login"
+    });
+
   return (
     <div>
         <TopNav/>
@@ -36,12 +48,12 @@ function WeeklyTasks() {
         </div> */}
     </div>
     <div class="flex flex-col items-center pb-10">
-        <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src='../images/trash.jpeg' alt="Trash Icon"/>
+        <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src={TrashIcon} alt="Trash Icon"/>
         <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">Take Out Trash</h5>
         <span class="text-sm text-gray-500 dark:text-gray-400">Task</span>
         <div class="flex mt-4 space-x-3 md:mt-6">
-            <a href="#" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">View</a>
-            <a href="#" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700">Delete</a>
+            <a href="#" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Post</a>
+            <a href="#" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700">View</a>
         </div>
     </div>
 </div>
@@ -69,12 +81,12 @@ function WeeklyTasks() {
         </div> */}
     </div>
     <div class="flex flex-col items-center pb-10" >
-        <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src='../images/trash.jpeg' alt="Bed Icon"/>
+        <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src={BedIcon} alt="Bed Icon"/>
         <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">Make the Bed</h5>
         <span class="text-sm text-gray-500 dark:text-gray-400">Task</span>
         <div class="flex mt-4 space-x-3 md:mt-6">
-            <a href="#" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">View</a>
-            <a href="#" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700">Delete</a>
+            <a href="#" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Post</a>
+            <a href="#" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700">View</a>
         </div>
     </div>
 </div>
