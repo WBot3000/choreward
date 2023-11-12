@@ -9,11 +9,11 @@ import Rewards from './Rewards'
 
 function MyFamily() {
 
-    useLoginCheck({
+    const authPassed = useLoginCheck({
         redirect: "/Login"
     });
 
-  return (
+  return (authPassed &&
     <div>
         <TopNav/>
         
