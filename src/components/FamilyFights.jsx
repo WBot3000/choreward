@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import useLoginCheck from './hooks/useLoginCheck'
 import BottomNav from './BottomNav'
 import TopNav from './TopNav'
@@ -32,8 +32,13 @@ const tempFights = [
 //TODO: Incorporate functionality for upload modals
 function FamilyFights() {
 
+    //NOTE: This state is just for testing purposes. When backend integration is done, this'll probably just be gotten from the user object (since whether or not you're the family head doesn't change, with the exception of a user creating a new family)
+    const [isFamilyHead, setIsFamilyHead] = useState(false);
+
     const [selectedFamilyFight, setSelectedFamilyFight] = useState(null);
     const [portalIsOpen, setPortalIsOpen] = useState(false);
+    const [familyToChallenge, setFamilyToChallenge] = useState("");
+    const [challengeSentStatus, setChallengeSentStatus] = useState("");
 
     useLoginCheck({
         redirect: "/Login"
@@ -48,11 +53,30 @@ function FamilyFights() {
         setPortalIsOpen(false);
         setSelectedFamilyFight(null);
     }
+
+    function sendChallenge(event) {
+        event.preventDefault();
+        try {
+            const fixedFamilyToChallenge = familyToChallenge?.trim()
+            if(fixedFamilyToChallenge == "") {
+                throw new Error("Please enter a family head name.")
+            }
+            else {
+                //Backend code, make sure the challenge has been sent
+                setChallengeSentStatus("Challenge successfully sent to " + fixedFamilyToChallenge)
+            }
+        }
+        catch(e) {
+            setChallengeSentStatus(e.message);
+        }
+    }
     
     //Need to figure out the size of the Family Fights container
     return (
         <div>
             <TopNav/>
+            <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                onClick={() => {setIsFamilyHead(!isFamilyHead)}}>Family Head Toggle For Testing</button>
             
             <h1 className="flex justify-center items-center">.</h1>
             <h1 className="mb-4 text-1xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white flex justify-center items-center">Family Fights</h1>
@@ -66,6 +90,19 @@ function FamilyFights() {
                 </li>
             </ul>
             </div>
+
+            {isFamilyHead &&
+                <form className='flex flex-col justify-center gap-y-2 p-6 bg-gray-100 border border-gray-300 rounded-lg shadow md:max-w-xl hover:bg-gray-200 dark:border-gray-800 dark:bg-gray-900 dark:hover:bg-gray-800 mx-auto my-5'>
+                    <label className="font-bold" htmlFor='family_to_challenge'>Challenge Family</label>
+                    <input type="text" name="family_to_challenge" value={familyToChallenge}
+                        onChange={e => {setFamilyToChallenge(e.target.value)}}/>
+                    {challengeSentStatus &&
+                        <p>{challengeSentStatus}</p>
+                    }
+                    <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800ml-4" 
+                        onClick={(e) => {sendChallenge(e)}}>Send Challenge</button>
+                </form>
+            }
 
             <div className='overflow-y-auto h-96'>
                 {tempFights.map(fight => (
