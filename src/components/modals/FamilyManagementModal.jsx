@@ -20,7 +20,7 @@ const users = [
 }]
 
 //This'll probably become the basis for the Portal Modal
-function FamilyManagementModal(props) {
+function FamilyManagementModal({ isOpen, onClose }) {
 
     const [inviteUsername, setInviteUsername] = useState("")
     const [inviteStatusMsg, setInviteStatusMsg] = useState(null)
@@ -37,8 +37,10 @@ function FamilyManagementModal(props) {
             {showKickPrompt &&
                 <div>
                     <p>Do you want to kick {user.username}?</p>
-                    <button onClick={() => {kickMember((user))}}>KICK</button>
-                    <button onClick={() => {setPromptedToKick(null)}}>Nevermind</button>
+                    <button className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800" 
+                        onClick={() => {kickMember((user))}}>KICK</button>
+                    <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" 
+                        onClick={() => {setPromptedToKick(null)}}>Nevermind</button>
                 </div>
             }
         </div>;
@@ -74,10 +76,10 @@ function FamilyManagementModal(props) {
         setInviteUsername("");
         setInviteStatusMsg(null);
         setPromptedToKick(null);
-        props.onClose();
+        onClose();
     }
 
-    return <Modal title="Manage Family" isOpen={props.isOpen} onClose={closeModal}>
+    return <Modal title="Manage Family" isOpen={isOpen} onClose={closeModal}>
         <h2 className="text-xl font-bold">Add New User</h2>
         <form>
             <input type="text" name="inv_username"

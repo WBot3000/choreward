@@ -20,6 +20,18 @@ const tempTasks = [
     }
 ]
 
+//TODO: Get rid of this once we can query actual video data
+const videoNames = ["Name 1", "Name 2", "Hello World", "Super Duper Ultra Masterfully Long Name Lol!", "Name 5", "Name 6", "Help Me!" , "I love cats", "Name 9", "Name 10", "Name 11", "Ultimate Video Fan", "Wahoo", "Name Last"]
+
+const generatedVidData = [];
+for(let i = 0; i < videoNames.length; i++) {
+    generatedVidData.push({
+        id: `${i}`,
+        title: videoNames[i],
+        poster: "JohnDoe"
+    })
+}
+
 
 function WeeklyTasks() {
 
@@ -98,7 +110,7 @@ function WeeklyTasks() {
             </div>
             <BottomNav/>
             <PortalModal isOpen={selectedWeeklyTask != null && portalIsOpen} onClose={() => {closePortalModal()}}
-                title={selectedWeeklyTask?.name} videos={[]}/>
+                title={selectedWeeklyTask?.name} videos={generatedVidData}/>
             <UploadModal isOpen={selectedWeeklyTask != null && uploadIsOpen} onClose={() => {closeUploadModal()}}
                 submissionFor={selectedWeeklyTask?.name}/>
         </div>

@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import Modal from "./Modal"
 import { HeartIcon, ChatBubbleLeftIcon } from "@heroicons/react/24/outline"
+import { HeartIcon as HeartIconFilled } from "@heroicons/react/24/solid" 
 
 
-//This'll probably become the basis for the Portal Modal
 function VideoModal({ isOpen, onClose, videoData }) {
     //Used to resize the video based on the window size
     //TODO: Maybe find less arbitrary numbers
     const [vidWidth, setVidWidth] = useState(window.innerWidth > 600 ? 550 : window.innerWidth - 25);
+    const [isLiked, setIsLiked] = useState(false);
     const [isLeavingComment, setIsLeavingComment] = useState(false);
     const [commentText, setCommentText] = useState("");
     const [commentError, setCommentError] = useState("");
@@ -16,7 +17,13 @@ function VideoModal({ isOpen, onClose, videoData }) {
     //Comments that are intiially displayed should be from the passed video data. However, if the user adds their own comment, this should be added to the display
     useEffect(() => {
         setComments(videoData?.comments ?? []);
-    }, [])
+    }, []);
+
+    //TODO: Set isLiked to a value based on whether or not the user has actually liked the video
+    //Stored in a state seperate from the video data so the system doesn't have to refetch when liking/unliking
+    useEffect(() => {
+        setIsLiked(false);
+    }, []);
 
     //Changes video size when the window is resized
     useEffect(() => {
@@ -64,13 +71,15 @@ function VideoModal({ isOpen, onClose, videoData }) {
         <div className="flex flex-wrap flex-col lg:flex-row">
             <iframe className="m-2" src="https://www.youtube.com/watch?v=8lM7f3O3Mko"
                 width={vidWidth} height={vidWidth*(9/16)}/>
-            <div className="lg:w-1/2 grow m-2 bg-zinc-300 rounded border-2 border-zinc-400 overflow-y-scroll max-h-80">
+            <div className="lg:w-1/2 grow m-2 bg-zinc-300 rounded border-2 border-zinc-400 overflow-y-scroll h-80">
                 {comments.map((cData) => <Comment key={cData.id} poster={cData.poster} comment={cData.comment}/>)}
             </div>
         </div>
         <div>
-            <button className="m-1 w-12 h-12 rounded-full">
-                <HeartIcon className="w-6"/>
+            <button className="m-1 w-12 h-12 rounded-full"
+                onClick={() => {setIsLiked(!isLiked)}}>
+                {isLiked && <HeartIconFilled className="w-6"/>}
+                {!isLiked && <HeartIcon className="w-6"/>}
             </button>
             <button className="m-1 w-12 h-12 rounded-full"
                 onClick={() => {setIsLeavingComment(true)}}>
