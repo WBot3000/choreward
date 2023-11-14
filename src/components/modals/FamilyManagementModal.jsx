@@ -90,6 +90,7 @@ function FamilyManagementModal(props) {
         <h2 className="text-xl font-bold">Current Users</h2>
         <ul className='flex flex-col gap-y-5 overflow-y-scroll'>
             {members.map(u => <UserListItem key={u.id} user={u} showKickPrompt={u === promptedToKick}/>)}
+            {members.length == 0 && <li>No invites</li>}
         </ul>
     </Modal>
 }
