@@ -29,7 +29,7 @@ function FamilyManagementModal({ isOpen, onClose }) {
 
     //Component that contains a current member of the family, and the option to kick them if need be
     function UserListItem({ user, showKickPrompt }) {
-        return <div>
+        return <li>
             <span className='flex gap-x-10'>
                 <p className="font-semibold">{user.username}</p>
                 <button onClick={() => {setPromptedToKick(user)}}>Remove User</button>
@@ -43,7 +43,7 @@ function FamilyManagementModal({ isOpen, onClose }) {
                         onClick={() => {setPromptedToKick(null)}}>Nevermind</button>
                 </div>
             }
-        </div>;
+        </li>;
     }
 
     //TODO: Actually send the invite. Include check to see if the user exists.
@@ -90,9 +90,10 @@ function FamilyManagementModal({ isOpen, onClose }) {
             <p>{inviteStatusMsg}</p>
         }
         <h2 className="text-xl font-bold">Current Users</h2>
-        <div className='flex flex-col gap-y-5 overflow-y-scroll'>
+        <ul className='flex flex-col gap-y-5 overflow-y-scroll'>
             {members.map(u => <UserListItem key={u.id} user={u} showKickPrompt={u === promptedToKick}/>)}
-        </div>
+            {members.length == 0 && <li>No family members. Add some here!</li>}
+        </ul>
     </Modal>
 }
 
