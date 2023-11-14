@@ -1,7 +1,7 @@
 import React from 'react'
-import TopNav from './TopNav'
-import BottomNav from './BottomNav'
-import ViewMembers from '../ViewMembers'
+import TopNav from '../TopNav'
+import BottomNav from '../BottomNav'
+import ViewMembers from '../../ViewMembers'
 
 function SendInvites() {
   return (
