@@ -12,24 +12,21 @@ import useFetchFamilies from "./hooks/useFetchFamily";
 
 function MyFamily() {
 
-    useLoginCheck({
-        redirect: "/Login",
+    const authPassed = useLoginCheck({
+        redirect: "/Login"
     });
 
-    //NOTE: This state is just for testing purposes. When backend integration is done, this'll probably just be gotten from the user object (since whether or not you're the family head doesn't change, with the exception of a user creating a new family)
-    const [isFamilyHead, setIsFamilyHead] = useState(false);
-    const [mgmtIsOpen, setMgmtIsOpen] = useState(false);
-
-    const { addFamily, fetchFamilies } = useFetchFamilies();
-    const [familyData, setFamilyData] = useState({
-        FamilyName: "",
-        Head: "",
-        Members: "",
-        Rewards: { RewardName: "", RewardCost: "" },
-        ThreadsID: "",
-        OnChanllengesID: "",
-        EarnedPoints: "",
-    });
+  
+  const { addFamily, fetchFamilies} = useFetchFamilies();
+  const [familyData, setFamilyData] = useState({
+    FamilyName: "",
+    Head: "",
+    Members: "",
+    Rewards: { RewardName: "", RewardCost: "" },
+    ThreadsID: "",
+    OnChanllengesID: "",
+    EarnedPoints: "",
+  });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -68,7 +65,7 @@ function MyFamily() {
         }
     };
 
-    return (
+    return (authPassed &&
         <div>
         <TopNav />
         <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
