@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import DashboardLayout from './layouts/dashboardLayouts';
+import DashboardLayout from './layouts/DashboardLayouts';
 import awsmobile from './aws-exports';
 import { Amplify } from 'aws-amplify';
 import LoginPage from './components/LoginPage';
