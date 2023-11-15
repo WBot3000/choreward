@@ -20,7 +20,7 @@ function MyFamily() {
     const [isFamilyHead, setIsFamilyHead] = useState(false);
     const [mgmtIsOpen, setMgmtIsOpen] = useState(false);
 
-    const { addFamily, fetchFamilies} = useFetchFamilies();
+    const { addFamily, fetchFamilies } = useFetchFamilies();
     const [familyData, setFamilyData] = useState({
         FamilyName: "",
         Head: "",
