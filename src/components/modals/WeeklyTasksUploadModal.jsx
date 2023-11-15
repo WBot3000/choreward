@@ -3,7 +3,7 @@ import Modal from "./Modal";
 
 import useFetchVideos from "../hooks/useFetchVideoData";
 
-function WeeklyTasksUploadModal({ userId, isOpen, onClose, submissionFor }) {
+function WeeklyTasksUploadModal({ userId, taskType, isOpen, onClose, submissionFor }) {
 
     const [uploadName, setUploadName] = useState("")
     const [selectedFile, setSelectedFile] = useState("");

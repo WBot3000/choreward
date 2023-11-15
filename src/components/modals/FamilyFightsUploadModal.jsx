@@ -8,7 +8,7 @@ const choreTypes = [
     "Make the Bed"
 ]
 
-function FamilyFightsUploadModal({ userId, isOpen, onClose, submissionFor }) {
+function FamilyFightsUploadModal({ userId, fightId, isOpen, onClose, submissionFor }) {
 
     const [uploadType, setUploadType] = useState("")
     const [selectedFile, setSelectedFile] = useState("");

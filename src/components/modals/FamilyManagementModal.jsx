@@ -20,7 +20,7 @@ const users = [
 }]
 
 //This'll probably become the basis for the Portal Modal
-function FamilyManagementModal({ isOpen, onClose }) {
+function FamilyManagementModal({ isOpen, onClose, addMemberDBFn, kickMemberDBFn }) {
 
     const [inviteUsername, setInviteUsername] = useState("")
     const [inviteStatusMsg, setInviteStatusMsg] = useState(null)
@@ -54,21 +54,34 @@ function FamilyManagementModal({ isOpen, onClose }) {
             setInviteStatusMsg("Please enter a username")
         }
         else {
-            setInviteStatusMsg("Invite sent to " + fixedUsername);
+            try {
+                addMemberDBFn()
+                setInviteStatusMsg(fixedUsername + " added to family");
+            }
+            catch(e) {
+                console.log("Error adding user: ", e);
+            }
         } 
     }
 
     //TODO: Kick the member on the backend too
     function kickMember(memberToKick) {
-        const newMemberList = [];
-        for(let member of members) {
-            if(member != memberToKick) {
-                newMemberList.push(member);
+        try {
+            kickMemberDBFn();
+            const newMemberList = [];
+            for(let member of members) {
+                if(member != memberToKick) {
+                    newMemberList.push(member);
+                }
             }
+            setPromptedToKick(null);
+            setMembers(newMemberList);
+            console.log(memberToKick.username + " has been kicked from this family");
         }
-        setPromptedToKick(null);
-        setMembers(newMemberList);
-        console.log(memberToKick.username + " has been kicked from this family");
+        catch(e) {
+            console.log("Error kicking user: ", e);
+        }
+
     }
 
     //Responsible for closing the modal. Don't just want to use the passed prop, as we also need to nullify all the appropriate fields

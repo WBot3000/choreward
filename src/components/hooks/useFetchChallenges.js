@@ -11,7 +11,7 @@ const useFetchChallenges = () => {
   const fetchChallenges = async () => {
     try {
       const challengeData = await API.graphql(graphqlOperation(listChanllenges));
-      setFamilies(challengeData.data.listChanllenges.items);
+      setChallenges(challengeData.data.listChanllenges.items);
       console.log(challengeData)
     } catch (err) {
       console.error('Error fetching challenges:', err);

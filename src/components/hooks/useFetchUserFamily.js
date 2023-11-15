@@ -32,21 +32,42 @@ const useFetchUserFamily = (userId) => {
   };
 
   //Function to add family member
-  const addMember = async () => {
+  const addMember = async (memberId) => {
     //TODO
   }
 
   //Function to add family member
-  const deleteMember = async () => {
+  const kickMember = async (memberId) => {
     //TODO
   }
+
+  //Function to add family reward
+  const addReward = async (rewardData) => {
+    //TODO
+  }
+
+  //Function to alter family reward
+  const editReward = async (rewardId, newRewardData) => {
+
+  }
+
+  //Function to add family reward
+  const deleteReward = async (rewardId) => {
+    //TODO
+  }
+
+  //Function for when a user redeems a reward
+  const redeemReward = async (rewardData) => {
+    //TODO
+  }
+
 
   // Fetch families on component mount
   useEffect(() => {
     getUserFamily();
   }, [allFamilies, userId]);
 
-  return { isFamilyHead, userFamilyData };
+  return { isFamilyHead, userFamilyData, addMember, kickMember };
 };
 
 export default useFetchUserFamily;
