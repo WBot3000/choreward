@@ -50,6 +50,8 @@ export const getChanllenges = /* GraphQL */ `
     getChanllenges(id: $id) {
       id
       ChallengeList
+      Family1Name
+      Family2Name
       EndTime
       RwardPoints
       createdAt
@@ -68,6 +70,8 @@ export const listChanllenges = /* GraphQL */ `
       items {
         id
         ChallengeList
+        Family1Name
+        Family2Name
         EndTime
         RwardPoints
         createdAt

@@ -71,6 +71,8 @@ export const onCreateChanllenges = /* GraphQL */ `
     onCreateChanllenges(filter: $filter) {
       id
       ChallengeList
+      Family1Name
+      Family2Name
       EndTime
       RwardPoints
       createdAt
@@ -86,6 +88,8 @@ export const onUpdateChanllenges = /* GraphQL */ `
     onUpdateChanllenges(filter: $filter) {
       id
       ChallengeList
+      Family1Name
+      Family2Name
       EndTime
       RwardPoints
       createdAt
@@ -101,6 +105,8 @@ export const onDeleteChanllenges = /* GraphQL */ `
     onDeleteChanllenges(filter: $filter) {
       id
       ChallengeList
+      Family1Name
+      Family2Name
       EndTime
       RwardPoints
       createdAt

@@ -17,6 +17,8 @@ type Threads @model @auth(rules: [{allow: public}]) {
 type Chanllenges @model @auth(rules: [{allow: public}]) {
   id: ID!
   ChallengeList: String
+  Family1Name: String
+  Family2Name: String
   EndTime: AWSDate
   RwardPoints: Int
 }

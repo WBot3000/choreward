@@ -81,6 +81,8 @@ export const createChanllenges = /* GraphQL */ `
     createChanllenges(input: $input, condition: $condition) {
       id
       ChallengeList
+      Family1Name
+      Family2Name
       EndTime
       RwardPoints
       createdAt
@@ -97,6 +99,8 @@ export const updateChanllenges = /* GraphQL */ `
     updateChanllenges(input: $input, condition: $condition) {
       id
       ChallengeList
+      Family1Name
+      Family2Name
       EndTime
       RwardPoints
       createdAt
@@ -113,6 +117,8 @@ export const deleteChanllenges = /* GraphQL */ `
     deleteChanllenges(input: $input, condition: $condition) {
       id
       ChallengeList
+      Family1Name
+      Family2Name
       EndTime
       RwardPoints
       createdAt
