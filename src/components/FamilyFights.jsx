@@ -35,7 +35,7 @@ function FamilyFights() {
     const [selectedFamilyFight, setSelectedFamilyFight] = useState(null);
     const [portalIsOpen, setPortalIsOpen] = useState(false);
 
-    useLoginCheck({
+    const authPassed = useLoginCheck({
         redirect: "/Login"
     });
 
@@ -50,7 +50,7 @@ function FamilyFights() {
     }
     
     //Need to figure out the size of the Family Fights container
-    return (
+    return (authPassed &&
         <div>
             <TopNav/>
             

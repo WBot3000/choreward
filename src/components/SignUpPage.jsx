@@ -12,7 +12,7 @@ function RegisterPage() {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
 
-    useLoginCheck({
+    const authFailed = useLoginCheck({
         redirect: "/WeeklyTasks",
         shouldBeLoggedOut: true
     })
@@ -45,7 +45,7 @@ function RegisterPage() {
       }
     
 
-    return (
+    return (authFailed &&
 
       <>
         {/*

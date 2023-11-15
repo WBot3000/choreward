@@ -14,6 +14,11 @@ function MyFamily() {
     redirect: "/Login",
   });
 
+    const authPassed = useLoginCheck({
+        redirect: "/Login"
+    });
+
+  
   const { addFamily, fetchFamilies} = useFetchFamilies();
   const [familyData, setFamilyData] = useState({
     FamilyName: "",
@@ -62,7 +67,7 @@ function MyFamily() {
     }
   };
 
-  return (
+  return (authPassed &&
     <div>
       <TopNav />
       
