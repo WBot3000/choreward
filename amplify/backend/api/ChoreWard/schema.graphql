@@ -1,0 +1,40 @@
+type Comment {
+  Date: AWSDate
+  UserID: String
+  Content: String
+}
+
+type Threads @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ThreadTitles: String
+  UserID: String
+  Likes: Int
+  VideoURL: AWSURL
+  Description: String
+  Comments: Comment
+}
+
+type Chanllenges @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ChallengeList: String
+  Family1Name: String
+  Family2Name: String
+  EndTime: AWSDate
+  RwardPoints: Int
+}
+
+type Reward {
+  RewardName: String
+  RewardCost: Int
+}
+
+type Families @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  FamilyName: String
+  Head: String
+  Members: String
+  Rewards: Reward
+  ThreadsID: String
+  OnChanllengesID: String
+  EarnedPoints: String
+}
