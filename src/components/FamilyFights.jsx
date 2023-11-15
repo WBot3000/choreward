@@ -10,28 +10,29 @@ import FamilyFightsUploadModal from './modals/FamilyFightsUploadModal'
 const tempMyFights = [
     {
         id: "1",
-        family1: "My Family",
-        family2: "Family 2"
+        EndTime: new Date(2023, 10, 22, 0, 0, 0).toISOString(),
+        Family1: "My Family",
+        Family2: "Family 2"
     }
 ]
 
 const tempOtherFights = [
     {
       id: "1",
-      family1: "Family 1",
-      family2: "Family 2"
+      Family1: "Family 1",
+      Family2: "Family 2"
     //   trashIcon: <FaClock />,
     //  viewButton: <button>View Video</button>,
     },
     {
         id: "2",
-        family1: "Family 1",
-        family2: "Family 3"
+        Family1: "Family 1",
+        Family2: "Family 3"
     },
     {
         id: "3",
-        family1: "Family 3",
-        family2: "Family 4"
+        Family1: "Family 3",
+        Family2: "Family 4"
     }
 ];
 
