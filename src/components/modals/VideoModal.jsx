@@ -4,7 +4,7 @@ import { HeartIcon, ChatBubbleLeftIcon } from "@heroicons/react/24/outline"
 import { HeartIcon as HeartIconFilled } from "@heroicons/react/24/solid" 
 
 
-function VideoModal({ isOpen, onClose, videoData }) {
+function VideoModal({ isOpen, onClose, videoData, setVideoLikedFn, commentFn }) {
     //Used to resize the video based on the window size
     //TODO: Maybe find less arbitrary numbers
     const [vidWidth, setVidWidth] = useState(window.innerWidth > 600 ? 550 : window.innerWidth - 25);
@@ -35,6 +35,16 @@ function VideoModal({ isOpen, onClose, videoData }) {
         return () => window.removeEventListener("resize", resizeFunction);
     });
 
+    function setLikedStatus() {
+        try {
+            setVideoLikedFn(videoData.id, !isLiked)
+            setIsLiked(!isLiked);
+        }
+        catch(e) {
+            console.log("Error switching liked status on video:", e)
+        }
+    }
+
     //Used when you don't actually want to leave a comment
     function closeCommentView(event) {
         event?.preventDefault();
@@ -54,6 +64,7 @@ function VideoModal({ isOpen, onClose, videoData }) {
             setCommentError("Unable to post blank comments.");
         }
         else {
+            commentFn()
             const newComments = [{
                 poster: "User1",
                 comment: fixedCommentText
@@ -77,7 +88,7 @@ function VideoModal({ isOpen, onClose, videoData }) {
         </div>
         <div>
             <button className="m-1 w-12 h-12 rounded-full"
-                onClick={() => {setIsLiked(!isLiked)}}>
+                onClick={setLikedStatus}>
                 {isLiked && <HeartIconFilled className="w-6"/>}
                 {!isLiked && <HeartIcon className="w-6"/>}
             </button>

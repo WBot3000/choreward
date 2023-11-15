@@ -3,7 +3,7 @@ import Modal from './Modal'
 import VideoModal from './VideoModal'
 import VideoLink from '../VideoLink';
 
-import useFetchVideos from '../hooks/useFetchVideoData';
+import useFetchVideos from '../hooks/useFetchVideos';
 
 // const placeholderComments = [
 //     {
@@ -31,9 +31,9 @@ import useFetchVideos from '../hooks/useFetchVideoData';
 // }
 
 //This'll probably become the basis for the Portal Modal
-function PortalModal({ isOpen, onClose, title="Portal", videos=[] }) {
+function PortalModal({ isOpen, onClose, title="Portal", videoQueryInfo={} }) {
 
-    //const [videos, setVideos] = useState(generatedVidData);
+    const {videos, setVideoLikeStatus, postCommentToVideo} = useFetchVideos(videoQueryInfo)
     const [selectedVidData, setSelectedVidData] = useState(null);
 
     // console.log(selectedVidData)
@@ -61,7 +61,7 @@ function PortalModal({ isOpen, onClose, title="Portal", videos=[] }) {
     </Modal>
 
     <VideoModal isOpen={selectedVidData != null} onClose={() => {setSelectedVidData(null)}}
-        videoData={selectedVidData}/>
+        videoData={selectedVidData} setVideoLikedFn={setVideoLikeStatus} commentFn={postCommentToVideo}/>
     </>
 }
 

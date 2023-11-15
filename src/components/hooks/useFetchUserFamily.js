@@ -6,7 +6,7 @@ import { API, graphqlOperation } from 'aws-amplify';
 import useFetchFamilies from './useFetchFamilies';
 
 const useFetchUserFamily = (userId) => {
-  const {allFamilies, addFamily} = useFetchFamilies();
+  const {allFamilies} = useFetchFamilies();
   const [isFamilyHead, setIsFamilyHead] = useState(false);
   const [userFamilyData, setUserFamilyData] = useState(null);
 
@@ -16,11 +16,11 @@ const useFetchUserFamily = (userId) => {
         for(let family of allFamilies) {
             if(family.Head == userId) {
                 setIsFamilyHead(true);
-                userFamilyData(family);
+                setUserFamilyData(family);
             }
             else if(family.Members.includes(userId)) {
                 setIsFamilyHead(false);
-                userFamilyData(family);
+                setUserFamilyData(family);
             }
         }
     //   const familyData = await API.graphql(graphqlOperation(listFamilies));

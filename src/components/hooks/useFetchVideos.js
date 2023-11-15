@@ -11,7 +11,7 @@ const useFetchVideos = (queryVariables) => {
   const fetchVideos = async () => {
     try {
       const videoData = await API.graphql(graphqlOperation(getThreads, queryVariables));
-      setFamilies(videoData.data.getThreads.items);
+      setVideos(videoData.data.getThreads.items);
       console.log(videoData)
     } catch (err) {
       console.error('Error fetching videos:', err);
@@ -29,11 +29,7 @@ const useFetchVideos = (queryVariables) => {
     }
   };
 
-  const likeVideo = async (videoId) => {
-    //TODO
-  }
-
-  const unlikeVideo = async (videoId) => {
+  const setVideoLikeStatus = async (videoId, setLikeTo) => {
     //TODO
   }
 
@@ -46,7 +42,7 @@ const useFetchVideos = (queryVariables) => {
     fetchVideos();
   }, []);
 
-  return { videos, addVideo, likeVideo, unlikeVideo, postCommentToVideo };
+  return { videos, addVideo, setVideoLikeStatus, postCommentToVideo };
 };
 
 export default useFetchVideos;

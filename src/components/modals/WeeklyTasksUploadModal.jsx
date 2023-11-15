@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Modal from "./Modal";
 
-import useFetchVideos from "../hooks/useFetchVideoData";
+import useFetchVideos from "../hooks/useFetchVideos";
 
 function WeeklyTasksUploadModal({ userId, taskType, isOpen, onClose, submissionFor }) {
 

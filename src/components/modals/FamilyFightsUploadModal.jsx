@@ -1,14 +1,12 @@
 import { useState } from "react";
 import Modal from "./Modal";
 
-import useFetchVideos from "../hooks/useFetchVideoData";
-
 const choreTypes = [
     "Take Out Trash",
     "Make the Bed"
 ]
 
-function FamilyFightsUploadModal({ userId, fightId, isOpen, onClose, submissionFor }) {
+function FamilyFightsUploadModal({ userId, fightId, addVideoFn, isOpen, onClose, submissionFor }) {
 
     const [uploadType, setUploadType] = useState("")
     const [selectedFile, setSelectedFile] = useState("");
@@ -31,7 +29,14 @@ function FamilyFightsUploadModal({ userId, fightId, isOpen, onClose, submissionF
             setUploadStatusMessage("Please provide a file to upload.");
         }
         else {
-            setUploadStatusMessage("File successfully uploaded.");
+            try {
+                addVideoFn({
+
+                })
+            }
+            catch(e) {
+                setUploadStatusMessage("File successfully uploaded.");
+            }
         }
     }
 
