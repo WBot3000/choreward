@@ -9,6 +9,7 @@ export const createThreads = /* GraphQL */ `
     createThreads(input: $input, condition: $condition) {
       id
       ThreadTitles
+      ThreadTypes
       UserID
       Likes
       VideoURL
@@ -33,6 +34,7 @@ export const updateThreads = /* GraphQL */ `
     updateThreads(input: $input, condition: $condition) {
       id
       ThreadTitles
+      ThreadTypes
       UserID
       Likes
       VideoURL
@@ -57,6 +59,7 @@ export const deleteThreads = /* GraphQL */ `
     deleteThreads(input: $input, condition: $condition) {
       id
       ThreadTitles
+      ThreadTypes
       UserID
       Likes
       VideoURL
@@ -73,12 +76,12 @@ export const deleteThreads = /* GraphQL */ `
     }
   }
 `;
-export const createChanllenges = /* GraphQL */ `
-  mutation CreateChanllenges(
-    $input: CreateChanllengesInput!
-    $condition: ModelChanllengesConditionInput
+export const createChallenges = /* GraphQL */ `
+  mutation CreateChallenges(
+    $input: CreateChallengesInput!
+    $condition: ModelChallengesConditionInput
   ) {
-    createChanllenges(input: $input, condition: $condition) {
+    createChallenges(input: $input, condition: $condition) {
       id
       ChallengeList
       Family1Name
@@ -91,12 +94,12 @@ export const createChanllenges = /* GraphQL */ `
     }
   }
 `;
-export const updateChanllenges = /* GraphQL */ `
-  mutation UpdateChanllenges(
-    $input: UpdateChanllengesInput!
-    $condition: ModelChanllengesConditionInput
+export const updateChallenges = /* GraphQL */ `
+  mutation UpdateChallenges(
+    $input: UpdateChallengesInput!
+    $condition: ModelChallengesConditionInput
   ) {
-    updateChanllenges(input: $input, condition: $condition) {
+    updateChallenges(input: $input, condition: $condition) {
       id
       ChallengeList
       Family1Name
@@ -109,12 +112,12 @@ export const updateChanllenges = /* GraphQL */ `
     }
   }
 `;
-export const deleteChanllenges = /* GraphQL */ `
-  mutation DeleteChanllenges(
-    $input: DeleteChanllengesInput!
-    $condition: ModelChanllengesConditionInput
+export const deleteChallenges = /* GraphQL */ `
+  mutation DeleteChallenges(
+    $input: DeleteChallengesInput!
+    $condition: ModelChallengesConditionInput
   ) {
-    deleteChanllenges(input: $input, condition: $condition) {
+    deleteChallenges(input: $input, condition: $condition) {
       id
       ChallengeList
       Family1Name

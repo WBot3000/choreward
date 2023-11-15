@@ -6,6 +6,7 @@ export const getThreads = /* GraphQL */ `
     getThreads(id: $id) {
       id
       ThreadTitles
+      ThreadTypes
       UserID
       Likes
       VideoURL
@@ -32,6 +33,7 @@ export const listThreads = /* GraphQL */ `
       items {
         id
         ThreadTitles
+        ThreadTypes
         UserID
         Likes
         VideoURL
@@ -45,9 +47,9 @@ export const listThreads = /* GraphQL */ `
     }
   }
 `;
-export const getChanllenges = /* GraphQL */ `
-  query GetChanllenges($id: ID!) {
-    getChanllenges(id: $id) {
+export const getChallenges = /* GraphQL */ `
+  query GetChallenges($id: ID!) {
+    getChallenges(id: $id) {
       id
       ChallengeList
       Family1Name
@@ -60,13 +62,13 @@ export const getChanllenges = /* GraphQL */ `
     }
   }
 `;
-export const listChanllenges = /* GraphQL */ `
-  query ListChanllenges(
-    $filter: ModelChanllengesFilterInput
+export const listChallenges = /* GraphQL */ `
+  query ListChallenges(
+    $filter: ModelChallengesFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listChanllenges(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listChallenges(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         ChallengeList
