@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Modal from "./Modal";
 
-function UploadModal({ isOpen, onClose, submissionFor }) {
+function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
 
     const [uploadName, setUploadName] = useState("")
     const [selectedFile, setSelectedFile] = useState("");
@@ -53,4 +53,4 @@ function UploadModal({ isOpen, onClose, submissionFor }) {
     </Modal>
 }
 
-export default UploadModal
+export default WeeklyTasksUploadModal

@@ -5,40 +5,62 @@ import TopNav from './TopNav'
 import FamilyCard from './FamilyCard'
 
 import PortalModal from './modals/PortalModal'
+import FamilyFightsUploadModal from './modals/FamilyFightsUploadModal'
 
-const tempFights = [
+const tempMyFights = [
+    {
+        id: "1",
+        family1: "My Family",
+        family2: "Family 2"
+    }
+]
+
+const tempOtherFights = [
     {
       id: "1",
-      text: 'Family Fight 1 VS Family Fight 2',
+      family1: "Family 1",
+      family2: "Family 2"
     //   trashIcon: <FaClock />,
     //  viewButton: <button>View Video</button>,
     },
     {
-      id: "2",
-      text: 'Family Fight 1 VS Family Fight 2',
-    //   trashIcon:     <FaClock />,
-    //  viewButton: <button>View Video</button>,
+        id: "2",
+        family1: "Family 1",
+        family2: "Family 3"
     },
     {
         id: "3",
-        text: "Family Fight 1 vs Family Fight 3"
-    },
-    {
-        id: "4",
-        text: "Family Fight 3 vs Family Fight 4"
+        family1: "Family 3",
+        family2: "Family 4"
     }
 ];
+
+// const tempChallenges = [
+//     {
+//         id: "1",
+//         text: "Family2",
+//         time: "7:00:00:00"
+//     }
+// ]
 
 //TODO: Incorporate functionality for upload modals
 function FamilyFights() {
 
+    const [myFights, setMyFights] = useState(tempMyFights);
+    const [otherFights, setOtherFights] = useState(tempOtherFights);
+
     //NOTE: This state is just for testing purposes. When backend integration is done, this'll probably just be gotten from the user object (since whether or not you're the family head doesn't change, with the exception of a user creating a new family)
     const [isFamilyHead, setIsFamilyHead] = useState(false);
 
+    const [viewingMyFights, setViewingMyFights] = useState(true);
+
     const [selectedFamilyFight, setSelectedFamilyFight] = useState(null);
     const [portalIsOpen, setPortalIsOpen] = useState(false);
+    const [uploadIsOpen, setUploadIsOpen] = useState(false);
+
     const [familyToChallenge, setFamilyToChallenge] = useState("");
     const [challengeSentStatus, setChallengeSentStatus] = useState("");
+    //const [currentChallenges, setCurrentChallenges] = useState(tempChallenges);
 
     useLoginCheck({
         redirect: "/Login"
@@ -51,6 +73,16 @@ function FamilyFights() {
 
     function closePortalModal() {
         setPortalIsOpen(false);
+        setSelectedFamilyFight(null);
+    }
+
+    function openUploadModal(fight) {
+        setSelectedFamilyFight(fight);
+        setUploadIsOpen(true);
+    }
+
+    function closeUploadModal() {
+        setUploadIsOpen(false);
         setSelectedFamilyFight(null);
     }
 
@@ -70,6 +102,34 @@ function FamilyFights() {
             setChallengeSentStatus(e.message);
         }
     }
+
+    // //TODO: Backend functionality
+    // function acceptChallenge(challengeToAccept) {
+    //     try {
+    //         //TODO: Backend code
+    //     }
+    //     catch(e) {
+    //         //TODO: Error handling code
+    //     }
+    // }
+
+    // //TODO: Backend functionality
+    // function declineChallenge(challengeToDecline) {
+    //     try {
+    //         //TODO: Backend code
+    //         const newChallengeList = [];
+    //         for(let challenge of currentChallenges) {
+    //             if(challenge != challengeToDecline) {
+    //                 newChallengeList.push(challenge);
+    //             }
+    //         }
+    //         setCurrentChallenges(newChallengeList);
+    //     }
+    //     catch(e) {
+    //         //TODO: Error handling code
+    //     }
+
+    // }
     
     //Need to figure out the size of the Family Fights container
     return (
@@ -83,15 +143,17 @@ function FamilyFights() {
             <div className="rounded-md mr-10 ml-10">
             <ul className="hidden text-sm font-medium text-center text-gray-500 divide-x divide-gray-200 rounded-lg shadow sm:flex dark:divide-gray-700 dark:text-gray-400">
                 <li className="w-full">
-                    <a href="#" className="inline-block w-full p-4 text-gray-900 bg-gray-100 rounded-l-lg focus:ring-4 focus:ring-blue-300 active focus:outline-none dark:bg-gray-700 dark:text-white" aria-current="page">My Fights</a>
+                    <a href="#" className="inline-block w-full p-4 text-gray-900 bg-gray-100 rounded-l-lg focus:ring-4 focus:ring-blue-300 active focus:outline-none dark:bg-gray-700 dark:text-white" 
+                        onClick={() => {setViewingMyFights(true)}} aria-current="page">My Fights</a>
                 </li>
                 <li className="w-full">
-                    <a href="#" className="inline-block w-full p-4 bg-white rounded-r-lg hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700">Other Fights</a>
+                    <a href="#" className="inline-block w-full p-4 bg-white rounded-r-lg hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
+                        onClick={() => {setViewingMyFights(false)}}>Other Fights</a>
                 </li>
             </ul>
             </div>
 
-            {isFamilyHead &&
+            {isFamilyHead && viewingMyFights && <>
                 <form className='flex flex-col justify-center gap-y-2 p-6 bg-gray-100 border border-gray-300 rounded-lg shadow md:max-w-xl hover:bg-gray-200 dark:border-gray-800 dark:bg-gray-900 dark:hover:bg-gray-800 mx-auto my-5'>
                     <label className="font-bold" htmlFor='family_to_challenge'>Challenge Family</label>
                     <input type="text" name="family_to_challenge" value={familyToChallenge}
@@ -102,20 +164,46 @@ function FamilyFights() {
                     <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800ml-4" 
                         onClick={(e) => {sendChallenge(e)}}>Send Challenge</button>
                 </form>
-            }
+
+                {/*TODO: DON'T DELETE, will probably come to use later*/}
+                {/* <h2 className="flex justify-center items-center mt-4 mb-4 text-2xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">My Challenges</h2>
+                <ul className='flex flex-col ml-96 mr-96 gap-y-5 overflow-y-scroll border-gray-200 border-2'>
+                    {currentChallenges.map(challenge => <ChallengeListItem key={challenge.id} challengeData={challenge} onAccept={() => {acceptChallenge(challenge)}} onDecline={() => {declineChallenge(challenge)}}/>)}
+                </ul> */}
+            </>}
 
             <div className='overflow-y-auto h-96'>
-                {tempFights.map(fight => (
-                    <FamilyCard key={fight.id} fightData={fight} portalOpenFunc={() => {openPortalModal(fight)}}/>
+                {viewingMyFights && myFights.map(fight => (
+                    <FamilyCard key={fight.id} userFamily="My Family" fightData={fight} portalOpenFunc={() => {openPortalModal(fight)}} uploadOpenFunc={() => {openUploadModal(fight)}}/>
+                ))}
+                {!viewingMyFights && otherFights.map(fight => (
+                    <FamilyCard key={fight.id} userFamily= "My Family" fightData={fight} portalOpenFunc={() => {openPortalModal(fight)}}/>
                 ))}
             </div>
             {/* <FamilyCard/> */}
             <BottomNav/>
 
             <PortalModal isOpen={selectedFamilyFight != null && portalIsOpen} onClose={closePortalModal}
-                title={selectedFamilyFight?.text} videos={[]}/>
+                title={`${selectedFamilyFight?.family1} vs ${selectedFamilyFight?.family2}`} videos={[]}/>
+            <FamilyFightsUploadModal isOpen={selectedFamilyFight != null && uploadIsOpen} onClose={closeUploadModal}
+                submissionFor={`${selectedFamilyFight?.family1} vs ${selectedFamilyFight?.family2}`}/>
         </div>
     )
 }
+
+//TODO: DON'T DELETE, will probably come to use later
+//Component that contains a current invite
+// function ChallengeListItem({ challengeData, onAccept, onDecline }) {
+//     return <li className='m-4'>
+//         <span className='flex gap-x-10'>
+//             <p className="font-semibold">{challengeData.text}</p>
+//             <p>{challengeData.time}</p>
+//             <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+//                 onClick={onAccept}>Accept!</button>
+//             <button className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
+//                 onClick={onDecline}>Decline...</button>
+//         </span>
+//     </li>;
+// }
 
 export default FamilyFights

@@ -1,6 +1,6 @@
 import React from 'react'
 
-function FamilyCard({fightData, portalOpenFunc, uploadOpenFunc}) {
+function FamilyCard({userFamily, fightData, portalOpenFunc, uploadOpenFunc}) {
     // const items = [
     //     {
     //       id: 1,
@@ -16,15 +16,24 @@ function FamilyCard({fightData, portalOpenFunc, uploadOpenFunc}) {
     //     },
     // ];
 
+    function canUpload() {
+        return userFamily == fightData.family1 || userFamily == fightData.family2
+    }
+
+
     return (
         <article key={fightData.id}>
             <div className="flex justify-center items-center pt-10">
                 <a href="#" className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
                     <div className="flex flex-col justify-between p-4 leading-normal">
-                        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{fightData.text}</h5>
+                        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{`${fightData.family1} vs ${fightData.family2}`}</h5>
                         <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">00:00:0000</p>
-                        <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                            onClick={portalOpenFunc}>View</button>
+                        <div className="flex mt-4 space-x-3 md:mt-6">
+                            {canUpload() && <button className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                onClick={uploadOpenFunc}>Post</button>}
+                            <button className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700"
+                                onClick={portalOpenFunc}>View</button>
+                        </div>
                     </div>
                 </a>
             </div>
