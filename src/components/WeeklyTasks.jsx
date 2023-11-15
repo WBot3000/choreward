@@ -39,7 +39,7 @@ function WeeklyTasks() {
     const [portalIsOpen, setPortalIsOpen] = useState(false);
     const [uploadIsOpen, setUploadIsOpen] = useState(false);
 
-    const authPassed = useLoginCheck({
+    const userId = useLoginCheck({
         redirect: "/Login"
     });
 
@@ -63,7 +63,9 @@ function WeeklyTasks() {
         setSelectedWeeklyTask(null);
     }
 
-    return (authPassed &&
+    console.log(userId)
+
+    return (userId &&
         <div>
             <TopNav/>
             
