@@ -31,6 +31,16 @@ const useFetchUserFamily = (userId) => {
     }
   };
 
+  //Function to add family member
+  const addMember = async () => {
+    //TODO
+  }
+
+  //Function to add family member
+  const deleteMember = async () => {
+    //TODO
+  }
+
   // Fetch families on component mount
   useEffect(() => {
     getUserFamily();

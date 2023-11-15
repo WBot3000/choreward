@@ -13,7 +13,7 @@ const useFetchVideos = (queryVariables) => {
       setFamilies(videoData.data.getThreads.items);
       console.log(videoData)
     } catch (err) {
-      console.error('Error fetching families:', err);
+      console.error('Error fetching videos:', err);
     }
   };
 

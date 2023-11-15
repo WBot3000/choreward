@@ -1,16 +1,20 @@
 import { useState } from "react";
 import Modal from "./Modal";
 
+import useFetchVideos from "../hooks/useFetchVideoData";
+
 const choreTypes = [
     "Take Out Trash",
     "Make the Bed"
 ]
 
-function FamilyFightsUploadModal({ isOpen, onClose, submissionFor }) {
+function FamilyFightsUploadModal({ userId, isOpen, onClose, submissionFor }) {
 
     const [uploadType, setUploadType] = useState("")
     const [selectedFile, setSelectedFile] = useState("");
     const [uploadStatusMessage, setUploadStatusMessage] = useState("");
+
+    //const { addVideo } = useFetchVideos();
 
     //Function responsible for closing the modal, also nullifies the currently selected file
     function closeModal() {
