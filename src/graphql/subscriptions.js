@@ -6,6 +6,7 @@ export const onCreateThreads = /* GraphQL */ `
     onCreateThreads(filter: $filter) {
       id
       ThreadTitles
+      ThreadTypes
       UserID
       Likes
       VideoURL
@@ -27,6 +28,7 @@ export const onUpdateThreads = /* GraphQL */ `
     onUpdateThreads(filter: $filter) {
       id
       ThreadTitles
+      ThreadTypes
       UserID
       Likes
       VideoURL
@@ -48,6 +50,7 @@ export const onDeleteThreads = /* GraphQL */ `
     onDeleteThreads(filter: $filter) {
       id
       ThreadTitles
+      ThreadTypes
       UserID
       Likes
       VideoURL
@@ -64,11 +67,11 @@ export const onDeleteThreads = /* GraphQL */ `
     }
   }
 `;
-export const onCreateChanllenges = /* GraphQL */ `
-  subscription OnCreateChanllenges(
-    $filter: ModelSubscriptionChanllengesFilterInput
+export const onCreateChallenges = /* GraphQL */ `
+  subscription OnCreateChallenges(
+    $filter: ModelSubscriptionChallengesFilterInput
   ) {
-    onCreateChanllenges(filter: $filter) {
+    onCreateChallenges(filter: $filter) {
       id
       ChallengeList
       Family1Name
@@ -81,11 +84,11 @@ export const onCreateChanllenges = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateChanllenges = /* GraphQL */ `
-  subscription OnUpdateChanllenges(
-    $filter: ModelSubscriptionChanllengesFilterInput
+export const onUpdateChallenges = /* GraphQL */ `
+  subscription OnUpdateChallenges(
+    $filter: ModelSubscriptionChallengesFilterInput
   ) {
-    onUpdateChanllenges(filter: $filter) {
+    onUpdateChallenges(filter: $filter) {
       id
       ChallengeList
       Family1Name
@@ -98,11 +101,11 @@ export const onUpdateChanllenges = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteChanllenges = /* GraphQL */ `
-  subscription OnDeleteChanllenges(
-    $filter: ModelSubscriptionChanllengesFilterInput
+export const onDeleteChallenges = /* GraphQL */ `
+  subscription OnDeleteChallenges(
+    $filter: ModelSubscriptionChallengesFilterInput
   ) {
-    onDeleteChanllenges(filter: $filter) {
+    onDeleteChallenges(filter: $filter) {
       id
       ChallengeList
       Family1Name

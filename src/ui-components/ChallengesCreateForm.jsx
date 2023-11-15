@@ -9,8 +9,8 @@ import * as React from "react";
 import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { API } from "aws-amplify";
-import { createThreads } from "../graphql/mutations";
-export default function ThreadsCreateForm(props) {
+import { createChallenges } from "../graphql/mutations";
+export default function ChallengesCreateForm(props) {
   const {
     clearOnSuccess = true,
     onSuccess,
@@ -22,42 +22,40 @@ export default function ThreadsCreateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    ThreadTitles: "",
-    ThreadTypes: "",
-    UserID: "",
-    Likes: "",
-    VideoURL: "",
-    Description: "",
+    ChallengeList: "",
+    Family1Name: "",
+    Family2Name: "",
+    EndTime: "",
+    RwardPoints: "",
   };
-  const [ThreadTitles, setThreadTitles] = React.useState(
-    initialValues.ThreadTitles
+  const [ChallengeList, setChallengeList] = React.useState(
+    initialValues.ChallengeList
   );
-  const [ThreadTypes, setThreadTypes] = React.useState(
-    initialValues.ThreadTypes
+  const [Family1Name, setFamily1Name] = React.useState(
+    initialValues.Family1Name
   );
-  const [UserID, setUserID] = React.useState(initialValues.UserID);
-  const [Likes, setLikes] = React.useState(initialValues.Likes);
-  const [VideoURL, setVideoURL] = React.useState(initialValues.VideoURL);
-  const [Description, setDescription] = React.useState(
-    initialValues.Description
+  const [Family2Name, setFamily2Name] = React.useState(
+    initialValues.Family2Name
+  );
+  const [EndTime, setEndTime] = React.useState(initialValues.EndTime);
+  const [RwardPoints, setRwardPoints] = React.useState(
+    initialValues.RwardPoints
   );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    setThreadTitles(initialValues.ThreadTitles);
-    setThreadTypes(initialValues.ThreadTypes);
-    setUserID(initialValues.UserID);
-    setLikes(initialValues.Likes);
-    setVideoURL(initialValues.VideoURL);
-    setDescription(initialValues.Description);
+    setChallengeList(initialValues.ChallengeList);
+    setFamily1Name(initialValues.Family1Name);
+    setFamily2Name(initialValues.Family2Name);
+    setEndTime(initialValues.EndTime);
+    setRwardPoints(initialValues.RwardPoints);
     setErrors({});
   };
   const validations = {
-    ThreadTitles: [],
-    ThreadTypes: [],
-    UserID: [],
-    Likes: [],
-    VideoURL: [{ type: "URL" }],
-    Description: [],
+    ChallengeList: [],
+    Family1Name: [],
+    Family2Name: [],
+    EndTime: [],
+    RwardPoints: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -85,12 +83,11 @@ export default function ThreadsCreateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          ThreadTitles,
-          ThreadTypes,
-          UserID,
-          Likes,
-          VideoURL,
-          Description,
+          ChallengeList,
+          Family1Name,
+          Family2Name,
+          EndTime,
+          RwardPoints,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -121,7 +118,7 @@ export default function ThreadsCreateForm(props) {
             }
           });
           await API.graphql({
-            query: createThreads.replaceAll("__typename", ""),
+            query: createChallenges.replaceAll("__typename", ""),
             variables: {
               input: {
                 ...modelFields,
@@ -141,186 +138,153 @@ export default function ThreadsCreateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "ThreadsCreateForm")}
+      {...getOverrideProps(overrides, "ChallengesCreateForm")}
       {...rest}
     >
       <TextField
-        label="Thread titles"
+        label="Challenge list"
         isRequired={false}
         isReadOnly={false}
-        value={ThreadTitles}
+        value={ChallengeList}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              ThreadTitles: value,
-              ThreadTypes,
-              UserID,
-              Likes,
-              VideoURL,
-              Description,
+              ChallengeList: value,
+              Family1Name,
+              Family2Name,
+              EndTime,
+              RwardPoints,
             };
             const result = onChange(modelFields);
-            value = result?.ThreadTitles ?? value;
+            value = result?.ChallengeList ?? value;
           }
-          if (errors.ThreadTitles?.hasError) {
-            runValidationTasks("ThreadTitles", value);
+          if (errors.ChallengeList?.hasError) {
+            runValidationTasks("ChallengeList", value);
           }
-          setThreadTitles(value);
+          setChallengeList(value);
         }}
-        onBlur={() => runValidationTasks("ThreadTitles", ThreadTitles)}
-        errorMessage={errors.ThreadTitles?.errorMessage}
-        hasError={errors.ThreadTitles?.hasError}
-        {...getOverrideProps(overrides, "ThreadTitles")}
+        onBlur={() => runValidationTasks("ChallengeList", ChallengeList)}
+        errorMessage={errors.ChallengeList?.errorMessage}
+        hasError={errors.ChallengeList?.hasError}
+        {...getOverrideProps(overrides, "ChallengeList")}
       ></TextField>
       <TextField
-        label="Thread types"
+        label="Family1 name"
         isRequired={false}
         isReadOnly={false}
-        value={ThreadTypes}
+        value={Family1Name}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              ThreadTitles,
-              ThreadTypes: value,
-              UserID,
-              Likes,
-              VideoURL,
-              Description,
+              ChallengeList,
+              Family1Name: value,
+              Family2Name,
+              EndTime,
+              RwardPoints,
             };
             const result = onChange(modelFields);
-            value = result?.ThreadTypes ?? value;
+            value = result?.Family1Name ?? value;
           }
-          if (errors.ThreadTypes?.hasError) {
-            runValidationTasks("ThreadTypes", value);
+          if (errors.Family1Name?.hasError) {
+            runValidationTasks("Family1Name", value);
           }
-          setThreadTypes(value);
+          setFamily1Name(value);
         }}
-        onBlur={() => runValidationTasks("ThreadTypes", ThreadTypes)}
-        errorMessage={errors.ThreadTypes?.errorMessage}
-        hasError={errors.ThreadTypes?.hasError}
-        {...getOverrideProps(overrides, "ThreadTypes")}
+        onBlur={() => runValidationTasks("Family1Name", Family1Name)}
+        errorMessage={errors.Family1Name?.errorMessage}
+        hasError={errors.Family1Name?.hasError}
+        {...getOverrideProps(overrides, "Family1Name")}
       ></TextField>
       <TextField
-        label="User id"
+        label="Family2 name"
         isRequired={false}
         isReadOnly={false}
-        value={UserID}
+        value={Family2Name}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              ThreadTitles,
-              ThreadTypes,
-              UserID: value,
-              Likes,
-              VideoURL,
-              Description,
+              ChallengeList,
+              Family1Name,
+              Family2Name: value,
+              EndTime,
+              RwardPoints,
             };
             const result = onChange(modelFields);
-            value = result?.UserID ?? value;
+            value = result?.Family2Name ?? value;
           }
-          if (errors.UserID?.hasError) {
-            runValidationTasks("UserID", value);
+          if (errors.Family2Name?.hasError) {
+            runValidationTasks("Family2Name", value);
           }
-          setUserID(value);
+          setFamily2Name(value);
         }}
-        onBlur={() => runValidationTasks("UserID", UserID)}
-        errorMessage={errors.UserID?.errorMessage}
-        hasError={errors.UserID?.hasError}
-        {...getOverrideProps(overrides, "UserID")}
+        onBlur={() => runValidationTasks("Family2Name", Family2Name)}
+        errorMessage={errors.Family2Name?.errorMessage}
+        hasError={errors.Family2Name?.hasError}
+        {...getOverrideProps(overrides, "Family2Name")}
       ></TextField>
       <TextField
-        label="Likes"
+        label="End time"
+        isRequired={false}
+        isReadOnly={false}
+        type="date"
+        value={EndTime}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              ChallengeList,
+              Family1Name,
+              Family2Name,
+              EndTime: value,
+              RwardPoints,
+            };
+            const result = onChange(modelFields);
+            value = result?.EndTime ?? value;
+          }
+          if (errors.EndTime?.hasError) {
+            runValidationTasks("EndTime", value);
+          }
+          setEndTime(value);
+        }}
+        onBlur={() => runValidationTasks("EndTime", EndTime)}
+        errorMessage={errors.EndTime?.errorMessage}
+        hasError={errors.EndTime?.hasError}
+        {...getOverrideProps(overrides, "EndTime")}
+      ></TextField>
+      <TextField
+        label="Rward points"
         isRequired={false}
         isReadOnly={false}
         type="number"
         step="any"
-        value={Likes}
+        value={RwardPoints}
         onChange={(e) => {
           let value = isNaN(parseInt(e.target.value))
             ? e.target.value
             : parseInt(e.target.value);
           if (onChange) {
             const modelFields = {
-              ThreadTitles,
-              ThreadTypes,
-              UserID,
-              Likes: value,
-              VideoURL,
-              Description,
+              ChallengeList,
+              Family1Name,
+              Family2Name,
+              EndTime,
+              RwardPoints: value,
             };
             const result = onChange(modelFields);
-            value = result?.Likes ?? value;
+            value = result?.RwardPoints ?? value;
           }
-          if (errors.Likes?.hasError) {
-            runValidationTasks("Likes", value);
+          if (errors.RwardPoints?.hasError) {
+            runValidationTasks("RwardPoints", value);
           }
-          setLikes(value);
+          setRwardPoints(value);
         }}
-        onBlur={() => runValidationTasks("Likes", Likes)}
-        errorMessage={errors.Likes?.errorMessage}
-        hasError={errors.Likes?.hasError}
-        {...getOverrideProps(overrides, "Likes")}
-      ></TextField>
-      <TextField
-        label="Video url"
-        isRequired={false}
-        isReadOnly={false}
-        value={VideoURL}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              ThreadTitles,
-              ThreadTypes,
-              UserID,
-              Likes,
-              VideoURL: value,
-              Description,
-            };
-            const result = onChange(modelFields);
-            value = result?.VideoURL ?? value;
-          }
-          if (errors.VideoURL?.hasError) {
-            runValidationTasks("VideoURL", value);
-          }
-          setVideoURL(value);
-        }}
-        onBlur={() => runValidationTasks("VideoURL", VideoURL)}
-        errorMessage={errors.VideoURL?.errorMessage}
-        hasError={errors.VideoURL?.hasError}
-        {...getOverrideProps(overrides, "VideoURL")}
-      ></TextField>
-      <TextField
-        label="Description"
-        isRequired={false}
-        isReadOnly={false}
-        value={Description}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              ThreadTitles,
-              ThreadTypes,
-              UserID,
-              Likes,
-              VideoURL,
-              Description: value,
-            };
-            const result = onChange(modelFields);
-            value = result?.Description ?? value;
-          }
-          if (errors.Description?.hasError) {
-            runValidationTasks("Description", value);
-          }
-          setDescription(value);
-        }}
-        onBlur={() => runValidationTasks("Description", Description)}
-        errorMessage={errors.Description?.errorMessage}
-        hasError={errors.Description?.hasError}
-        {...getOverrideProps(overrides, "Description")}
+        onBlur={() => runValidationTasks("RwardPoints", RwardPoints)}
+        errorMessage={errors.RwardPoints?.errorMessage}
+        hasError={errors.RwardPoints?.hasError}
+        {...getOverrideProps(overrides, "RwardPoints")}
       ></TextField>
       <Flex
         justifyContent="space-between"

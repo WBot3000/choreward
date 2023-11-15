@@ -23,6 +23,7 @@ export declare type ValidationResponse = {
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
 export declare type ThreadsCreateFormInputValues = {
     ThreadTitles?: string;
+    ThreadTypes?: string;
     UserID?: string;
     Likes?: number;
     VideoURL?: string;
@@ -30,6 +31,7 @@ export declare type ThreadsCreateFormInputValues = {
 };
 export declare type ThreadsCreateFormValidationValues = {
     ThreadTitles?: ValidationFunction<string>;
+    ThreadTypes?: ValidationFunction<string>;
     UserID?: ValidationFunction<string>;
     Likes?: ValidationFunction<number>;
     VideoURL?: ValidationFunction<string>;
@@ -39,6 +41,7 @@ export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes
 export declare type ThreadsCreateFormOverridesProps = {
     ThreadsCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
     ThreadTitles?: PrimitiveOverrideProps<TextFieldProps>;
+    ThreadTypes?: PrimitiveOverrideProps<TextFieldProps>;
     UserID?: PrimitiveOverrideProps<TextFieldProps>;
     Likes?: PrimitiveOverrideProps<TextFieldProps>;
     VideoURL?: PrimitiveOverrideProps<TextFieldProps>;

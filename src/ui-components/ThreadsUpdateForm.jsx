@@ -25,6 +25,7 @@ export default function ThreadsUpdateForm(props) {
   } = props;
   const initialValues = {
     ThreadTitles: "",
+    ThreadTypes: "",
     UserID: "",
     Likes: "",
     VideoURL: "",
@@ -32,6 +33,9 @@ export default function ThreadsUpdateForm(props) {
   };
   const [ThreadTitles, setThreadTitles] = React.useState(
     initialValues.ThreadTitles
+  );
+  const [ThreadTypes, setThreadTypes] = React.useState(
+    initialValues.ThreadTypes
   );
   const [UserID, setUserID] = React.useState(initialValues.UserID);
   const [Likes, setLikes] = React.useState(initialValues.Likes);
@@ -45,6 +49,7 @@ export default function ThreadsUpdateForm(props) {
       ? { ...initialValues, ...threadsRecord }
       : initialValues;
     setThreadTitles(cleanValues.ThreadTitles);
+    setThreadTypes(cleanValues.ThreadTypes);
     setUserID(cleanValues.UserID);
     setLikes(cleanValues.Likes);
     setVideoURL(cleanValues.VideoURL);
@@ -69,6 +74,7 @@ export default function ThreadsUpdateForm(props) {
   React.useEffect(resetStateValues, [threadsRecord]);
   const validations = {
     ThreadTitles: [],
+    ThreadTypes: [],
     UserID: [],
     Likes: [],
     VideoURL: [{ type: "URL" }],
@@ -101,6 +107,7 @@ export default function ThreadsUpdateForm(props) {
         event.preventDefault();
         let modelFields = {
           ThreadTitles: ThreadTitles ?? null,
+          ThreadTypes: ThreadTypes ?? null,
           UserID: UserID ?? null,
           Likes: Likes ?? null,
           VideoURL: VideoURL ?? null,
@@ -166,6 +173,7 @@ export default function ThreadsUpdateForm(props) {
           if (onChange) {
             const modelFields = {
               ThreadTitles: value,
+              ThreadTypes,
               UserID,
               Likes,
               VideoURL,
@@ -185,6 +193,35 @@ export default function ThreadsUpdateForm(props) {
         {...getOverrideProps(overrides, "ThreadTitles")}
       ></TextField>
       <TextField
+        label="Thread types"
+        isRequired={false}
+        isReadOnly={false}
+        value={ThreadTypes}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              ThreadTitles,
+              ThreadTypes: value,
+              UserID,
+              Likes,
+              VideoURL,
+              Description,
+            };
+            const result = onChange(modelFields);
+            value = result?.ThreadTypes ?? value;
+          }
+          if (errors.ThreadTypes?.hasError) {
+            runValidationTasks("ThreadTypes", value);
+          }
+          setThreadTypes(value);
+        }}
+        onBlur={() => runValidationTasks("ThreadTypes", ThreadTypes)}
+        errorMessage={errors.ThreadTypes?.errorMessage}
+        hasError={errors.ThreadTypes?.hasError}
+        {...getOverrideProps(overrides, "ThreadTypes")}
+      ></TextField>
+      <TextField
         label="User id"
         isRequired={false}
         isReadOnly={false}
@@ -194,6 +231,7 @@ export default function ThreadsUpdateForm(props) {
           if (onChange) {
             const modelFields = {
               ThreadTitles,
+              ThreadTypes,
               UserID: value,
               Likes,
               VideoURL,
@@ -226,6 +264,7 @@ export default function ThreadsUpdateForm(props) {
           if (onChange) {
             const modelFields = {
               ThreadTitles,
+              ThreadTypes,
               UserID,
               Likes: value,
               VideoURL,
@@ -254,6 +293,7 @@ export default function ThreadsUpdateForm(props) {
           if (onChange) {
             const modelFields = {
               ThreadTitles,
+              ThreadTypes,
               UserID,
               Likes,
               VideoURL: value,
@@ -282,6 +322,7 @@ export default function ThreadsUpdateForm(props) {
           if (onChange) {
             const modelFields = {
               ThreadTitles,
+              ThreadTypes,
               UserID,
               Likes,
               VideoURL,
