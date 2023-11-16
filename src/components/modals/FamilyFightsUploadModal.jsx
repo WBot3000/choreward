@@ -12,7 +12,7 @@ function FamilyFightsUploadModal({ userId, fightId, addVideoFn, isOpen, onClose,
     const [selectedFile, setSelectedFile] = useState("");
     const [uploadStatusMessage, setUploadStatusMessage] = useState("");
 
-    //const { addVideo } = useFetchVideos();
+    //const { addVideo } = useFetchThreads();
 
     //Function responsible for closing the modal, also nullifies the currently selected file
     function closeModal() {

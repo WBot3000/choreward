@@ -9,7 +9,7 @@ import FamilyFightsUploadModal from './modals/FamilyFightsUploadModal'
 
 //Data hooks
 import useFetchUserFamily from './hooks/useFetchUserFamily'
-import useFetchVideos from './hooks/useFetchVideos'
+import useFetchThreads from './hooks/useFetchThreads'
 
 const tempMyFights = [
     {
@@ -57,7 +57,7 @@ function FamilyFights() {
 
 
     const {isFamilyHead, userFamilyData} = useFetchUserFamily(userId);
-    const {videos: allFights, addVideo, setVideoLikeStatus, postCommentToVideo} = useFetchVideos({});
+    const {videos: allFights, addVideo, setVideoLikeStatus, postCommentToVideo} = useFetchThreads({});
 
     const [myFights, setMyFights] = useState(tempMyFights);
     const [otherFights, setOtherFights] = useState(tempOtherFights);
