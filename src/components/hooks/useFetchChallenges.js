@@ -1,34 +1,29 @@
 import { useEffect, useState } from 'react';
 import { API, graphqlOperation } from 'aws-amplify';
-import { listChanllenges } from '../../graphql/queries'; // Import the query from your Amplify generated files
-import { createChanllenges } from '../../graphql/mutations'; // Import the mutation from your Amplify generated files
+import { listChallenges } from '../../graphql/queries'; // Import the query
+import { createChallenge } from '../../graphql/mutations'; // Import the mutation
 
-//AKA Family Fights, was getting concerned that all the hooks were starting to look the same though
 const useFetchChallenges = () => {
   const [challenges, setChallenges] = useState([]);
 
-  // Function to fetch challenges
   const fetchChallenges = async () => {
     try {
-      const challengeData = await API.graphql(graphqlOperation(listChanllenges));
-      setChallenges(challengeData.data.listChanllenges.items);
-      console.log(challengeData)
+      const challengeData = await API.graphql(graphqlOperation(listChallenges));
+      setChallenges(challengeData.data.listChallenges.items);
     } catch (err) {
       console.error('Error fetching challenges:', err);
     }
   };
 
-  // Function to add a new challenge
   const addChallenge = async (challenge) => {
     try {
-      await API.graphql(graphqlOperation(createChanllenges, { input: challenge }));
-      fetchChallenges(); // Refresh the list after adding
+      await API.graphql(graphqlOperation(createChallenge, { input: challenge }));
+      fetchChallenges();
     } catch (err) {
       console.error('Error creating a challenge:', err);
     }
   };
 
-  // Fetch families on component mount
   useEffect(() => {
     fetchChallenges();
   }, []);

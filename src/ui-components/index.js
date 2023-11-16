@@ -4,8 +4,8 @@
  * Any changes to this file will be overwritten when running amplify pull. *
  **************************************************************************/
 
-export { default as ChanllengesCreateForm } from "./ChanllengesCreateForm";
-export { default as ChanllengesUpdateForm } from "./ChanllengesUpdateForm";
+export { default as ChallengesCreateForm } from "./ChallengesCreateForm";
+export { default as ChallengesUpdateForm } from "./ChallengesUpdateForm";
 export { default as FamiliesCreateForm } from "./FamiliesCreateForm";
 export { default as FamiliesUpdateForm } from "./FamiliesUpdateForm";
 export { default as ThreadsCreateForm } from "./ThreadsCreateForm";
