@@ -20,9 +20,11 @@ const useFetchThreads = () => {
     //Task Type is either a constant string (for Weekly Tasks like "Make the Bed"), or the ID of the challenge it belongs to (for Family Fights)
     const getThreadsByTaskType = (taskType) => {
         const filteredThreads = []
-        for(let thread of threads) {
-            if(thread.TaskType == taskType) {
-                filteredThreads.push(thread);
+        if(taskType != null) { //Don't bother if there's no task type
+            for(let thread of threads) {
+                if(thread.TaskType == taskType) {
+                    filteredThreads.push(thread);
+                }
             }
         }
         return filteredThreads; //Should be all threads that match the criteria
@@ -31,9 +33,11 @@ const useFetchThreads = () => {
     //For Recent Uploads section
     const getThreadsByFamily = (familyData) => {
         const filteredThreads = []
-        for(let thread of threads) {
-            if(thread.UserID == familyData.Head || family.Members.includes(thread.UserID)) {
-                filteredThreads.push(thread);
+        if(familyData != null) { //Don't bother if there's no data
+            for(let thread of threads) {
+                if(thread.UserID == familyData.Head || family.Members.includes(thread.UserID)) {
+                    filteredThreads.push(thread);
+                }
             }
         }
         return filteredThreads; //Should be all threads that have been posted by users in the family data

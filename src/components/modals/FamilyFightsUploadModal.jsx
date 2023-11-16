@@ -6,13 +6,16 @@ const choreTypes = [
     "Make the Bed"
 ]
 
-function FamilyFightsUploadModal({ userId, fightId, addVideoFn, isOpen, onClose, submissionFor }) {
+function FamilyFightsUploadModal({ fightId, isOpen, onClose, submissionFor, addFn }) {
 
     const [uploadType, setUploadType] = useState("")
     const [selectedFile, setSelectedFile] = useState("");
     const [uploadStatusMessage, setUploadStatusMessage] = useState("");
 
-    //const { addVideo } = useFetchThreads();
+        //Used so we don't have to drill the username, redirect shouldn't ever occur, but here just in case
+        const username = useLoginCheck({
+            redirect: "/Login"
+        });
 
     //Function responsible for closing the modal, also nullifies the currently selected file
     function closeModal() {
@@ -28,14 +31,24 @@ function FamilyFightsUploadModal({ userId, fightId, addVideoFn, isOpen, onClose,
         if(!selectedFile) {
             setUploadStatusMessage("Please provide a file to upload.");
         }
+        else if (!uploadType) {
+            setUploadStatusMessage("Please select the type of chore you want to upload for.")
+        }
         else {
             try {
-                addVideoFn({
-
+                addFn({
+                    ThreadTitles: uploadType + " " + submissionFor,
+                    ThreadTypes: fightId,
+                    UserID: username,
+                    Likes: [],
+                    VideoURL: "helloworld",
+                    Description: "",
+                    Comments: []
                 })
+                setUploadStatusMessage("File successfully uploaded.");
             }
             catch(e) {
-                setUploadStatusMessage("File successfully uploaded.");
+                setUploadStatusMessage(e.message)
             }
         }
     }

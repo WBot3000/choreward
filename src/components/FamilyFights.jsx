@@ -8,7 +8,7 @@ import PortalModal from './modals/PortalModal'
 import FamilyFightsUploadModal from './modals/FamilyFightsUploadModal'
 
 //Data hooks
-import useFetchUserFamily from './hooks/useFetchUserFamily'
+import useFetchFamilies from './hooks/useFetchFamilies'
 import useFetchThreads from './hooks/useFetchThreads'
 
 const tempMyFights = [
@@ -55,9 +55,10 @@ function FamilyFights() {
         redirect: "/Login"
     });
 
+    const {families, getFamilyByUser, getFamilyByName} = useFetchFamilies();
+    const {threads, getThreadsByTaskType, addThread} = useFetchThreads();
 
     const {isFamilyHead, userFamilyData} = useFetchUserFamily(userId);
-    const {videos: allFights, addVideo, setVideoLikeStatus, postCommentToVideo} = useFetchThreads({});
 
     const [myFights, setMyFights] = useState(tempMyFights);
     const [otherFights, setOtherFights] = useState(tempOtherFights);
@@ -200,11 +201,9 @@ function FamilyFights() {
             <BottomNav/>
 
             <PortalModal isOpen={selectedFamilyFight != null && portalIsOpen} onClose={closePortalModal}
-                title={`${selectedFamilyFight?.family1} vs ${selectedFamilyFight?.family2}`} videoQueryInfo={{
-                    $TaskType: selectedFamilyFight?.id
-                }}/>
-            <FamilyFightsUploadModal isOpen={selectedFamilyFight != null && uploadIsOpen} onClose={closeUploadModal}
-                submissionFor={`${selectedFamilyFight?.family1} vs ${selectedFamilyFight?.family2}`}/>
+                title={`${selectedFamilyFight?.Family1} vs ${selectedFamilyFight?.Family2}`} videoFetchFn={() => {getThreadsByTaskType(selectedFamilyFight?.id)}}/>
+            <FamilyFightsUploadModal fightId={selectedFamilyFight?.id} isOpen={selectedFamilyFight != null && uploadIsOpen} onClose={closeUploadModal}
+                submissionFor={`${selectedFamilyFight?.Family1} vs ${selectedFamilyFight?.Family2}`} addFn={addThread}/>
         </div>
     )
 }

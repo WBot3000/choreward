@@ -27,6 +27,15 @@ const useFetchFamilies = () => {
     return null; //User specified not part of a family
   }
 
+    const getFamilyByName = (familyName) => {
+        for(let family of families) {
+            if(family.FamilyName == familyName) {
+                return family;
+            }
+        }
+        return null; //Family of that name not found
+      }
+
   // Function to add a new family
   const addFamily = async (family) => {
     try {
@@ -42,7 +51,7 @@ const useFetchFamilies = () => {
     fetchFamilies();
   }, []);
 
-  return { families, getFamilyByUser, addFamily };
+  return { families, getFamilyByUser, getFamilyByName, addFamily };
 };
 
 export default useFetchFamilies;
