@@ -1,9 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Modal from './Modal'
 import VideoModal from './VideoModal'
 import VideoLink from '../VideoLink';
-
-import useFetchThreads from '../hooks/useFetchThreads';
 
 // const placeholderComments = [
 //     {
@@ -31,10 +29,14 @@ import useFetchThreads from '../hooks/useFetchThreads';
 // }
 
 //This'll probably become the basis for the Portal Modal
-function PortalModal({ isOpen, onClose, title="Portal", videoQueryInfo={} }) {
+function PortalModal({ isOpen, onClose, title="Portal", videoFetchFn }) {
 
-    const {videos, setVideoLikeStatus, postCommentToVideo} = useFetchThreads(videoQueryInfo)
+    const [allVideos, setAllVideos] = useState([])
     const [selectedVidData, setSelectedVidData] = useState(null);
+
+    useEffect(() => {
+        setAllVideos(videoFetchFn())
+    }, [videoFetchFn])
 
     // console.log(selectedVidData)
 
@@ -56,12 +58,12 @@ function PortalModal({ isOpen, onClose, title="Portal", videoQueryInfo={} }) {
     return <>
     <Modal title={title} isOpen={isOpen} onClose={closeModal}>
         <div className="m-4 flex flex-wrap justify-center overflow-y-scroll border-b-2 border-slate-400">
-            {videos.map(vd => <VideoLink key={vd.id} setFn={setSelectedVidData} videoData={vd}/>)}
+            {allVideos.map(vd => <VideoLink key={vd.id} setFn={setSelectedVidData} videoData={vd}/>)}
         </div>
     </Modal>
 
     <VideoModal isOpen={selectedVidData != null} onClose={() => {setSelectedVidData(null)}}
-        videoData={selectedVidData} setVideoLikedFn={setVideoLikeStatus} commentFn={postCommentToVideo}/>
+        videoData={selectedVidData} likeFn={setVideoLikeStatus} commentFn={postCommentToVideo}/>
     </>
 }
 

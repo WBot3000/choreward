@@ -15,6 +15,30 @@ const useFetchThreads = () => {
     }
   };
 
+    //For most Portal modals
+    //Function to get all the threads of a certain Task Type
+    //Task Type is either a constant string (for Weekly Tasks like "Make the Bed"), or the ID of the challenge it belongs to (for Family Fights)
+    const getThreadsByTaskType = (taskType) => {
+        const filteredThreads = []
+        for(let thread of threads) {
+            if(thread.TaskType == taskType) {
+                filteredThreads.push(thread);
+            }
+        }
+        return filteredThreads; //Should be all threads that match the criteria
+    }
+
+    //For Recent Uploads section
+    const getThreadsByFamily = (familyData) => {
+        const filteredThreads = []
+        for(let thread of threads) {
+            if(thread.UserID == familyData.Head || family.Members.includes(thread.UserID)) {
+                filteredThreads.push(thread);
+            }
+        }
+        return filteredThreads; //Should be all threads that have been posted by users in the family data
+    }
+
   const addThread = async (thread) => {
     try {
       await API.graphql(graphqlOperation(createThread, { input: thread }));
@@ -28,7 +52,7 @@ const useFetchThreads = () => {
     fetchThreads();
   }, []);
 
-  return { threads, addThread };
+  return { threads, getThreadsByTaskType, getThreadsByFamily, addThread };
 };
 
 export default useFetchThreads;

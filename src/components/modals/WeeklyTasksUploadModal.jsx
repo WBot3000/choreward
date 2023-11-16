@@ -1,13 +1,18 @@
 import { useState } from "react";
 import Modal from "./Modal";
 
-import useFetchThreads from "../hooks/useFetchThreads";
+import useLoginCheck from "../hooks/useLoginCheck";
 
-function WeeklyTasksUploadModal({ userId, taskType, isOpen, onClose, submissionFor }) {
+function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor, addFn }) {
 
     const [uploadName, setUploadName] = useState("")
     const [selectedFile, setSelectedFile] = useState("");
     const [uploadStatusMessage, setUploadStatusMessage] = useState("");
+
+    //Used so we don't have to drill the username, redirect shouldn't ever occur, but here just in case
+    const username = useLoginCheck({
+        redirect: "/Login"
+    });
 
     //Function responsible for closing the modal, also nullifies the currently selected file
     function closeModal() {
@@ -24,8 +29,22 @@ function WeeklyTasksUploadModal({ userId, taskType, isOpen, onClose, submissionF
             setUploadStatusMessage("Please provide a file to upload.");
         }
         else {
-            //TODO: Backend code
-            setUploadStatusMessage("File successfully uploaded.");
+            try {
+            //TODO: We're going to need to store the file using S3 Buckets
+                addFn({
+                    ThreadTitles: uploadName.trim(),
+                    ThreadTypes: submissionFor,
+                    UserID: username,
+                    Likes: [],
+                    VideoURL: "helloworld",
+                    Description: "",
+                    Comments: []
+                })
+                setUploadStatusMessage("File successfully uploaded.");
+            }
+            catch(e) {
+                setUploadStatusMessage(e.message)
+            }
         }
     }
 

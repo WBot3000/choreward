@@ -4,7 +4,8 @@ import { HeartIcon, ChatBubbleLeftIcon } from "@heroicons/react/24/outline"
 import { HeartIcon as HeartIconFilled } from "@heroicons/react/24/solid" 
 
 
-function VideoModal({ isOpen, onClose, videoData, setVideoLikedFn, commentFn }) {
+//TODO: Need to have thread editing support from hook in order to have proper likeFn and commentFn
+function VideoModal({ isOpen, onClose, videoData, likeFn, commentFn }) {
     //Used to resize the video based on the window size
     //TODO: Maybe find less arbitrary numbers
     const [vidWidth, setVidWidth] = useState(window.innerWidth > 600 ? 550 : window.innerWidth - 25);
@@ -20,7 +21,6 @@ function VideoModal({ isOpen, onClose, videoData, setVideoLikedFn, commentFn }) 
     }, []);
 
     //TODO: Set isLiked to a value based on whether or not the user has actually liked the video
-    //Stored in a state seperate from the video data so the system doesn't have to refetch when liking/unliking
     useEffect(() => {
         setIsLiked(false);
     }, []);
@@ -37,7 +37,8 @@ function VideoModal({ isOpen, onClose, videoData, setVideoLikedFn, commentFn }) 
 
     function setLikedStatus() {
         try {
-            setVideoLikedFn(videoData.id, !isLiked)
+            //TODO: Might change soon
+            likeFn(videoData.id, !isLiked)
             setIsLiked(!isLiked);
         }
         catch(e) {

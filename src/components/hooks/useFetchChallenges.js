@@ -15,6 +15,21 @@ const useFetchChallenges = () => {
     }
   };
 
+  //Split challenges up into those the family is participating in, and those that they aren't
+  const splitChallenges = async (familyName) => {
+    const myChallenges = []
+    const otherChallenges = []
+        for(let challenge of challenges) {
+            if(challenge.Family1 == familyName || challenge.Family2 == familyName) {
+                myChallenges.push(challenge);
+            }
+            else {
+                otherChallenges.push(challenge);
+            }
+        }
+    return [myChallenges, otherChallenges]; //Returns sorted challenges
+  }
+
   const addChallenge = async (challenge) => {
     try {
       await API.graphql(graphqlOperation(createChallenge, { input: challenge }));

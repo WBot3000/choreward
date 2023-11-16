@@ -8,6 +8,8 @@ import BedIcon from "../assets/images/bed.svg"
 import PortalModal from './modals/PortalModal'
 import WeeklyTasksUploadModal from './modals/WeeklyTasksUploadModal'
 
+import useFetchThreads from './hooks/useFetchThreads'
+
 //TODO: Eventually get weekly tasks from the database
 const tempTasks = [
     {
@@ -34,6 +36,8 @@ const tempTasks = [
 
 
 function WeeklyTasks() {
+
+    const {threads, getThreadsByTaskType, addThread} = useFetchThreads();
 
     const [selectedWeeklyTaskType, setSelectedWeeklyTaskType] = useState(null);
     const [portalIsOpen, setPortalIsOpen] = useState(false);
@@ -112,11 +116,9 @@ function WeeklyTasks() {
             </div>
             <BottomNav/>
             <PortalModal isOpen={selectedWeeklyTaskType != null && portalIsOpen} onClose={() => {closePortalModal()}}
-                title={selectedWeeklyTaskType} videoQueryInfo={{
-                    $TaskType: selectedWeeklyTaskType
-                }}/>
+                title={selectedWeeklyTaskType} videoFetchFn={() => {getThreadsByTaskType(selectedWeeklyTaskType)}}/>
             <WeeklyTasksUploadModal isOpen={selectedWeeklyTaskType != null && uploadIsOpen} onClose={() => {closeUploadModal()}}
-                submissionFor={selectedWeeklyTaskType}/>
+                submissionFor={selectedWeeklyTaskType} addFn={addThread}/>
         </div>
     )
 }

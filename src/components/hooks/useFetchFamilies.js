@@ -17,6 +17,16 @@ const useFetchFamilies = () => {
     }
   };
 
+  //Function to get a specific family from the families that have been fetched
+  const getFamilyByUser = (userId) => {
+    for(let family of families) {
+        if(family.Head == userId || family.Members.includes(userId)) {
+            return family;
+        }
+    }
+    return null; //User specified not part of a family
+  }
+
   // Function to add a new family
   const addFamily = async (family) => {
     try {
@@ -32,7 +42,7 @@ const useFetchFamilies = () => {
     fetchFamilies();
   }, []);
 
-  return { families, addFamily };
+  return { families, getFamilyByUser, addFamily };
 };
 
 export default useFetchFamilies;
