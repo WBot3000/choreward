@@ -5,7 +5,7 @@ import useLoginCheck from "../hooks/useLoginCheck";
 
 function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor, addFn }) {
 
-    const [uploadName, setUploadName] = useState("")
+    const [uploadName, setUploadName] = useState("");
     const [selectedFile, setSelectedFile] = useState("");
     const [uploadStatusMessage, setUploadStatusMessage] = useState("");
 

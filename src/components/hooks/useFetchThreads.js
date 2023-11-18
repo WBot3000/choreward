@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { API, graphqlOperation } from 'aws-amplify';
 import { listThreads } from '../../graphql/queries'; // Import the query
-import { createThread } from '../../graphql/mutations'; // Import the mutation
+//import { createThread } from '../../graphql/mutations'; // Import the mutation
 
 const useFetchThreads = () => {
   const [threads, setThreads] = useState([]);

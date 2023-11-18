@@ -58,12 +58,12 @@ function PortalModal({ isOpen, onClose, title="Portal", videoFetchFn }) {
     return <>
     <Modal title={title} isOpen={isOpen} onClose={closeModal}>
         <div className="m-4 flex flex-wrap justify-center overflow-y-scroll border-b-2 border-slate-400">
-            {allVideos.map(vd => <VideoLink key={vd.id} setFn={setSelectedVidData} videoData={vd}/>)}
+            {allVideos?.map(vd => <VideoLink key={vd.id} setFn={setSelectedVidData} videoData={vd}/>)}
         </div>
     </Modal>
 
     <VideoModal isOpen={selectedVidData != null} onClose={() => {setSelectedVidData(null)}}
-        videoData={selectedVidData} likeFn={setVideoLikeStatus} commentFn={postCommentToVideo}/>
+        videoData={selectedVidData} likeFn={() => {}} commentFn={() => {}}/>
     </>
 }
 
