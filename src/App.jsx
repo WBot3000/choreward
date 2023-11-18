@@ -10,6 +10,7 @@ import NavBar from './components/TopNav';
 import WeeklyTasks from './components/WeeklyTasks';
 import MyFamily from './components/MyFamily';
 import FamilyFights from './components/FamilyFights';
+import FamilyForm from './Components/FamilyForm';
 
 Amplify.configure(awsmobile);
 // This is a mock authentication function.
@@ -30,6 +31,7 @@ function App() {
                 <Route path='/WeeklyTasks' element={<WeeklyTasks />} />
                 <Route path='/MyFamily' element={<MyFamily />} />
                 <Route path='/FamilyFights' element={<FamilyFights />} />
+                <Route path='/FamilyForm' element={<FamilyForm />} />
                 {/* <Route path='/contacts' element={<Contacts isAuthenticated={isAuthenticated} />} /> */}
             </Routes>
         </Router>
