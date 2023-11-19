@@ -10,6 +10,11 @@ function TopNav() {
         Auth.signOut().then(() => {navigate("/Login")}).catch((e) => console.log("Error logging out: ", e))
     }
 
+    function goToInvites() {
+        // Navigate to the Invites page when clicked
+        navigate("/ViewInvites");
+    }
+
     function toggleDropdown() {
         var dropdown = document.getElementById('user-dropdown');
         dropdown.classList.toggle('hidden');
@@ -45,7 +50,7 @@ function TopNav() {
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Dashboard</a>
                         </li>
                         <li>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Invites</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" onClick={goToInvites}>Invites</a>
                         </li>
                         <li>
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" onClick={logOut}>Sign out</a>

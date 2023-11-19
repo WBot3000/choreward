@@ -25,33 +25,33 @@ function NotFamily() {
         setCreateFormVisibility(true);
     };
 
-    //TODO: Backend functionality
-    function acceptInvite(inviteToAccept) {
-        try {
-            //TODO: Backend code
-        }
-        catch(e) {
-            //TODO: Error handling code
-        }
-    }
+    // //TODO: Backend functionality
+    // function acceptInvite(inviteToAccept) {
+    //     try {
+    //         //TODO: Backend code
+    //     }
+    //     catch(e) {
+    //         //TODO: Error handling code
+    //     }
+    // }
 
-    //TODO: Backend functionality
-    function declineInvite(inviteToDecline) {
-        try {
-            //TODO: Backend code
-            const newInviteList = [];
-            for(let invite of currentInvites) {
-                if(invite != inviteToDecline) {
-                    newInviteList.push(invite);
-                }
-            }
-            setCurrentInvites(newInviteList);
-        }
-        catch(e) {
-            //TODO: Error handling code
-        }
+    // //TODO: Backend functionality
+    // function declineInvite(inviteToDecline) {
+    //     try {
+    //         //TODO: Backend code
+    //         const newInviteList = [];
+    //         for(let invite of currentInvites) {
+    //             if(invite != inviteToDecline) {
+    //                 newInviteList.push(invite);
+    //             }
+    //         }
+    //         setCurrentInvites(newInviteList);
+    //     }
+    //     catch(e) {
+    //         //TODO: Error handling code
+    //     }
 
-    }
+    // }
 
     return (
         <>
@@ -72,10 +72,10 @@ function NotFamily() {
 
                 {isCreateFormVisible && <CreateForm />}
 
-                <h2 className="flex justify-center items-center mt-4 mb-4 text-2xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">My Invites</h2>
+                {/* <h2 className="flex justify-center items-center mt-4 mb-4 text-2xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">My Invites</h2>
                 <ul className='flex flex-col ml-96 mr-96 gap-y-5 overflow-y-scroll border-gray-200 border-2'>
                     {currentInvites.map(inv => <InviteListItem key={inv.id} inviteData={inv} onAccept={() => {acceptInvite(inv)}} onDecline={() => {declineInvite(inv)}}/>)}
-                </ul>
+                </ul> */}
             </div>
             <BottomNav/>
         </>
