@@ -1,12 +1,36 @@
 import React, { useState } from 'react'
 import TopNav from './TopNav'
 import BottomNav from './BottomNav'
+import useFetchFamilies from './hooks/useFetchFamily'; // Importing the fetch family hook
 
 function NotFamily() {
     const [isCreateFormVisible, setCreateFormVisibility] = useState(false);
+    const { addFamily } = useFetchFamilies(); // Accessing addFamily function from the hook
 
     const toggleVisibility = () => {
         setCreateFormVisibility(true);
+    };
+
+    const handleFormSubmit = async (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+
+        try {
+            const newFamilyData = {
+                FamilyName: formData.get('family-name'), // Assuming 'family-name' is the input field ID for FamilyName
+                Head: formData.get('family-head'), // Assuming 'family-head' is the input field ID for Head
+                // Members: "",
+                // Rewards: { RewardName: "", RewardCost: "" },
+                // ThreadsID: "",
+                // OnChanllengesID: "",
+                // EarnedPoints: "",
+            };
+
+            await addFamily(newFamilyData);
+            setCreateFormVisibility(false); // Hide the form after submission
+        } catch (error) {
+            console.error("Error adding family:", error);
+        }
     };
 
     return (
@@ -24,24 +48,27 @@ function NotFamily() {
                     </a>
                 </div>
 
-                {isCreateFormVisible && <CreateForm />}
+
+                {/* Display the form when isCreateFormVisible is true */}
+                {isCreateFormVisible && <CreateForm onSubmit={handleFormSubmit} />}
             </div>
             <BottomNav/>
         </>
     )
 }
 
-const CreateForm = () => {
+const CreateForm = ({ onSubmit }) => {
     return (
     <div class justify-center items-center>
-    <form class="mr-20 ml-20" >
+    <form class="mr-20 ml-20" onSubmit={onSubmit} >
+    {/* form inputs */}
     <div class="mb-6">
       <label for="family-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name Your Family</label>
-      <input type="fmaily-name" id="email" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="Awesome Fam" required/>
+      <input type="first-name" id="email" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="Awesome Fam" required/>
     </div>
     <div class="mb-6">
-      <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Family Head</label>
-      <input type="password" id="password" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required/>
+      <label for="family-head" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Family Head</label>
+      <input type="last-name" id="password" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required/>
     </div>
     <div class="flex items-start mb-6">
     </div>
