@@ -1,11 +1,19 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Auth } from 'aws-amplify'
 import { useNavigate } from 'react-router-dom'
-
+import useLoginCheck from "./hooks/useLoginCheck";
 function TopNav() {
 
     const navigate = useNavigate();
-    
+
+    const { statusChecked, userName, userEmail } = useLoginCheck({ redirect: '/login', shouldBeLoggedOut: false });
+    // useEffect(() => {
+    //     if (statusChecked && userName) {
+    //         console.log('User Data:', statusChecked);
+    //         console.log('userN', userName)
+    //     }
+    // }, [statusChecked, userName]);
+
     function logOut() {
         Auth.signOut().then(() => {navigate("/Login")}).catch((e) => console.log("Error logging out: ", e))
     }
@@ -24,9 +32,7 @@ function TopNav() {
         // Navigate to the Not Family page when clicked - can be replaced with a different page/modal
         navigate("/NotFamily");
     }
-
-      
-
+    // console.log(statusChecked, userEmail)
     return (
         <div>
             <nav className="border-gray-200 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
@@ -47,8 +53,8 @@ function TopNav() {
 
                 <div id="user-dropdown" class="absolute top-50 right-10 z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
                         <div class="px-4 py-3">
-                        <span class="block text-sm text-gray-900 dark:text-white">Username</span>
-                        <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">userEmail@gmail.com</span>
+                        <span class="block text-sm text-gray-900 dark:text-white">{userName}</span>
+                        <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">{userEmail}</span>
                         </div>
                         <ul class="py-2" aria-labelledby="user-menu-button">
                         <li>
@@ -58,7 +64,7 @@ function TopNav() {
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" onClick={goToInvites}>Invites</a>
                         </li>
                         <li>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" onClick={goToNotFamily}>My Family</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" onClick={goToNotFamily}>Add Family</a>
                         </li>
                         <li>
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" onClick={logOut}>Sign out</a>
