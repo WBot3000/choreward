@@ -20,6 +20,11 @@ function TopNav() {
         dropdown.classList.toggle('hidden');
       }
 
+      function goToNotFamily() {
+        // Navigate to the Not Family page when clicked - can be replaced with a different page/modal
+        navigate("/NotFamily");
+    }
+
       
 
     return (
@@ -51,6 +56,9 @@ function TopNav() {
                         </li>
                         <li>
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" onClick={goToInvites}>Invites</a>
+                        </li>
+                        <li>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" onClick={goToNotFamily}>My Family</a>
                         </li>
                         <li>
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" onClick={logOut}>Sign out</a>
