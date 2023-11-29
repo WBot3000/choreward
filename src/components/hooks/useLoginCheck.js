@@ -12,10 +12,18 @@ export default function useLoginCheck({redirect, shouldBeLoggedOut=false}) {
 
     useEffect(() => {
         if(shouldBeLoggedOut) {
-            Auth.currentAuthenticatedUser().then(() => {navigate(redirect)})
+            Auth.currentAuthenticatedUser().then(() => {
+                if(navigate) {
+                    navigate(redirect)
+                }
+            })
         }
         else {
-            Auth.currentAuthenticatedUser().catch(() => {navigate(redirect)}).then((userInfo) => {setUsername(userInfo.username)});
+            Auth.currentAuthenticatedUser().catch(() => {
+                if(navigate) {
+                    navigate(redirect)
+                }
+            }).then((userInfo) => {setUsername(userInfo.username)});
         }
     }, []);
 

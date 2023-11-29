@@ -1,13 +1,18 @@
 import { useState, useEffect } from "react";
 import Modal from "./Modal"
 import { HeartIcon, ChatBubbleLeftIcon } from "@heroicons/react/24/outline"
-import { HeartIcon as HeartIconFilled } from "@heroicons/react/24/solid" 
+import { HeartIcon as HeartIconFilled } from "@heroicons/react/24/solid"
+import useFetchThreads from "../hooks/useFetchThreads";
+import useLoginCheck from "../hooks/useLoginCheck";
 
 
 //TODO: Need to have thread editing support from hook in order to have proper likeFn and commentFn
-function VideoModal({ isOpen, onClose, videoData, likeFn, commentFn }) {
+function VideoModal({ isOpen, onClose, videoData }) {
+
+    const userId = useLoginCheck();
+    const { updateThreadById } = useFetchThreads();
+
     //Used to resize the video based on the window size
-    //TODO: Maybe find less arbitrary numbers
     const [vidWidth, setVidWidth] = useState(window.innerWidth > 600 ? 550 : window.innerWidth - 25);
     const [isLiked, setIsLiked] = useState(false);
     const [isLeavingComment, setIsLeavingComment] = useState(false);
@@ -22,8 +27,14 @@ function VideoModal({ isOpen, onClose, videoData, likeFn, commentFn }) {
 
     //TODO: Set isLiked to a value based on whether or not the user has actually liked the video
     useEffect(() => {
-        setIsLiked(false);
-    }, []);
+        const likesOnVideo = selectedVidData?.Likes?.split(",");
+        if(!likesOnVideo || !likesOnVideo.includes(userId)) {
+            setIsLiked(false);
+        }
+        else {
+            setIsLiked(true);
+        }
+    }, [selectedVidData]);
 
     //Changes video size when the window is resized
     useEffect(() => {
@@ -35,14 +46,24 @@ function VideoModal({ isOpen, onClose, videoData, likeFn, commentFn }) {
         return () => window.removeEventListener("resize", resizeFunction);
     });
 
-    function setLikedStatus() {
+    async function setLikedStatus() {
         try {
-            //TODO: Might change soon
-            likeFn(videoData.id, !isLiked)
+            const newVidData = {...selectedVidData};
+            let newLikedList = selectedVidData?.Likes?.split(",");
+            if(isLiked) { //Unlike the video by removing the user's name from the list
+                const idxOfUser = newLikedList.indexOf(userId);
+                newLikedList.splice(idxOfUser, 1);
+            }
+            else {
+                newLikedList.push(userId);
+            }
+            newVidData.Likes = newLikedList.join(",");
+
+            await updateThreadById(selectedVidData.id, newVidData);
             setIsLiked(!isLiked);
         }
         catch(e) {
-            console.log("Error switching liked status on video:", e)
+            console.log("Error switching liked status on video:", e);
         }
     }
 
@@ -55,9 +76,7 @@ function VideoModal({ isOpen, onClose, videoData, likeFn, commentFn }) {
     }
 
     //Used to post comments to videos
-    //TODO: Update this on the backend
-    //TODO 2: Maybe add clientside filter?
-    function postComment(event) {
+    async function postComment(event) {
         event.preventDefault();
         //Add the poster's new comment to the top of the list
         const fixedCommentText = commentText.trim();
@@ -65,15 +84,29 @@ function VideoModal({ isOpen, onClose, videoData, likeFn, commentFn }) {
             setCommentError("Unable to post blank comments.");
         }
         else {
-            commentFn()
-            const newComments = [{
-                poster: "User1",
-                comment: fixedCommentText
-            }]
-            for(let comment of comments) {
-                newComments.push(comment);
+            try {
+                const newVidData = {...selectedVidData};
+                let newCommentsList = JSON.parse(selectedVidData?.Comments ?? "[]");
+                newCommentsList.unshift({
+                    Date: new Date().toISOString(),
+                    UserID: userId,
+                    Content: fixedCommentText
+                });
+                newVidData.Comments = JSON.stringify(newCommentsList);
+                await updateThreadById(selectedVidData.id, newVidData);
+
+                const newComments = [{
+                    poster: userId,
+                    comment: fixedCommentText
+                }]
+                for(let comment of comments) {
+                    newComments.push(comment);
+                }
+                setComments(newComments);
             }
-            setComments(newComments);
+            catch(e) {
+                console.log("Error adding comment to video:", e);
+            }
             closeCommentView();
         }
     }
@@ -89,7 +122,7 @@ function VideoModal({ isOpen, onClose, videoData, likeFn, commentFn }) {
         </div>
         <div>
             <button className="m-1 w-12 h-12 rounded-full"
-                onClick={setLikedStatus}>
+                onClick={async () => {await setLikedStatus()}}>
                 {isLiked && <HeartIconFilled className="w-6"/>}
                 {!isLiked && <HeartIcon className="w-6"/>}
             </button>
@@ -103,7 +136,7 @@ function VideoModal({ isOpen, onClose, videoData, likeFn, commentFn }) {
                 <form>
                     <input type="text" name="comment_text"
                         onChange={e => {setCommentText(e.target.value)}}/>
-                    <button className='ml-4' onClick={(e) => {postComment(e)}}>Post Comment</button>
+                    <button className='ml-4' onClick={async (e) => {await postComment(e)}}>Post Comment</button>
                     <button className='ml-4' onClick={(e) => {closeCommentView(e)}}>Don't Post</button>
                 </form>
                 {commentError && <p>{commentError}</p>}

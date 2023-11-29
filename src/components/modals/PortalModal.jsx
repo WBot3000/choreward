@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Modal from './Modal'
 import VideoModal from './VideoModal'
 import VideoLink from '../VideoLink';
+import useFetchThreads from '../hooks/useFetchThreads';
 
 // const placeholderComments = [
 //     {
@@ -29,14 +30,16 @@ import VideoLink from '../VideoLink';
 // }
 
 //This'll probably become the basis for the Portal Modal
-function PortalModal({ isOpen, onClose, title="Portal", videoFetchFn }) {
+function PortalModal({ isOpen, onClose, title="Portal" }) {
 
+    const { getThreadsByTaskType } = useFetchThreads();
     const [allVideos, setAllVideos] = useState([])
     const [selectedVidData, setSelectedVidData] = useState(null);
 
     useEffect(() => {
-        setAllVideos(videoFetchFn())
-    }, [videoFetchFn])
+        const vidsInCategory = getThreadsByTaskType(title);
+        setAllVideos(vidsInCategory)
+    }, [title])
 
     // console.log(selectedVidData)
 
@@ -63,7 +66,7 @@ function PortalModal({ isOpen, onClose, title="Portal", videoFetchFn }) {
     </Modal>
 
     <VideoModal isOpen={selectedVidData != null} onClose={() => {setSelectedVidData(null)}}
-        videoData={selectedVidData} likeFn={setVideoLikeStatus} commentFn={postCommentToVideo}/>
+        videoData={selectedVidData}/>
     </>
 }
 

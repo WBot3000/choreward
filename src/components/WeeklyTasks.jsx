@@ -37,7 +37,7 @@ const tempTasks = [
 
 function WeeklyTasks() {
 
-    const {threads, getThreadsByTaskType, addThread} = useFetchThreads();
+    //const {threads, getThreadsByTaskType, addThread, updateThreadById} = useFetchThreads();
 
     const [selectedWeeklyTaskType, setSelectedWeeklyTaskType] = useState(null);
     const [portalIsOpen, setPortalIsOpen] = useState(false);
@@ -116,7 +116,7 @@ function WeeklyTasks() {
             </div>
             <BottomNav/>
             <PortalModal isOpen={selectedWeeklyTaskType != null && portalIsOpen} onClose={() => {closePortalModal()}}
-                title={selectedWeeklyTaskType} videoFetchFn={() => {getThreadsByTaskType(selectedWeeklyTaskType)}}/>
+                title={selectedWeeklyTaskType} /*videoFetchFn={() => {getThreadsByTaskType(selectedWeeklyTaskType)}}*/ />
             <WeeklyTasksUploadModal isOpen={selectedWeeklyTaskType != null && uploadIsOpen} onClose={() => {closeUploadModal()}}
                 submissionFor={selectedWeeklyTaskType} addFn={addThread}/>
         </div>
