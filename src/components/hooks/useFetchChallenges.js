@@ -50,13 +50,21 @@ const useFetchChallenges = () => {
     }
   };
 
-  // ... (rest o
+  // listChallenges inside return of this function find the ID that we want
+  // newData ={
+  //   "id": "keep the same id",
+  //   "name": "keep save name",
+  //   "description": "keep save description",
+  //   "ChallengeList": {2,3,1}
 
+  // }
+  // updateChallengeById(id, newData )
+   
   useEffect(() => {
     fetchChallenges();
   }, []);
 
-  return { challenges, addChallenge,updateChallengeById,fetchChallengeById,deleteChallengeById };
+  return { challenges, addChallenge, fetchChallenges, updateChallengeById,fetchChallengeById,deleteChallengeById };
 };
 
 export default useFetchChallenges;
