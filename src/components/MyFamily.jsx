@@ -8,8 +8,7 @@ import Rewards from './Rewards'
 import FamilyManagementModal from "./modals/FamilyManagementModal"
 
 // import this dependecies to use our hooks
-import useFetchFamilies from "./hooks/useFetchFamilies";
-import useFetchUserFamily from './hooks/useFetchUserFamily'
+import useFetchFamily from "./hooks/useFetchFamily";
 import useFetchThreads from './hooks/useFetchThreads'
 
 function MyFamily() {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { API, graphqlOperation } from 'aws-amplify';
 import { listThreads,getThreads } from '../../graphql/queries'; // Import the query
-import { createThread,updateThreads,deleteThreads } from '../../graphql/mutations'; // Import the mutation
+import { createThreads, updateThreads, deleteThreads } from '../../graphql/mutations'; // Import the mutation
 
 const useFetchThreads = () => {
   const [threads, setThreads] = useState([]);
@@ -45,8 +45,8 @@ const useFetchThreads = () => {
 
   const addThread = async (thread) => {
     try {
-      await API.graphql(graphqlOperation(createThread, { input: thread }));
-      fetchThreads();
+      await API.graphql(graphqlOperation(createThreads, { input: thread }));
+      await fetchThreads();
     } catch (err) {
       console.error('Error creating a thread:', err);
     }
@@ -64,7 +64,7 @@ const useFetchThreads = () => {
       const currentThreadData = await fetchThreadById(id);
       const updatedThread = { ...currentThreadData, ...newData };
       await API.graphql(graphqlOperation(updateThreads, { input: updatedThread }));
-      fetchThreads(); // Refresh the Threads list
+      await fetchThreads(); // Refresh the Threads list
     } catch (err) {
       console.error('Error updating Thread:', err);
     }
@@ -72,7 +72,7 @@ const useFetchThreads = () => {
   const deleteThreadById = async (id) => {
     try {
       await API.graphql(graphqlOperation(deleteThreads, { input: { id } }));
-      fetchThreads(); // Refresh the Threads list after deletion
+      await fetchThreads(); // Refresh the Threads list after deletion
     } catch (err) {
       console.error('Error deleting Thread:', err);
     }

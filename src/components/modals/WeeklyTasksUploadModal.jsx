@@ -2,15 +2,18 @@ import { useState } from "react";
 import Modal from "./Modal";
 
 import useLoginCheck from "../hooks/useLoginCheck";
+import useFetchThreads from "../hooks/useFetchThreads";
 
-function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor, addFn }) {
+function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
+
+    const { threads, addThread } = useFetchThreads();
 
     const [uploadName, setUploadName] = useState("")
     const [selectedFile, setSelectedFile] = useState("");
     const [uploadStatusMessage, setUploadStatusMessage] = useState("");
 
     //Used so we don't have to drill the username, redirect shouldn't ever occur, but here just in case
-    const username = useLoginCheck({
+    const userId = useLoginCheck({
         redirect: "/Login"
     });
 
@@ -22,7 +25,7 @@ function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor, addFn }) {
 
     //Responsible for uploading the file
     //TODO: Connect to backend and provide any possible safety checks (ex. file type validation)
-    function uploadFile(event) {
+    async function uploadFile(event) {
         event.preventDefault();
         console.log(selectedFile);
         if(!selectedFile) {
@@ -31,22 +34,30 @@ function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor, addFn }) {
         else {
             try {
             //TODO: We're going to need to store the file using S3 Buckets
-                addFn({
+                await addThread({
                     ThreadTitles: uploadName.trim(),
                     ThreadTypes: submissionFor,
-                    UserID: username,
-                    Likes: [],
-                    VideoURL: "helloworld",
+                    UserID: userId,
+                    Likes: 0,
+                    LikedUsers: "",
+                    VideoURL: "https://s3.us-east-2.amazonaws.com/chorewardthreadvideos234141-staging/some-object.txt", //TODO: Update this with actual video data
                     Description: "",
-                    Comments: []
+                    //TODO: Fix
+                    Comments: {
+                        Date: new Date().toISOString().slice(0, 10),
+                        UserID: userId,
+                        Content: "Hello World!"
+                    }
                 })
-                setUploadStatusMessage("File successfully uploaded.");
+                setUploadStatusMessage("File sent to upload.");
             }
             catch(e) {
-                setUploadStatusMessage(e.message)
+                setUploadStatusMessage(e.message);
             }
         }
     }
+
+    console.log(threads);
 
     return <Modal title={`Upload for ${submissionFor}`} isOpen={isOpen} onClose={closeModal}>
         <div>

@@ -9,7 +9,7 @@ import useLoginCheck from "../hooks/useLoginCheck";
 //TODO: Need to have thread editing support from hook in order to have proper likeFn and commentFn
 function VideoModal({ isOpen, onClose, videoData }) {
 
-    const userId = useLoginCheck();
+    const userId = useLoginCheck({redirect:null});
     const { updateThreadById } = useFetchThreads();
 
     //Used to resize the video based on the window size
@@ -27,14 +27,14 @@ function VideoModal({ isOpen, onClose, videoData }) {
 
     //TODO: Set isLiked to a value based on whether or not the user has actually liked the video
     useEffect(() => {
-        const likesOnVideo = selectedVidData?.Likes?.split(",");
+        const likesOnVideo = videoData?.Likes?.split(",");
         if(!likesOnVideo || !likesOnVideo.includes(userId)) {
             setIsLiked(false);
         }
         else {
             setIsLiked(true);
         }
-    }, [selectedVidData]);
+    }, [videoData]);
 
     //Changes video size when the window is resized
     useEffect(() => {
@@ -46,20 +46,25 @@ function VideoModal({ isOpen, onClose, videoData }) {
         return () => window.removeEventListener("resize", resizeFunction);
     });
 
+    //TODO: Change this to incorporate Likes (the number value) and LikedUsers (the list as a string that Likes currently is here in this implementation)
     async function setLikedStatus() {
         try {
-            const newVidData = {...selectedVidData};
-            let newLikedList = selectedVidData?.Likes?.split(",");
+            const newVidData = {...videoData};
+            let newLikedList = videoData?.LikedUsers?.split(",");
             if(isLiked) { //Unlike the video by removing the user's name from the list
                 const idxOfUser = newLikedList.indexOf(userId);
-                newLikedList.splice(idxOfUser, 1);
+                if(idxOfUser > -1) {
+                    newLikedList.splice(idxOfUser, 1);
+                    newVidData.Likes--;
+                }
             }
-            else {
+            else { //Liking the video
                 newLikedList.push(userId);
+                newVidData.Likes++
             }
-            newVidData.Likes = newLikedList.join(",");
+            newVidData.LikedUsers = newLikedList.join(",");
 
-            await updateThreadById(selectedVidData.id, newVidData);
+            await updateThreadById(videoData.id, newVidData);
             setIsLiked(!isLiked);
         }
         catch(e) {
@@ -85,15 +90,15 @@ function VideoModal({ isOpen, onClose, videoData }) {
         }
         else {
             try {
-                const newVidData = {...selectedVidData};
-                let newCommentsList = JSON.parse(selectedVidData?.Comments ?? "[]");
+                const newVidData = {...videoData};
+                let newCommentsList = JSON.parse(videoData?.Comments ?? "[]");
                 newCommentsList.unshift({
                     Date: new Date().toISOString(),
                     UserID: userId,
                     Content: fixedCommentText
                 });
                 newVidData.Comments = JSON.stringify(newCommentsList);
-                await updateThreadById(selectedVidData.id, newVidData);
+                await updateThreadById(videoData.id, newVidData);
 
                 const newComments = [{
                     poster: userId,
