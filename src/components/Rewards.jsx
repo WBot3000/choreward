@@ -1,4 +1,6 @@
+import { useState } from "react";
 import React from 'react'
+import RewardsModal from "./modals/RewardsModal";
 
 function Rewards() {
     const items = [
@@ -25,12 +27,32 @@ function Rewards() {
           viewButton: <button>Redeem</button>,
         },
   ];
+
+    const [modalOpen, setModalOpen] = useState(false);
+  
+    const openModal = () => {
+      setModalOpen(true);
+    };
+  
+    const closeModal = () => {
+      setModalOpen(false);
+    };
+
   return (
     <div>
       <div className="flex">
       <h2 className="mb-2 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl dark:text-white ml-10 mt-10">Rewards</h2>
       <link></link>
+      <button onClick={openModal}>Add Rewards</button>
+      <button className="ml-10" onClick={closeModal}> X </button>
       </div>
+      {modalOpen && (
+      <div className="modal">
+          <div className="modal-content">
+          <RewardsModal/>
+          </div>
+        </div>)}
+
 
     <div className="flex pb-40">
     {items.map((item) => (

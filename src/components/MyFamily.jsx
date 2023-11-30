@@ -1,13 +1,13 @@
 import useLoginCheck from "./hooks/useLoginCheck";
 import BottomNav from "./BottomNav";
 import TopNav from "./TopNav";
-// import SelectedFamily from './SelectedFamily'
 import RecentUploads from "./RecentUploads";
 import Rewards from "./Rewards";
 
 // import this dependecies to use our hooks
 import useFetchFamilies from "./hooks/useFetchFamily";
 import { useState } from "react";
+import AddMembers from "./AddMembers";
 
 
 
@@ -26,6 +26,7 @@ function MyFamily() {
   
   const { addFamily, fetchFamilies} = useFetchFamilies();
 
+  
   const [familyData, setFamilyData] = useState({
     FamilyName: "",
     Head: "",
@@ -149,6 +150,7 @@ function MyFamily() {
         Family {FamilyName}
       </h1>
       {/* <div className="flex justify-center items-center"><SelectedFamily/></div> */}
+      <AddMembers/>
       <div className="flex ml-10 mt-10  justify-left">
         <RecentUploads />
       </div>
@@ -157,6 +159,11 @@ function MyFamily() {
       <BottomNav />
     </div>
   );
+
+
+
+
+
     //For testing purposes
 //     const [isPartOfFamily, setIsPartOfFamily] = useState(true);
 
