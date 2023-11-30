@@ -9,7 +9,11 @@ import Rewards from "./Rewards";
 import useFetchFamilies from "./hooks/useFetchFamily";
 import { useState } from "react";
 
+
+
 function MyFamily() {
+  const { statusChecked, userName, FamilyName, Head } = useLoginCheck({ redirect: '/login', shouldBeLoggedOut: false });
+
   useLoginCheck({
     redirect: "/Login",
   });
@@ -18,8 +22,10 @@ function MyFamily() {
         redirect: "/Login"
     });
 
+    
   
   const { addFamily, fetchFamilies} = useFetchFamilies();
+
   const [familyData, setFamilyData] = useState({
     FamilyName: "",
     Head: "",
@@ -140,7 +146,7 @@ function MyFamily() {
       </form>
       <h1 className="flex justify-center items-center">.</h1>
       <h1 className="mb-4 text-1xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white flex justify-center items-center">
-        My Family
+        Family {FamilyName}
       </h1>
       {/* <div className="flex justify-center items-center"><SelectedFamily/></div> */}
       <div className="flex ml-10 mt-10  justify-left">

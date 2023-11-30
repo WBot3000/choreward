@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import TopNav from './TopNav'
 import BottomNav from './BottomNav'
 import useFetchFamilies from './hooks/useFetchFamily'; // Importing the fetch family hook
+import { Link } from 'react-router-dom';
 
 function NotFamily() {
     const [isCreateFormVisible, setCreateFormVisibility] = useState(false);
@@ -19,7 +20,7 @@ function NotFamily() {
             FamilyName: "",
             Head: "",
             Members: "",
-            Rewards: { RewardName: "", RewardCost: 0 },
+            Rewards: { RewardName: "", RewardCost: 0},
             ThreadsID: "",
             OnChanllengesID: "",
             EarnedPoints: "",
@@ -32,7 +33,7 @@ function NotFamily() {
       FamilyName: "",
       Head: "",
       Members: "",
-      Rewards: { RewardName: "", RewardCost: "" },
+      Rewards: { RewardName: "", RewardCost: 0 },
       ThreadsID: "",
       OnChanllengesID: "",
       EarnedPoints: "",
@@ -94,6 +95,10 @@ function NotFamily() {
     
     <div class="flex justify-center item-center ">
     <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Create</button>
+    
+    <Link to="/MyFamily">
+    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Create</button>
+    </Link>
     </div>
     
     </form> 
