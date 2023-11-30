@@ -8,7 +8,7 @@ import PortalModal from './modals/PortalModal'
 import FamilyFightsUploadModal from './modals/FamilyFightsUploadModal'
 
 //Data hooks
-import useFetchFamilies from './hooks/useFetchFamilies'
+import useFetchFamily from './hooks/useFetchFamily'
 import useFetchThreads from './hooks/useFetchThreads'
 
 const tempMyFights = [
@@ -55,7 +55,7 @@ function FamilyFights() {
         redirect: "/Login"
     });
 
-    const {families, getFamilyByUser, getFamilyByName} = useFetchFamilies();
+    const {families, getFamilyByUser, getFamilyByName} = useFetchFamily();
     const {threads, getThreadsByTaskType, addThread} = useFetchThreads();
 
     const {isFamilyHead, userFamilyData} = useFetchUserFamily(userId);
@@ -147,6 +147,8 @@ function FamilyFights() {
     //     }
 
     // }
+
+    
     
     //Need to figure out the size of the Family Fights container
     return (userId &&

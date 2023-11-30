@@ -1,6 +1,9 @@
 import { useState } from "react";
 import Modal from "./Modal";
 
+import useLoginCheck from "../hooks/useLoginCheck";
+import useFetchThreads from "../hooks/useFetchThreads";
+
 const choreTypes = [
     "Take Out Trash",
     "Make the Bed"
@@ -8,14 +11,16 @@ const choreTypes = [
 
 function FamilyFightsUploadModal({ fightId, isOpen, onClose, submissionFor, addFn }) {
 
+    const { threads, addThread } = useFetchThreads();
+
     const [uploadType, setUploadType] = useState("")
     const [selectedFile, setSelectedFile] = useState("");
     const [uploadStatusMessage, setUploadStatusMessage] = useState("");
 
-        //Used so we don't have to drill the username, redirect shouldn't ever occur, but here just in case
-        const username = useLoginCheck({
-            redirect: "/Login"
-        });
+    //Used so we don't have to drill the username, redirect shouldn't ever occur, but here just in case
+    const username = useLoginCheck({
+        redirect: "/Login"
+    });
 
     //Function responsible for closing the modal, also nullifies the currently selected file
     function closeModal() {
@@ -25,7 +30,7 @@ function FamilyFightsUploadModal({ fightId, isOpen, onClose, submissionFor, addF
 
     //Responsible for uploading the file
     //TODO: Connect to backend and provide any possible safety checks (ex. file type validation)
-    function uploadFile(event) {
+    async function uploadFile(event) {
         event.preventDefault();
         console.log(selectedFile);
         if(!selectedFile) {
@@ -36,19 +41,26 @@ function FamilyFightsUploadModal({ fightId, isOpen, onClose, submissionFor, addF
         }
         else {
             try {
-                addFn({
-                    ThreadTitles: uploadType + " " + submissionFor,
-                    ThreadTypes: fightId,
-                    UserID: username,
-                    Likes: [],
-                    VideoURL: "helloworld",
+                await addThread({
+                    //TODO: Make title more readable by fetching the name of the Family Fight itself
+                    ThreadTitles: `${userId} "${uploadType}" for ${fightId}`,
+                    ThreadTypes: uploadType,
+                    UserID: userId,
+                    Likes: 0,
+                    LikedUsers: "",
+                    VideoURL: "https://s3.us-east-2.amazonaws.com/chorewardthreadvideos234141-staging/some-object.txt", //TODO: Update this with actual video data
                     Description: "",
-                    Comments: []
+                    //TODO: Fix
+                    Comments: {
+                        Date: new Date().toISOString().slice(0, 10),
+                        UserID: userId,
+                        Content: "Hello World!"
+                    }
                 })
-                setUploadStatusMessage("File successfully uploaded.");
+                setUploadStatusMessage("File sent to upload.");
             }
             catch(e) {
-                setUploadStatusMessage(e.message)
+                setUploadStatusMessage(e.message);
             }
         }
     }
@@ -73,7 +85,7 @@ function FamilyFightsUploadModal({ fightId, isOpen, onClose, submissionFor, addF
                 </div>                
                 <div>
                     <button className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        onClick={(e) => {uploadFile(e)}}>Post Video</button>
+                        onClick={async (e) => {uploadFile(e)}}>Post Video</button>
                     <button className='ml-4 inline-flex items-center px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700' 
                         onClick={closeModal}>Don't Post</button>
                 </div>

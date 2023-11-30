@@ -1,0 +1,13 @@
+{
+  "resourceName": "ThreadVideo",
+  "policyUUID": "3de6c06e",
+  "bucketName": "chorewardthreadvideos",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}
