@@ -29,7 +29,9 @@ const useFetchFamilies = () => {
   const fetchFamilyById = async (id) => {
     try {
       const FamilyData = await API.graphql(graphqlOperation(getFamilies, { id: id }));
-      return FamilyData.data.getFamily;
+      console.log("this runs", id, FamilyData.data)
+      return FamilyData.data;
+      // return FamilyData.data.getFamily;
     } catch (err) {
       console.error('Error fetching Family by ID:', err);
     }

@@ -8,6 +8,7 @@ function NotFamily() {
     const [isCreateFormVisible, setCreateFormVisibility] = useState(false);
     const { addFamily, fetchFamilies} = useFetchFamilies();
 
+    
     const toggleVisibility = () => {
         setCreateFormVisibility(true);
     };
@@ -20,7 +21,7 @@ function NotFamily() {
             FamilyName: "",
             Head: "",
             Members: "",
-            Rewards: [{RewardName: "", RewardCost: 0 }],
+            Rewards: { RewardName: "skdanf", RewardCost: "10"},
             ThreadsID: "",
             OnChanllengesID: "",
             EarnedPoints: "",
@@ -42,7 +43,7 @@ function NotFamily() {
   
     const handleChange = (e) => {
       const { name, value } = e.target;
-      console.log(familyData)
+      console.log("family", familyData)
       if (name.includes("Rewards.")) {
         const field = name.split(".")[1];
         setFamilyData((prevState) => ({
