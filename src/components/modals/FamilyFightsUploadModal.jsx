@@ -42,9 +42,8 @@ function FamilyFightsUploadModal({ fightId, isOpen, onClose, submissionFor, addF
         else {
             try {
                 await addThread({
-                    //TODO: Make title more readable by fetching the name of the Family Fight itself
-                    ThreadTitles: `${userId} "${uploadType}" for ${fightId}`,
-                    ThreadTypes: uploadType,
+                    ThreadTitles: `${userId} "${uploadType}" for ${submissionFor}`,
+                    ThreadTypes: fightId,
                     UserID: userId,
                     Likes: 0,
                     LikedUsers: "",

@@ -91,7 +91,8 @@ function VideoModal({ isOpen, onClose, videoData }) {
         else {
             try {
                 const newVidData = {...videoData};
-                let newCommentsList = JSON.parse(videoData?.Comments ?? "[]");
+                let newCommentsList = JSON.parse(videoData?.Comments ?? "[]"); //Convert JSON string to object
+
                 newCommentsList.unshift({
                     Date: new Date().toISOString(),
                     UserID: userId,

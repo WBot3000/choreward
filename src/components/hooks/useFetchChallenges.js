@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { API, graphqlOperation } from 'aws-amplify';
 import { listChallenges,getChallenges } from '../../graphql/queries'; // Import the query
-import { createChallenge,updateChallenges,deleteChallenges } from '../../graphql/mutations'; // Import the mutation
+import { createChallenges, updateChallenges, deleteChallenges } from '../../graphql/mutations'; // Import the mutation
 
 const useFetchChallenges = () => {
   const [challenges, setChallenges] = useState([]);
@@ -16,7 +16,10 @@ const useFetchChallenges = () => {
   };
 
   //Split challenges up into those the family is participating in, and those that they aren't
-  const splitChallenges = async (familyName) => {
+  const splitChallenges = (familyName) => {
+    if(!familyName) {
+        return [[], challenges];
+    }
     const myChallenges = []
     const otherChallenges = []
         for(let challenge of challenges) {
@@ -32,7 +35,7 @@ const useFetchChallenges = () => {
 
   const addChallenge = async (challenge) => {
     try {
-      await API.graphql(graphqlOperation(createChallenge, { input: challenge }));
+      await API.graphql(graphqlOperation(createChallenges, { input: challenge }));
       fetchChallenges();
     } catch (err) {
       console.error('Error creating a challenge:', err);
@@ -79,7 +82,7 @@ const useFetchChallenges = () => {
     fetchChallenges();
   }, []);
 
-  return { challenges, addChallenge, fetchChallenges, updateChallengeById,fetchChallengeById,deleteChallengeById };
+  return { challenges, splitChallenges, addChallenge, fetchChallenges, updateChallengeById,fetchChallengeById,deleteChallengeById };
 };
 
 export default useFetchChallenges;
