@@ -2,7 +2,6 @@ import { useContext, useState } from "react";
 import Modal from "./Modal";
 
 import useLoginCheck from "../hooks/useLoginCheck";
-import useFetchThreads from "../hooks/useFetchThreads";
 import { ThreadContext } from "../contexts/ThreadContext";
 
 function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
@@ -11,7 +10,7 @@ function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
     const [selectedFile, setSelectedFile] = useState("");
     const [uploadStatusMessage, setUploadStatusMessage] = useState("");
 
-    const { addThread } = useContext(ThreadContext)
+    const { addThread } = useContext(ThreadContext);
 
     //Used so we don't have to drill the username, redirect shouldn't ever occur, but here just in case
     const userId = useLoginCheck({

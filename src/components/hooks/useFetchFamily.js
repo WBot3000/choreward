@@ -20,7 +20,8 @@ const useFetchFamilies = () => {
   //Function to get a specific family from the families that have been fetched
   const getFamilyByUser = (userId) => {
     for(let family of families) {
-        if(family.Head == userId || family.Members.includes(userId)) {
+        let membersList = family?.Members?.split(",") ?? []
+        if(family.Head == userId || membersList.includes(userId)) {
             return family;
         }
     }

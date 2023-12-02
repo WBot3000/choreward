@@ -10,44 +10,7 @@ import FamilyFightsUploadModal from './modals/FamilyFightsUploadModal'
 //Data hooks
 import useFetchChallenges from './hooks/useFetchChallenges'
 import useFetchFamily from './hooks/useFetchFamily'
-import useFetchThreads from './hooks/useFetchThreads'
 
-const tempMyFights = [
-    {
-        id: "1",
-        EndTime: new Date(2023, 10, 22, 0, 0, 0).toISOString(),
-        Family1: "My Family",
-        Family2: "Family 2"
-    }
-]
-
-const tempOtherFights = [
-    {
-      id: "1",
-      Family1: "Family 1",
-      Family2: "Family 2"
-    //   trashIcon: <FaClock />,
-    //  viewButton: <button>View Video</button>,
-    },
-    {
-        id: "2",
-        Family1: "Family 1",
-        Family2: "Family 3"
-    },
-    {
-        id: "3",
-        Family1: "Family 3",
-        Family2: "Family 4"
-    }
-];
-
-// const tempChallenges = [
-//     {
-//         id: "1",
-//         text: "Family2",
-//         time: "7:00:00:00"
-//     }
-// ]
 
 //TODO: Incorporate functionality for upload modals
 function FamilyFights() {
@@ -58,7 +21,6 @@ function FamilyFights() {
 
     const {families, getFamilyByUser, getFamilyByName} = useFetchFamily();
     const {splitChallenges} = useFetchChallenges();
-    const {threads, getThreadsByTaskType, addThread} = useFetchThreads();
 
     //const {isFamilyHead, userFamilyData} = useFetchUserFamily(userId);
 
@@ -208,9 +170,9 @@ function FamilyFights() {
             <BottomNav/>
 
             <PortalModal isOpen={selectedFamilyFight != null && portalIsOpen} onClose={closePortalModal}
-                title={`${selectedFamilyFight?.Family1} vs ${selectedFamilyFight?.Family2}`} videoFetchFn={() => {getThreadsByTaskType(selectedFamilyFight?.id)}}/>
+                title={`${selectedFamilyFight?.Family1} vs ${selectedFamilyFight?.Family2}`} filter={selectedFamilyFight?.id}/>
             <FamilyFightsUploadModal fightId={selectedFamilyFight?.id} isOpen={selectedFamilyFight != null && uploadIsOpen} onClose={closeUploadModal}
-                submissionFor={`${selectedFamilyFight?.Family1} vs ${selectedFamilyFight?.Family2}`} addFn={addThread}/>
+                submissionFor={`${selectedFamilyFight?.Family1} vs ${selectedFamilyFight?.Family2}`}/>
         </div>
     )
 }

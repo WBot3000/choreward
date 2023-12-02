@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Modal from "./Modal";
 
 import useLoginCheck from "../hooks/useLoginCheck";
-import useFetchThreads from "../hooks/useFetchThreads";
+import { ThreadContext } from "../contexts/ThreadContext";
 
 const choreTypes = [
     "Take Out Trash",
@@ -11,14 +11,14 @@ const choreTypes = [
 
 function FamilyFightsUploadModal({ fightId, isOpen, onClose, submissionFor, addFn }) {
 
-    const { threads, addThread } = useFetchThreads();
-
     const [uploadType, setUploadType] = useState("")
     const [selectedFile, setSelectedFile] = useState("");
     const [uploadStatusMessage, setUploadStatusMessage] = useState("");
 
+    const { addThread } = useContext(ThreadContext)
+
     //Used so we don't have to drill the username, redirect shouldn't ever occur, but here just in case
-    const username = useLoginCheck({
+    const userId = useLoginCheck({
         redirect: "/Login"
     });
 
