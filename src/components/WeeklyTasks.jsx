@@ -8,7 +8,6 @@ import BedIcon from "../assets/images/bed.svg"
 import PortalModal from './modals/PortalModal'
 import WeeklyTasksUploadModal from './modals/WeeklyTasksUploadModal'
 
-import useFetchThreads from './hooks/useFetchThreads'
 
 //TODO: Eventually get weekly tasks from the database
 const tempTasks = [
@@ -22,20 +21,10 @@ const tempTasks = [
     }
 ]
 
-//TODO: Get rid of this once we can query actual video data
-// const videoNames = ["Name 1", "Name 2", "Hello World", "Super Duper Ultra Masterfully Long Name Lol!", "Name 5", "Name 6", "Help Me!" , "I love cats", "Name 9", "Name 10", "Name 11", "Ultimate Video Fan", "Wahoo", "Name Last"]
-
-// const generatedVidData = [];
-// for(let i = 0; i < videoNames.length; i++) {
-//     generatedVidData.push({
-//         id: `${i}`,
-//         title: videoNames[i],
-//         poster: "JohnDoe"
-//     })
-// }
-
 
 function WeeklyTasks() {
+
+    //const { threads, fetchThreads, getThreadsByTaskType } = useFetchThreads();
 
     const [selectedWeeklyTaskType, setSelectedWeeklyTaskType] = useState(null);
     const [portalIsOpen, setPortalIsOpen] = useState(false);
@@ -65,7 +54,7 @@ function WeeklyTasks() {
         setSelectedWeeklyTaskType(null);
     }
 
-    console.log(userId)
+    //console.log(userId)
 
     return (userId &&
         <div>
@@ -93,7 +82,7 @@ function WeeklyTasks() {
             </div>
             <BottomNav/>
             <PortalModal isOpen={selectedWeeklyTaskType != null && portalIsOpen} onClose={() => {closePortalModal()}}
-                title={selectedWeeklyTaskType} /*videoFetchFn={() => {getThreadsByTaskType(selectedWeeklyTaskType)}}*/ />
+                title={selectedWeeklyTaskType} filter={selectedWeeklyTaskType}/>
             <WeeklyTasksUploadModal isOpen={selectedWeeklyTaskType != null && uploadIsOpen} onClose={() => {closeUploadModal()}}
                 submissionFor={selectedWeeklyTaskType}/>
         </div>

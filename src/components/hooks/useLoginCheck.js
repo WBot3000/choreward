@@ -23,7 +23,7 @@ export default function useLoginCheck({redirect=null, shouldBeLoggedOut=false}) 
                 if(redirect) {
                     navigate(redirect)
                 }
-            }).then((userInfo) => {console.log(userInfo); setUsername(userInfo.username)});
+            }).then((userInfo) => {setUsername(userInfo.username)});
         }
     }, []);
 

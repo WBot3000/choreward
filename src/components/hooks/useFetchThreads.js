@@ -6,6 +6,8 @@ import { createThreads, updateThreads, deleteThreads } from '../../graphql/mutat
 const useFetchThreads = () => {
   const [threads, setThreads] = useState([]);
 
+  //console.log(threads);
+
   const fetchThreads = async () => {
     try {
       const threadData = await API.graphql(graphqlOperation(listThreads));
@@ -22,7 +24,7 @@ const useFetchThreads = () => {
         const filteredThreads = []
         if(taskType != null) { //Don't bother if there's no task type
             for(let thread of threads) {
-                if(thread.TaskType == taskType) {
+                if(thread.ThreadTypes == taskType) {
                     filteredThreads.push(thread);
                 }
             }
@@ -33,7 +35,7 @@ const useFetchThreads = () => {
     //For Recent Uploads section
     const getThreadsByFamily = (familyData) => {
         const filteredThreads = []
-        if(familyData != null) { //Don't bother if there's no data
+        if(familyData != null) { //Don't bother if there's no family data
             for(let thread of threads) {
                 if(thread.UserID == familyData.Head || family.Members.includes(thread.UserID)) {
                     filteredThreads.push(thread);

@@ -1,16 +1,17 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Modal from "./Modal";
 
 import useLoginCheck from "../hooks/useLoginCheck";
 import useFetchThreads from "../hooks/useFetchThreads";
+import { ThreadContext } from "../contexts/ThreadContext";
 
 function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
-
-    const { threads, addThread } = useFetchThreads();
 
     const [uploadName, setUploadName] = useState("");
     const [selectedFile, setSelectedFile] = useState("");
     const [uploadStatusMessage, setUploadStatusMessage] = useState("");
+
+    const { addThread } = useContext(ThreadContext)
 
     //Used so we don't have to drill the username, redirect shouldn't ever occur, but here just in case
     const userId = useLoginCheck({
@@ -19,7 +20,7 @@ function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
 
     //Function responsible for closing the modal, also nullifies the currently selected file
     function closeModal() {
-        setSelectedFile(null);
+        setSelectedFile("");
         onClose();
     }
 
@@ -27,7 +28,6 @@ function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
     //TODO: Connect to backend and provide any possible safety checks (ex. file type validation)
     async function uploadFile(event) {
         event.preventDefault();
-        console.log(selectedFile);
         if(!selectedFile) {
             setUploadStatusMessage("Please provide a file to upload.");
         }
@@ -56,8 +56,6 @@ function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
             }
         }
     }
-
-    console.log(threads);
 
     return <Modal title={`Upload for ${submissionFor}`} isOpen={isOpen} onClose={closeModal}>
         <div>
