@@ -1,29 +1,48 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import React from 'react'
 import RewardsModal from "./modals/RewardsModal";
+import useFetchFamilies from "./hooks/useFetchFamily";
 
-function Rewards() {
+function RewardsDisplay() {
+  const { families, fetchFamilies,fetchFamilyById } = useFetchFamilies();
+  const [data, setData] = useState(null);
+  const [Reward, setRewards] = useState("");
+
+  useEffect(() => {
+    // Assuming fetchData is a function that returns a Promise
+    const fetchData = async () => {
+      try {
+        const result = await fetchFamilyById("0699d2a6-38cb-4955-96ee-9978dc20d195");
+        // console.log("fetchByID", result)
+        // setData(result.getFamilies);
+        setRewards(result.getFamilies.Rewards)
+      } catch (error) {
+        // Handle errors
+        console.error('Error fetching data:', error);
+      }
+    };
+    
+    fetchData();
+  }, []);
+
+    const {RewardName, RewardCost} = Reward
+    // console.log("rewards HERE", RewardName, RewardCost)
+
     const items = [
         {
-          id: 1,
           text: 'Ice-cream',
           points:500,
-        //   trashIcon: <FaClock />,
           viewButton: <button>Redeem</button>,
         },
         {
-          id: 2,
           text: 'Video Game',
           points:2500,
-        //   trashIcon:     <FaClock />,
           viewButton: <button>Redeem</button>,
         }
         ,
         {
-          id: 3,
-          text: 'New Shoes',
-          points:2000,
-        //   trashIcon:     <FaClock />,
+          text: RewardName,
+          points:RewardCost,
           viewButton: <button>Redeem</button>,
         },
   ];
@@ -55,8 +74,8 @@ function Rewards() {
 
 
     <div className="flex pb-40">
-    {items.map((item) => (
-    <article key={item.id}>
+    {items.map((item,index) => (
+    <article key={index}>
            <div className="flex justify-center items-center pt-10 pl-10">
  <a href="#" className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
      <div className="flex flex-col justify-between p-4 leading-normal">
@@ -73,4 +92,4 @@ function Rewards() {
   )
 }
 
-export default Rewards
+export default RewardsDisplay

@@ -37,12 +37,10 @@ const useFetchFamilies = () => {
     }
   };
   const updateFamilyById = async (id, newData) => {
-    console.log(newData, id)
     try {
       const currentFamilyData = await fetchFamilyById(id);
       
       const updatedFamily = { ...currentFamilyData, ...newData };
-      console.log("this is awes", currentFamilyData, "new", newData, "updated--", updatedFamily)
       await API.graphql(graphqlOperation(updateFamilies, { input: updatedFamily }));
       fetchFamilies(); // Refresh the Familys list
     } catch (err) {

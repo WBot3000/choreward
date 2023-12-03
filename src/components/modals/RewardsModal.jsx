@@ -4,17 +4,16 @@ import React from 'react'
 import { updateFamilies } from '../../graphql/mutations';
 import useFetchFamilies from "../hooks/useFetchFamily";
 import useLoginCheck from "../hooks/useLoginCheck";
-import Rewards from "../Rewards";
+import Rewards from "../RewardsDisplay";
 import { getFamilies } from "../../graphql/queries";
 
 
 function RewardsModal() {
-    const {userId, userName} = useLoginCheck({redirect:null});
+    const {userId} = useLoginCheck({redirect:null});
     console.log(userId)
     const { families, addFamily, fetchFamilies, updateFamilyById,fetchFamilyById,deleteFamilyById } = useFetchFamilies();
     
-    // get families    
-    console.log("fam", families[0])
+
 
     // get families by id
     const [data, setData] = useState(null);
@@ -23,8 +22,8 @@ function RewardsModal() {
       // Assuming fetchData is a function that returns a Promise
       const fetchData = async () => {
         try {
-          const result = await fetchFamilyById("4023a389-b13f-4dbc-9458-663055ddb70d");
-          console.log("this", result)
+          const result = await fetchFamilyById("0699d2a6-38cb-4955-96ee-9978dc20d195");
+          console.log("fetchByID", result)
           setData(result);
         } catch (error) {
           // Handle errors
@@ -35,59 +34,25 @@ function RewardsModal() {
       fetchData();
     }, []);
     
-    console.log("final",data)
-
     const [familyData, setFamilyData] = useState();
 
     const handleSubmit = (e) => {
         let newReward = {
-                    rewardName: "Name",
-                    rewardCost: "Cost"
+                    rewardName: "NewNewReward",
+                    rewardCost: 10
                 }
         deleteFamilyById("b250fb30-7850-42e4-a00f-c63145728f6f")
         const result = fetchFamilyById("4023a389-b13f-4dbc-9458-663055ddb70d");
         const fn = result.getFamilies;
-        console.log("result", data.getFamilies, {...data.getFamilies, ...{Head: "Ruch"}})
+
+
+        let familyMembers = data.getFamilies.Members.split(",")
+        const {RewardName, RewardCost} = data.getFamilies.Rewards
+        console.log("famMemebers", familyMembers, "rewards", RewardName, RewardCost)
         
-        updateFamilyById("4023a389-b13f-4dbc-9458-663055ddb70d", {...data.getFamilies, ...{Head: "Ruch"}})
+        // console.log("result", data.getFamilies, {...data.getFamilies, ...{Head: "Ruchi"}})
+        // updateFamilyById("4023a389-b13f-4dbc-9458-663055ddb70d", {...data.getFamilies, ...{Head: "Ruch"}})
     }
-
-    // const handleSubmit = (e) => {
-    //     const {Name, Cost} = e.target;
-    //     console.log(Name, Cost)
-    //     let newReward = {
-    //         rewardName: "Name",
-    //         rewardCost: "Cost"
-    //     }
-    //     console.log("this runs",familyData)
-    // }
-    // const handleChange = (e) => {
-    //     const { name, value } = e.target;
-    //     console.log("wer", familyData, name, value)
-    //     if (name.includes("Rewards.")) {
-    //       const field = name.split(".")[1];
-    //       setFamilyData((prevState) => ({
-    //         ...prevState,
-    //         Rewards: {
-    //           ...prevState.Rewards,
-    //           rewardName: "122",
-    //           rewardCost: 122  
-    //         },
-    //       }));
-    //     } else {
-    //       setFamilyData((prevState) => ({
-    //         ...prevState,
-    //         Rewards: value,
-
-    //         Rewards: {
-    //             ...prevState.Rewards, 
-    //             rewardName: "123",
-    //             rewardCost: 123  
-    //           }
-              
-    //       }));
-    //     }
-    //   };
 
   return (
     <div className="pl-20 pr-20">
