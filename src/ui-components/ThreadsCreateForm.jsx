@@ -25,9 +25,11 @@ export default function ThreadsCreateForm(props) {
     ThreadTitles: "",
     ThreadTypes: "",
     UserID: "",
+    LikedUsers: "",
     Likes: "",
     VideoURL: "",
     Description: "",
+    Comments: "",
   };
   const [ThreadTitles, setThreadTitles] = React.useState(
     initialValues.ThreadTitles
@@ -36,28 +38,34 @@ export default function ThreadsCreateForm(props) {
     initialValues.ThreadTypes
   );
   const [UserID, setUserID] = React.useState(initialValues.UserID);
+  const [LikedUsers, setLikedUsers] = React.useState(initialValues.LikedUsers);
   const [Likes, setLikes] = React.useState(initialValues.Likes);
   const [VideoURL, setVideoURL] = React.useState(initialValues.VideoURL);
   const [Description, setDescription] = React.useState(
     initialValues.Description
   );
+  const [Comments, setComments] = React.useState(initialValues.Comments);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setThreadTitles(initialValues.ThreadTitles);
     setThreadTypes(initialValues.ThreadTypes);
     setUserID(initialValues.UserID);
+    setLikedUsers(initialValues.LikedUsers);
     setLikes(initialValues.Likes);
     setVideoURL(initialValues.VideoURL);
     setDescription(initialValues.Description);
+    setComments(initialValues.Comments);
     setErrors({});
   };
   const validations = {
     ThreadTitles: [],
     ThreadTypes: [],
     UserID: [],
+    LikedUsers: [],
     Likes: [],
     VideoURL: [{ type: "URL" }],
     Description: [],
+    Comments: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -88,9 +96,11 @@ export default function ThreadsCreateForm(props) {
           ThreadTitles,
           ThreadTypes,
           UserID,
+          LikedUsers,
           Likes,
           VideoURL,
           Description,
+          Comments,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -156,9 +166,11 @@ export default function ThreadsCreateForm(props) {
               ThreadTitles: value,
               ThreadTypes,
               UserID,
+              LikedUsers,
               Likes,
               VideoURL,
               Description,
+              Comments,
             };
             const result = onChange(modelFields);
             value = result?.ThreadTitles ?? value;
@@ -185,9 +197,11 @@ export default function ThreadsCreateForm(props) {
               ThreadTitles,
               ThreadTypes: value,
               UserID,
+              LikedUsers,
               Likes,
               VideoURL,
               Description,
+              Comments,
             };
             const result = onChange(modelFields);
             value = result?.ThreadTypes ?? value;
@@ -214,9 +228,11 @@ export default function ThreadsCreateForm(props) {
               ThreadTitles,
               ThreadTypes,
               UserID: value,
+              LikedUsers,
               Likes,
               VideoURL,
               Description,
+              Comments,
             };
             const result = onChange(modelFields);
             value = result?.UserID ?? value;
@@ -230,6 +246,37 @@ export default function ThreadsCreateForm(props) {
         errorMessage={errors.UserID?.errorMessage}
         hasError={errors.UserID?.hasError}
         {...getOverrideProps(overrides, "UserID")}
+      ></TextField>
+      <TextField
+        label="Liked users"
+        isRequired={false}
+        isReadOnly={false}
+        value={LikedUsers}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              ThreadTitles,
+              ThreadTypes,
+              UserID,
+              LikedUsers: value,
+              Likes,
+              VideoURL,
+              Description,
+              Comments,
+            };
+            const result = onChange(modelFields);
+            value = result?.LikedUsers ?? value;
+          }
+          if (errors.LikedUsers?.hasError) {
+            runValidationTasks("LikedUsers", value);
+          }
+          setLikedUsers(value);
+        }}
+        onBlur={() => runValidationTasks("LikedUsers", LikedUsers)}
+        errorMessage={errors.LikedUsers?.errorMessage}
+        hasError={errors.LikedUsers?.hasError}
+        {...getOverrideProps(overrides, "LikedUsers")}
       ></TextField>
       <TextField
         label="Likes"
@@ -247,9 +294,11 @@ export default function ThreadsCreateForm(props) {
               ThreadTitles,
               ThreadTypes,
               UserID,
+              LikedUsers,
               Likes: value,
               VideoURL,
               Description,
+              Comments,
             };
             const result = onChange(modelFields);
             value = result?.Likes ?? value;
@@ -276,9 +325,11 @@ export default function ThreadsCreateForm(props) {
               ThreadTitles,
               ThreadTypes,
               UserID,
+              LikedUsers,
               Likes,
               VideoURL: value,
               Description,
+              Comments,
             };
             const result = onChange(modelFields);
             value = result?.VideoURL ?? value;
@@ -305,9 +356,11 @@ export default function ThreadsCreateForm(props) {
               ThreadTitles,
               ThreadTypes,
               UserID,
+              LikedUsers,
               Likes,
               VideoURL,
               Description: value,
+              Comments,
             };
             const result = onChange(modelFields);
             value = result?.Description ?? value;
@@ -321,6 +374,37 @@ export default function ThreadsCreateForm(props) {
         errorMessage={errors.Description?.errorMessage}
         hasError={errors.Description?.hasError}
         {...getOverrideProps(overrides, "Description")}
+      ></TextField>
+      <TextField
+        label="Comments"
+        isRequired={false}
+        isReadOnly={false}
+        value={Comments}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              ThreadTitles,
+              ThreadTypes,
+              UserID,
+              LikedUsers,
+              Likes,
+              VideoURL,
+              Description,
+              Comments: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.Comments ?? value;
+          }
+          if (errors.Comments?.hasError) {
+            runValidationTasks("Comments", value);
+          }
+          setComments(value);
+        }}
+        onBlur={() => runValidationTasks("Comments", Comments)}
+        errorMessage={errors.Comments?.errorMessage}
+        hasError={errors.Comments?.hasError}
+        {...getOverrideProps(overrides, "Comments")}
       ></TextField>
       <Flex
         justifyContent="space-between"

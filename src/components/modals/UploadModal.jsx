@@ -1,30 +1,19 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Modal from "./Modal";
 import { Storage } from 'aws-amplify';
 import { API, graphqlOperation } from 'aws-amplify';
 import { updateThreads } from '../../graphql/mutations'; // import the mutation
 import useFetchThreads from '../hooks/useFetchThreads';
 
-import useLoginCheck from "../hooks/useLoginCheck";
-// import { ThreadContext } from "../contexts/ThreadContext";
+function UploadModal({ isOpen, onClose, submissionFor }) {
 
-function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
-
-    const [uploadName, setUploadName] = useState("");
+    const [uploadName, setUploadName] = useState("")
     const [selectedFile, setSelectedFile] = useState(null);
     const [uploadStatusMessage, setUploadStatusMessage] = useState("");
     const [ threads, addThread,fetchThreads, updateThreadById,fetchThreadById,deleteThreadById] = useFetchThreads();
 
-    // const { addThread } = useContext(ThreadContext);
-
-    //Used so we don't have to drill the username, redirect shouldn't ever occur, but here just in case
-    const userId = useLoginCheck({
-        redirect: "/Login"
-    });
-
-    //Function responsible for closing the modal, also nullifies the currently selected file
     function closeModal() {
-        setSelectedFile("");
+        setSelectedFile(null);
         onClose();
     }
 
@@ -40,40 +29,6 @@ function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
             console.log('Thread updated with video URL');
         } catch (error) {
             console.error('Error updating thread:', error);
-
-        }
-    }
-
-    //Responsible for uploading the file
-    //TODO: Connect to backend and provide any possible safety checks (ex. file type validation)
-    async function uploadFile(event) {
-        event.preventDefault();
-        if(!selectedFile) {
-            setUploadStatusMessage("Please provide a file to upload.");
-        }
-        else {
-            try {
-            //TODO: We're going to need to store the file using S3 Buckets
-                await addThread({
-                    ThreadTitles: uploadName.trim(),
-                    ThreadTypes: submissionFor,
-                    UserID: userId,
-                    Likes: 0,
-                    LikedUsers: "",
-                    VideoURL: "https://s3.us-east-2.amazonaws.com/chorewardthreadvideos234141-staging/some-object.txt", //TODO: Update this with actual video data
-                    Description: "",
-                    //TODO: Fix
-                    Comments: {
-                        Date: new Date().toISOString().slice(0, 10),
-                        UserID: userId,
-                        Content: "Hello World!"
-                    }
-                })
-                setUploadStatusMessage("File sent to upload.");
-            }
-            catch(e) {
-                setUploadStatusMessage(e.message);
-            }
         }
     }
 
@@ -138,4 +93,4 @@ function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
             {uploadStatusMessage && <p>{uploadStatusMessage}</p>}
         </div> */}
 
-export default WeeklyTasksUploadModal
+export default UploadModal

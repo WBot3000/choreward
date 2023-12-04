@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState, useContext } from 'react'
 import { ThreadContext } from '../contexts/ThreadContext';
 import Modal from './Modal'
