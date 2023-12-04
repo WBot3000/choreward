@@ -7,10 +7,14 @@ import { useNavigate } from 'react-router-dom';
 //You can also redirect if the user is logged in by setting "checkForLoggedOut" to be true
 export default function useLoginCheck({redirect=null, shouldBeLoggedOut=false}) {
 
-    const [username, setUsername] = useState(null);
+    const [userName, setUserName] = useState(null);
+    const [userEmail, setUserEmail] = useState(null);
+    const [statusChecked, setStatusChecked] = useState(null);
     const navigate = useNavigate();
 
+
     useEffect(() => {
+        
         if(shouldBeLoggedOut) {
             Auth.currentAuthenticatedUser().then(() => {
                 if(redirect) {
@@ -19,13 +23,20 @@ export default function useLoginCheck({redirect=null, shouldBeLoggedOut=false}) 
             })
         }
         else {
-            Auth.currentAuthenticatedUser().catch(() => {
-                if(redirect) {
-                    navigate(redirect)
-                }
-            }).then((userInfo) => {setUsername(userInfo.username)});
+            Auth.currentAuthenticatedUser().catch(() => {navigate(redirect)}).then((user) => {
+                // Access user attributes like username and email
+                const { username, attributes } = user;
+                const email = attributes.email; // Assuming email is stored in attributes
+        
+                // Use username and email here
+                // console.log('Username:', username);
+                // console.log('Email:', email);
+                setUserName(username);
+                setUserEmail(email);
+                setStatusChecked(true);
+            })
         }
     }, []);
 
-    return username;
+    return {statusChecked, userName, userEmail};
 }

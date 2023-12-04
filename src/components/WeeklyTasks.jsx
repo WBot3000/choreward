@@ -7,6 +7,7 @@ import BedIcon from "../assets/images/bed.svg"
 
 import PortalModal from './modals/PortalModal'
 import WeeklyTasksUploadModal from './modals/WeeklyTasksUploadModal'
+import useFetchThreads from './hooks/useFetchThreads'
 
 
 //TODO: Eventually get weekly tasks from the database
@@ -24,7 +25,7 @@ const tempTasks = [
 
 function WeeklyTasks() {
 
-    //const { threads, fetchThreads, getThreadsByTaskType } = useFetchThreads();
+    const { threads, fetchThreads, getThreadsByTaskType } = useFetchThreads();
 
     const [selectedWeeklyTaskType, setSelectedWeeklyTaskType] = useState(null);
     const [portalIsOpen, setPortalIsOpen] = useState(false);

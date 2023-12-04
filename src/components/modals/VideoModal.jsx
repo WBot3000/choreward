@@ -11,6 +11,7 @@ import useFetchComments from "../hooks/useFetchComments";
 function VideoModal({ isOpen, onClose, videoId }) {
 
     const userId = useLoginCheck({redirect:null});
+
     const { fetchThreadById, updateThreadById } = useFetchThreads();
     const { addComment, fetchCommentById } = useFetchComments();
 
@@ -33,7 +34,6 @@ function VideoModal({ isOpen, onClose, videoId }) {
     }, [videoId]);
 
 
-    //const [isLiked, setIsLiked] = useState(false);
     const [isLeavingComment, setIsLeavingComment] = useState(false);
     const [commentText, setCommentText] = useState("");
     const [commentError, setCommentError] = useState("");
@@ -112,7 +112,6 @@ function VideoModal({ isOpen, onClose, videoId }) {
                 newVidData.Likes++
             }
             newVidData.LikedUsers = newLikedList.join(",");
-            //console.log("New Likes", newVidData.LikedUsers);
             await updateThreadById(videoData.id, newVidData);
             setVideoData(newVidData); 
             //setIsLiked(!isLiked);

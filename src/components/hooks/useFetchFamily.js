@@ -51,6 +51,7 @@ const useFetchFamilies = () => {
   const updateFamilyById = async (id, newData) => {
     try {
       const currentFamilyData = await fetchFamilyById(id);
+      
       const updatedFamily = { ...currentFamilyData, ...newData };
       delete updatedFamily.createdAt;
       delete updatedFamily.updatedAt;
