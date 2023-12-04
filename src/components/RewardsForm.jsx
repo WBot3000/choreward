@@ -9,8 +9,8 @@ import { getFamilies } from "../graphql/queries";
 
 
 function RewardsForm() {
-    const {userId} = useLoginCheck({redirect:null});
-    console.log(userId)
+    const {userName} = useLoginCheck({redirect:null});
+    console.log(userName)
     const { families, addFamily, fetchFamilies, updateFamilyById,fetchFamilyById,deleteFamilyById } = useFetchFamilies();
     
 

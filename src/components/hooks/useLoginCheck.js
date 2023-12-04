@@ -20,7 +20,7 @@ export default function useLoginCheck({redirect=null, shouldBeLoggedOut=false}) 
                 if(redirect) {
                     navigate(redirect)
                 }
-            })
+            }).catch(() => {setStatusChecked(true)})
         }
         else {
             Auth.currentAuthenticatedUser().catch(() => {navigate(redirect)}).then((user) => {

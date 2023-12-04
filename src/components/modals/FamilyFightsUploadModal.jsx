@@ -9,7 +9,7 @@ const choreTypes = [
     "Make the Bed"
 ]
 
-function FamilyFightsUploadModal({ fightId, isOpen, onClose, submissionFor, addFn }) {
+function FamilyFightsUploadModal({ fightId, isOpen, onClose, submissionFor }) {
 
     const [uploadType, setUploadType] = useState("")
     const [selectedFile, setSelectedFile] = useState("");
@@ -18,7 +18,7 @@ function FamilyFightsUploadModal({ fightId, isOpen, onClose, submissionFor, addF
     const { addThread } = useFetchThreads()
 
     //Used so we don't have to drill the username, redirect shouldn't ever occur, but here just in case
-    const userId = useLoginCheck({
+    const {userName} = useLoginCheck({
         redirect: "/Login"
     });
 
@@ -42,9 +42,9 @@ function FamilyFightsUploadModal({ fightId, isOpen, onClose, submissionFor, addF
         else {
             try {
                 await addThread({
-                    ThreadTitles: `${userId} "${uploadType}" for ${submissionFor}`,
+                    ThreadTitles: `${userName} "${uploadType}" for ${submissionFor}`,
                     ThreadTypes: fightId,
-                    UserID: userId,
+                    UserID: userName,
                     Likes: 0,
                     LikedUsers: "",
                     VideoURL: "https://s3.us-east-2.amazonaws.com/chorewardthreadvideos234141-staging/some-object.txt", //TODO: Update this with actual video data

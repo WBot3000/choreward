@@ -10,7 +10,7 @@ import useFetchComments from "../hooks/useFetchComments";
 //TODO: Need to have thread editing support from hook in order to have proper likeFn and commentFn
 function VideoModal({ isOpen, onClose, videoId }) {
 
-    const userId = useLoginCheck({redirect:null});
+    const {userName} = useLoginCheck({redirect:null});
 
     const { fetchThreadById, updateThreadById } = useFetchThreads();
     const { addComment, fetchCommentById } = useFetchComments();
@@ -37,7 +37,13 @@ function VideoModal({ isOpen, onClose, videoId }) {
     const [isLeavingComment, setIsLeavingComment] = useState(false);
     const [commentText, setCommentText] = useState("");
     const [commentError, setCommentError] = useState("");
-    const [comments, setComments] = useState([]);
+    const [comments, setComments] = useState(null);
+    useEffect(() => {
+        if(!isOpen) {
+            setVideoData(null);
+            setComments(null);
+        }
+    }, [isOpen])
 
     function commentIDStringToList() {
         return (!videoData || !videoData.Comments) ? [] : videoData?.Comments?.split(",");
@@ -49,7 +55,7 @@ function VideoModal({ isOpen, onClose, videoId }) {
 
     function userHasLiked() {
         const likesOnVideo = likedUsersIDStringToList();
-        if(!likesOnVideo || !likesOnVideo.includes(userId)) {
+        if(!likesOnVideo || !likesOnVideo.includes(userName)) {
             return false;
         }
         else {
@@ -101,14 +107,14 @@ function VideoModal({ isOpen, onClose, videoId }) {
         try {
             const newVidData = {...videoData};
             let newLikedList = likedUsersIDStringToList();
-            const idxOfUser = newLikedList.indexOf(userId);
+            const idxOfUser = newLikedList.indexOf(userName);
             console.log(newLikedList, idxOfUser);
             if(idxOfUser > -1) { //Unlike the video by removing the user's name from the list
                 newLikedList.splice(idxOfUser, 1);
                 newVidData.Likes--;
             }
             else { //Liking the video
-                newLikedList.push(userId);
+                newLikedList.push(userName);
                 newVidData.Likes++
             }
             newVidData.LikedUsers = newLikedList.join(",");
@@ -141,7 +147,7 @@ function VideoModal({ isOpen, onClose, videoId }) {
             try {
                 const newComment = {
                     Date: new Date().toISOString().slice(0, 10),
-                    UserID: userId,
+                    UserID: userName,
                     Content: fixedCommentText
                 }
 
@@ -156,27 +162,6 @@ function VideoModal({ isOpen, onClose, videoId }) {
                 else {
                     setCommentError("Error occured while adding comment to server");
                 }
-                
-
-
-                //let newCommentsList = JSON.parse(videoData?.Comments ?? "[]"); //Convert JSON string to object
-
-                //newCommentsList.unshift({
-                //    Date: new Date().toISOString(),
-                //    UserID: userId,
-                //    Content: fixedCommentText
-                //});
-                //newVidData.Comments = JSON.stringify(newCommentsList);
-                //await updateThreadById(videoData.id, newVidData);
-
-                // const newComments = [{
-                //     UserID: userId,
-                //     Content: fixedCommentText
-                // }]
-                // for(let comment of comments) {
-                //     newComments.push(comment);
-                // }
-                // setComments(newComments);
             }
             catch(e) {
                 console.log("Error adding comment to video:", e);
@@ -192,7 +177,10 @@ function VideoModal({ isOpen, onClose, videoId }) {
             <iframe className="m-2" src="https://www.youtube.com/watch?v=8lM7f3O3Mko"
                 width={vidWidth} height={vidWidth*(9/16)}/>
             <div className="lg:w-1/2 grow m-2 bg-zinc-300 rounded border-2 border-zinc-400 overflow-y-scroll h-80">
-                {comments.map((cData) => <Comment key={cData.id} poster={cData.UserID} comment={cData.Content}/>)}
+                {comments == null && <div className="m-2">
+                        <p className="font-bold">Loading comments...</p>
+                    </div>}
+                {comments?.map((cData) => <Comment key={cData.id} poster={cData.UserID} comment={cData.Content}/>)}
             </div>
         </div>
         <div>

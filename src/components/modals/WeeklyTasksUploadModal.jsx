@@ -15,7 +15,7 @@ function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
     const { addThread, deleteThreadById } = useFetchThreads();
 
     //Used so we don't have to drill the username, redirect shouldn't ever occur, but here just in case
-    const userId = useLoginCheck({
+    const {userName} = useLoginCheck({
         redirect: "/Login"
     });
 
@@ -64,7 +64,7 @@ function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
         const threadId = await addThread({
             ThreadTitles: uploadName.trim(),
             ThreadTypes: submissionFor,
-            UserID: userId,
+            UserID: userName,
             Likes: 0,
             LikedUsers: "",
             VideoURL: "https://s3.us-east-2.amazonaws.com/chorewardthreadvideos234141-staging/some-object.txt", //TODO: Update this with actual video data
@@ -72,7 +72,7 @@ function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
             //Comment Content
             /*
                 Date: new Date().toISOString().slice(0, 10),
-                UserID: userId,
+                UserID: userName,
                 Content: "Hello World!"
             */
             Comments: ""
