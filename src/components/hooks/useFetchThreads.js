@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { API, graphqlOperation } from 'aws-amplify';
 import { listThreads,getThreads } from '../../graphql/queries'; // Import the query
-import { createThread,updateThreads,deleteThreads } from '../../graphql/mutations'; // Import the mutation
+import { createThreads, updateThreads, deleteThreads } from '../../graphql/mutations'; // Import the mutation
 
 const useFetchThreads = () => {
   const [threads, setThreads] = useState([]);
+
+  //console.log(threads);
 
   const fetchThreads = async () => {
     try {
@@ -15,10 +17,38 @@ const useFetchThreads = () => {
     }
   };
 
+    //For most Portal modals
+    //Function to get all the threads of a certain Task Type
+    //Task Type is either a constant string (for Weekly Tasks like "Make the Bed"), or the ID of the challenge it belongs to (for Family Fights)
+    const getThreadsByTaskType = (taskType) => {
+        const filteredThreads = []
+        if(taskType != null) { //Don't bother if there's no task type
+            for(let thread of threads) {
+                if(thread.ThreadTypes == taskType) {
+                    filteredThreads.push(thread);
+                }
+            }
+        }
+        return filteredThreads; //Should be all threads that match the criteria
+    }
+
+    //For Recent Uploads section
+    const getThreadsByFamily = (familyData) => {
+        const filteredThreads = []
+        if(familyData != null) { //Don't bother if there's no family data
+            for(let thread of threads) {
+                if(thread.UserID == familyData.Head || family.Members.includes(thread.UserID)) {
+                    filteredThreads.push(thread);
+                }
+            }
+        }
+        return filteredThreads; //Should be all threads that have been posted by users in the family data
+    }
+
   const addThread = async (thread) => {
     try {
-      await API.graphql(graphqlOperation(createThread, { input: thread }));
-      fetchThreads();
+      await API.graphql(graphqlOperation(createThreads, { input: thread }));
+      await fetchThreads();
     } catch (err) {
       console.error('Error creating a thread:', err);
     }
@@ -35,8 +65,11 @@ const useFetchThreads = () => {
     try {
       const currentThreadData = await fetchThreadById(id);
       const updatedThread = { ...currentThreadData, ...newData };
+      delete updatedThread.createdAt;
+      delete updatedThread.updatedAt;
+      delete updatedThread.__typename;
       await API.graphql(graphqlOperation(updateThreads, { input: updatedThread }));
-      fetchThreads(); // Refresh the Threads list
+      await fetchThreads(); // Refresh the Threads list
     } catch (err) {
       console.error('Error updating Thread:', err);
     }
@@ -44,7 +77,7 @@ const useFetchThreads = () => {
   const deleteThreadById = async (id) => {
     try {
       await API.graphql(graphqlOperation(deleteThreads, { input: { id } }));
-      fetchThreads(); // Refresh the Threads list after deletion
+      await fetchThreads(); // Refresh the Threads list after deletion
     } catch (err) {
       console.error('Error deleting Thread:', err);
     }
@@ -55,7 +88,7 @@ const useFetchThreads = () => {
     fetchThreads();
   }, []);
 
-  return { threads, addThread,fetchThreads, updateThreadById,fetchThreadById,deleteThreadById  };
+  return { threads, getThreadsByTaskType, getThreadsByFamily, addThread, fetchThreads, updateThreadById, fetchThreadById, deleteThreadById  };
 };
 
 export default useFetchThreads;

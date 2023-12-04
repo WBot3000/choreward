@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { API, graphqlOperation } from 'aws-amplify';
 import { listFamilies, getFamilies } from '../../graphql/queries'; // Import the query from your Amplify generated files
-import { createFamilies,updateFamilies,deleteFamilies } from '../../graphql/mutations'; // Import the mutation from your Amplify generated files
+import { createFamilies, updateFamilies, deleteFamilies } from '../../graphql/mutations'; // Import the mutation from your Amplify generated files
 
 const useFetchFamilies = () => {
   const [families, setFamilies] = useState([]);
@@ -16,6 +16,17 @@ const useFetchFamilies = () => {
       console.error('Error fetching families:', err);
     }
   };
+
+  //Function to get a specific family from the families that have been fetched
+  const getFamilyByUser = (userId) => {
+    for(let family of families) {
+        let membersList = family?.Members?.split(",") ?? []
+        if(family.Head == userId || membersList.includes(userId)) {
+            return family;
+        }
+    }
+    return null; //User specified not part of a family
+  }
 
   // Function to add a new family
   const addFamily = async (family) => {
@@ -38,6 +49,9 @@ const useFetchFamilies = () => {
     try {
       const currentFamilyData = await fetchFamilyById(id);
       const updatedFamily = { ...currentFamilyData, ...newData };
+      delete updatedFamily.createdAt;
+      delete updatedFamily.updatedAt;
+      delete updatedFamily.__typename;
       await API.graphql(graphqlOperation(updateFamilies, { input: updatedFamily }));
       fetchFamilies(); // Refresh the Familys list
     } catch (err) {
@@ -58,7 +72,7 @@ const useFetchFamilies = () => {
     fetchFamilies();
   }, []);
 
-  return { families, addFamily, fetchFamilies, updateFamilyById,fetchFamilyById,deleteFamilyById };
+  return { families, getFamilyByUser, addFamily, fetchFamilies, updateFamilyById, fetchFamilyById, deleteFamilyById };
 };
 
 export default useFetchFamilies;

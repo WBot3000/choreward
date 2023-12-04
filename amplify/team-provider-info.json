@@ -15,8 +15,8 @@
       "auth": {
         "choreward3599fc80": {}
       },
-      "api": {
-        "ChoreWard": {}
+      "storage": {
+        "ThreadVideo": {}
       }
     }
   }
