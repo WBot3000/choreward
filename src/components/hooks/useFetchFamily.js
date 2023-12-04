@@ -52,8 +52,28 @@ const useFetchFamilies = () => {
       console.error('Error deleting Family:', err);
     }
   };
+// achieve this 
+//  attribute: "123,456,789"
+//  parse  with the "," attibute so it be come three items
+// Previously Data is:
+  // {id：1234
+  //   FamilyName: "The Smiths",
+  //   FamilyMembers: [ Walker]
+  //   Head: Walker 
+  // }
+
+  //Now the Data is :
+  // {id：1234
+  //   FamilyName: "The Smiths",
+  //   FamilyMembers: [ Walker,Link]
+  //   Head: Walker 
+  // }
+  // updateFamilyById(1234,{FamilyMembers: [ Walker,Link]})
 
   // Fetch families on component mount
+  // update a Family RewardsCost by id
+  // updateFamilyBy(1234，{RewardsCost: 1000})
+
   useEffect(() => {
     fetchFamilies();
   }, []);

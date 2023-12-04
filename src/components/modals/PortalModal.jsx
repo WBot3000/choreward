@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react'
 import Modal from './Modal'
 import VideoModal from './VideoModal'

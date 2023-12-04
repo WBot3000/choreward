@@ -17,6 +17,9 @@
       },
       "api": {
         "ChoreWard": {}
+      },
+      "storage": {
+        "ThreadVideo": {}
       }
     }
   }
