@@ -8,15 +8,11 @@ export const onCreateThreads = /* GraphQL */ `
       ThreadTitles
       ThreadTypes
       UserID
+      LikedUsers
       Likes
       VideoURL
       Description
-      Comments {
-        Date
-        UserID
-        Content
-        __typename
-      }
+      Comments
       createdAt
       updatedAt
       __typename
@@ -30,15 +26,11 @@ export const onUpdateThreads = /* GraphQL */ `
       ThreadTitles
       ThreadTypes
       UserID
+      LikedUsers
       Likes
       VideoURL
       Description
-      Comments {
-        Date
-        UserID
-        Content
-        __typename
-      }
+      Comments
       createdAt
       updatedAt
       __typename
@@ -52,15 +44,11 @@ export const onDeleteThreads = /* GraphQL */ `
       ThreadTitles
       ThreadTypes
       UserID
+      LikedUsers
       Likes
       VideoURL
       Description
-      Comments {
-        Date
-        UserID
-        Content
-        __typename
-      }
+      Comments
       createdAt
       updatedAt
       __typename
@@ -175,6 +163,45 @@ export const onDeleteFamilies = /* GraphQL */ `
       ThreadsID
       OnChanllengesID
       EarnedPoints
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onCreateComments = /* GraphQL */ `
+  subscription OnCreateComments($filter: ModelSubscriptionCommentsFilterInput) {
+    onCreateComments(filter: $filter) {
+      id
+      Date
+      UserID
+      Content
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateComments = /* GraphQL */ `
+  subscription OnUpdateComments($filter: ModelSubscriptionCommentsFilterInput) {
+    onUpdateComments(filter: $filter) {
+      id
+      Date
+      UserID
+      Content
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteComments = /* GraphQL */ `
+  subscription OnDeleteComments($filter: ModelSubscriptionCommentsFilterInput) {
+    onDeleteComments(filter: $filter) {
+      id
+      Date
+      UserID
+      Content
       createdAt
       updatedAt
       __typename

@@ -11,15 +11,11 @@ export const createThreads = /* GraphQL */ `
       ThreadTitles
       ThreadTypes
       UserID
+      LikedUsers
       Likes
       VideoURL
       Description
-      Comments {
-        Date
-        UserID
-        Content
-        __typename
-      }
+      Comments
       createdAt
       updatedAt
       __typename
@@ -36,15 +32,11 @@ export const updateThreads = /* GraphQL */ `
       ThreadTitles
       ThreadTypes
       UserID
+      LikedUsers
       Likes
       VideoURL
       Description
-      Comments {
-        Date
-        UserID
-        Content
-        __typename
-      }
+      Comments
       createdAt
       updatedAt
       __typename
@@ -61,15 +53,11 @@ export const deleteThreads = /* GraphQL */ `
       ThreadTitles
       ThreadTypes
       UserID
+      LikedUsers
       Likes
       VideoURL
       Description
-      Comments {
-        Date
-        UserID
-        Content
-        __typename
-      }
+      Comments
       createdAt
       updatedAt
       __typename
@@ -196,6 +184,54 @@ export const deleteFamilies = /* GraphQL */ `
       ThreadsID
       OnChanllengesID
       EarnedPoints
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const createComments = /* GraphQL */ `
+  mutation CreateComments(
+    $input: CreateCommentsInput!
+    $condition: ModelCommentsConditionInput
+  ) {
+    createComments(input: $input, condition: $condition) {
+      id
+      Date
+      UserID
+      Content
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const updateComments = /* GraphQL */ `
+  mutation UpdateComments(
+    $input: UpdateCommentsInput!
+    $condition: ModelCommentsConditionInput
+  ) {
+    updateComments(input: $input, condition: $condition) {
+      id
+      Date
+      UserID
+      Content
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const deleteComments = /* GraphQL */ `
+  mutation DeleteComments(
+    $input: DeleteCommentsInput!
+    $condition: ModelCommentsConditionInput
+  ) {
+    deleteComments(input: $input, condition: $condition) {
+      id
+      Date
+      UserID
+      Content
       createdAt
       updatedAt
       __typename
