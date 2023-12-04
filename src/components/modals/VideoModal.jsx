@@ -2,15 +2,15 @@ import { useContext, useState, useEffect } from "react";
 import Modal from "./Modal"
 import { HeartIcon, ChatBubbleLeftIcon } from "@heroicons/react/24/outline"
 import { HeartIcon as HeartIconFilled } from "@heroicons/react/24/solid"
+import useFetchThreads from "../hooks/useFetchThreads";
 import useLoginCheck from "../hooks/useLoginCheck";
-import { ThreadContext } from "../contexts/ThreadContext";
 
 
 //TODO: Need to have thread editing support from hook in order to have proper likeFn and commentFn
 function VideoModal({ isOpen, onClose, videoData }) {
 
     const userId = useLoginCheck({redirect:null});
-    const { updateThreadById } = useContext(ThreadContext);
+    const { updateThreadById } = useFetchThreads();
 
     //Used to resize the video based on the window size
     const [vidWidth, setVidWidth] = useState(window.innerWidth > 600 ? 550 : window.innerWidth - 25);
@@ -63,15 +63,13 @@ function VideoModal({ isOpen, onClose, videoData }) {
                 newVidData.Likes++
             }
             newVidData.LikedUsers = newLikedList.join(",");
-            console.log(newVidData);
+            console.log("This is new data", newVidData)
             await updateThreadById(videoData.id, newVidData);
             setIsLiked(!isLiked);
         }
         catch(e) {
             console.log("Error switching liked status on video:", e);
         }
-        //console.log(videoData);
-        await updateThreadById(videoData.id, videoData)
     }
 
     //Used when you don't actually want to leave a comment
