@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import React from 'react'
-import RewardsModal from "./modals/RewardsModal";
+import RewardsForm from "./RewardsForm";
 import useFetchFamilies from "./hooks/useFetchFamily";
 
 function RewardsDisplay() {
@@ -68,7 +68,7 @@ function RewardsDisplay() {
       {modalOpen && (
       <div className="modal">
           <div className="modal-content">
-          <RewardsModal/>
+          <RewardsForm/>
           </div>
         </div>)}
 

@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState, useContext } from 'react'
-import { ThreadContext } from '../contexts/ThreadContext';
+import { useEffect, useState } from 'react'
 import Modal from './Modal'
 import VideoModal from './VideoModal'
 import VideoLink from '../VideoLink';
+import useFetchThreads from '../hooks/useFetchThreads';
 
 
 function PortalModal({ isOpen, onClose, title, filter }) {
@@ -11,7 +11,7 @@ function PortalModal({ isOpen, onClose, title, filter }) {
     const [allVideos, setAllVideos] = useState([]);
     const [selectedVidData, setSelectedVidData] = useState(null);
 
-    const {threads, getThreadsByTaskType} = useContext(ThreadContext);
+    const {threads, getThreadsByTaskType} = useFetchThreads();
 
     useEffect(() => {
        const vidsInCategory = getThreadsByTaskType(filter);

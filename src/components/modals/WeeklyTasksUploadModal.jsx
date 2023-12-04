@@ -6,14 +6,14 @@ import { updateThreads } from '../../graphql/mutations'; // import the mutation
 import useFetchThreads from '../hooks/useFetchThreads';
 
 import useLoginCheck from "../hooks/useLoginCheck";
-// import { ThreadContext } from "../contexts/ThreadContext";
+
 
 function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
 
     const [uploadName, setUploadName] = useState("");
     const [selectedFile, setSelectedFile] = useState(null);
     const [uploadStatusMessage, setUploadStatusMessage] = useState("");
-    const [ threads, addThread,fetchThreads, updateThreadById,fetchThreadById,deleteThreadById] = useFetchThreads();
+    const { threads, addThread, fetchThreads, updateThreadById, fetchThreadById, deleteThreadById } = useFetchThreads();
 
     // const { addThread } = useContext(ThreadContext);
 
