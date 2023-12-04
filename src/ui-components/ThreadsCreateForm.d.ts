@@ -25,17 +25,21 @@ export declare type ThreadsCreateFormInputValues = {
     ThreadTitles?: string;
     ThreadTypes?: string;
     UserID?: string;
+    LikedUsers?: string;
     Likes?: number;
     VideoURL?: string;
     Description?: string;
+    Comments?: string;
 };
 export declare type ThreadsCreateFormValidationValues = {
     ThreadTitles?: ValidationFunction<string>;
     ThreadTypes?: ValidationFunction<string>;
     UserID?: ValidationFunction<string>;
+    LikedUsers?: ValidationFunction<string>;
     Likes?: ValidationFunction<number>;
     VideoURL?: ValidationFunction<string>;
     Description?: ValidationFunction<string>;
+    Comments?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type ThreadsCreateFormOverridesProps = {
@@ -43,9 +47,11 @@ export declare type ThreadsCreateFormOverridesProps = {
     ThreadTitles?: PrimitiveOverrideProps<TextFieldProps>;
     ThreadTypes?: PrimitiveOverrideProps<TextFieldProps>;
     UserID?: PrimitiveOverrideProps<TextFieldProps>;
+    LikedUsers?: PrimitiveOverrideProps<TextFieldProps>;
     Likes?: PrimitiveOverrideProps<TextFieldProps>;
     VideoURL?: PrimitiveOverrideProps<TextFieldProps>;
     Description?: PrimitiveOverrideProps<TextFieldProps>;
+    Comments?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type ThreadsCreateFormProps = React.PropsWithChildren<{
     overrides?: ThreadsCreateFormOverridesProps | undefined | null;

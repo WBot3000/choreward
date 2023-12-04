@@ -8,15 +8,11 @@ export const getThreads = /* GraphQL */ `
       ThreadTitles
       ThreadTypes
       UserID
+      LikedUsers
       Likes
       VideoURL
       Description
-      Comments {
-        Date
-        UserID
-        Content
-        __typename
-      }
+      Comments
       createdAt
       updatedAt
       __typename
@@ -35,9 +31,11 @@ export const listThreads = /* GraphQL */ `
         ThreadTitles
         ThreadTypes
         UserID
+        LikedUsers
         Likes
         VideoURL
         Description
+        Comments
         createdAt
         updatedAt
         __typename
@@ -121,6 +119,40 @@ export const listFamilies = /* GraphQL */ `
         ThreadsID
         OnChanllengesID
         EarnedPoints
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const getComments = /* GraphQL */ `
+  query GetComments($id: ID!) {
+    getComments(id: $id) {
+      id
+      Date
+      UserID
+      Content
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const listComments = /* GraphQL */ `
+  query ListComments(
+    $filter: ModelCommentsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        Date
+        UserID
+        Content
         createdAt
         updatedAt
         __typename

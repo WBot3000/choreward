@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { API, graphqlOperation } from 'aws-amplify';
 import { listChallenges,getChallenges } from '../../graphql/queries'; // Import the query
-import { createChallenge,updateChallenges,deleteChallenges } from '../../graphql/mutations'; // Import the mutation
+import { createChallenges, updateChallenges, deleteChallenges } from '../../graphql/mutations'; // Import the mutation
 
 const useFetchChallenges = () => {
   const [challenges, setChallenges] = useState([]);
@@ -15,9 +15,27 @@ const useFetchChallenges = () => {
     }
   };
 
+  //Split challenges up into those the family is participating in, and those that they aren't
+  const splitChallenges = (familyName) => {
+    if(!familyName) {
+        return [[], challenges];
+    }
+    const myChallenges = []
+    const otherChallenges = []
+        for(let challenge of challenges) {
+            if(challenge.Family1 == familyName || challenge.Family2 == familyName) {
+                myChallenges.push(challenge);
+            }
+            else {
+                otherChallenges.push(challenge);
+            }
+        }
+    return [myChallenges, otherChallenges]; //Returns sorted challenges
+  }
+
   const addChallenge = async (challenge) => {
     try {
-      await API.graphql(graphqlOperation(createChallenge, { input: challenge }));
+      await API.graphql(graphqlOperation(createChallenges, { input: challenge }));
       fetchChallenges();
     } catch (err) {
       console.error('Error creating a challenge:', err);
@@ -35,6 +53,9 @@ const useFetchChallenges = () => {
     try {
       const currentChallengeData = await fetchChallengeById(id);
       const updatedChallenge = { ...currentChallengeData, ...newData };
+      delete updatedChallenge.createdAt;
+      delete updatedChallenge.updatedAt;
+      delete updatedChallenge.__typename;
       await API.graphql(graphqlOperation(updateChallenges, { input: updatedChallenge }));
       fetchChallenges(); // Refresh the challenges list
     } catch (err) {
@@ -64,7 +85,7 @@ const useFetchChallenges = () => {
     fetchChallenges();
   }, []);
 
-  return { challenges, addChallenge, fetchChallenges, updateChallengeById,fetchChallengeById,deleteChallengeById };
+  return { challenges, splitChallenges, addChallenge, fetchChallenges, updateChallengeById,fetchChallengeById,deleteChallengeById };
 };
 
 export default useFetchChallenges;

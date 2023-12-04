@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import Modal from "./Modal"
 import { HeartIcon, ChatBubbleLeftIcon } from "@heroicons/react/24/outline"
 import { HeartIcon as HeartIconFilled } from "@heroicons/react/24/solid"
@@ -23,11 +23,11 @@ function VideoModal({ isOpen, onClose, videoData }) {
     //Comments that are intiially displayed should be from the passed video data. However, if the user adds their own comment, this should be added to the display
     useEffect(() => {
         setComments(videoData?.comments ?? []);
-    }, []);
+    }, [videoData]);
 
     //TODO: Set isLiked to a value based on whether or not the user has actually liked the video
     useEffect(() => {
-        const likesOnVideo = videoData?.Likes?.split(",");
+        const likesOnVideo = videoData?.LikedUsers?.split(",");
         if(!likesOnVideo || !likesOnVideo.includes(userId)) {
             setIsLiked(false);
         }
@@ -50,7 +50,7 @@ function VideoModal({ isOpen, onClose, videoData }) {
     async function setLikedStatus() {
         try {
             const newVidData = {...videoData};
-            let newLikedList = videoData?.LikedUsers?.split(",");
+            let newLikedList = videoData?.LikedUsers?.split(",") ?? [];
             if(isLiked) { //Unlike the video by removing the user's name from the list
                 const idxOfUser = newLikedList.indexOf(userId);
                 if(idxOfUser > -1) {
@@ -91,7 +91,8 @@ function VideoModal({ isOpen, onClose, videoData }) {
         else {
             try {
                 const newVidData = {...videoData};
-                let newCommentsList = JSON.parse(videoData?.Comments ?? "[]");
+                let newCommentsList = JSON.parse(videoData?.Comments ?? "[]"); //Convert JSON string to object
+
                 newCommentsList.unshift({
                     Date: new Date().toISOString(),
                     UserID: userId,
@@ -117,7 +118,7 @@ function VideoModal({ isOpen, onClose, videoData }) {
     }
 
 
-    return <Modal title={videoData?.title + " by " + videoData?.poster} isOpen={isOpen} onClose={onClose}>
+    return <Modal title={videoData?.ThreadTitles + " by " + videoData?.UserID} isOpen={isOpen} onClose={onClose}>
         <div className="flex flex-wrap flex-col lg:flex-row">
             <iframe className="m-2" src="https://www.youtube.com/watch?v=8lM7f3O3Mko"
                 width={vidWidth} height={vidWidth*(9/16)}/>

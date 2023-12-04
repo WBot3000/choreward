@@ -6,6 +6,8 @@
 
 export { default as ChallengesCreateForm } from "./ChallengesCreateForm";
 export { default as ChallengesUpdateForm } from "./ChallengesUpdateForm";
+export { default as CommentsCreateForm } from "./CommentsCreateForm";
+export { default as CommentsUpdateForm } from "./CommentsUpdateForm";
 export { default as FamiliesCreateForm } from "./FamiliesCreateForm";
 export { default as FamiliesUpdateForm } from "./FamiliesUpdateForm";
 export { default as ThreadsCreateForm } from "./ThreadsCreateForm";

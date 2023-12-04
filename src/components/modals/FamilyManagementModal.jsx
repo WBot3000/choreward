@@ -20,7 +20,7 @@ const users = [
 }]
 
 //This'll probably become the basis for the Portal Modal
-function FamilyManagementModal(props) {
+function FamilyManagementModal({ isOpen, onClose, addMemberDBFn, kickMemberDBFn }) {
 
     const [inviteUsername, setInviteUsername] = useState("")
     const [inviteStatusMsg, setInviteStatusMsg] = useState(null)
@@ -37,8 +37,10 @@ function FamilyManagementModal(props) {
             {showKickPrompt &&
                 <div>
                     <p>Do you want to kick {user.username}?</p>
-                    <button onClick={() => {kickMember((user))}}>KICK</button>
-                    <button onClick={() => {setPromptedToKick(null)}}>Nevermind</button>
+                    <button className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800" 
+                        onClick={() => {kickMember((user))}}>KICK</button>
+                    <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" 
+                        onClick={() => {setPromptedToKick(null)}}>Nevermind</button>
                 </div>
             }
         </li>;
@@ -52,21 +54,34 @@ function FamilyManagementModal(props) {
             setInviteStatusMsg("Please enter a username")
         }
         else {
-            setInviteStatusMsg("Invite sent to " + fixedUsername);
+            try {
+                addMemberDBFn()
+                setInviteStatusMsg(fixedUsername + " added to family");
+            }
+            catch(e) {
+                console.log("Error adding user: ", e);
+            }
         } 
     }
 
     //TODO: Kick the member on the backend too
     function kickMember(memberToKick) {
-        const newMemberList = [];
-        for(let member of members) {
-            if(member != memberToKick) {
-                newMemberList.push(member);
+        try {
+            kickMemberDBFn();
+            const newMemberList = [];
+            for(let member of members) {
+                if(member != memberToKick) {
+                    newMemberList.push(member);
+                }
             }
+            setPromptedToKick(null);
+            setMembers(newMemberList);
+            console.log(memberToKick.username + " has been kicked from this family");
         }
-        setPromptedToKick(null);
-        setMembers(newMemberList);
-        console.log(memberToKick.username + " has been kicked from this family");
+        catch(e) {
+            console.log("Error kicking user: ", e);
+        }
+
     }
 
     //Responsible for closing the modal. Don't just want to use the passed prop, as we also need to nullify all the appropriate fields
@@ -74,10 +89,10 @@ function FamilyManagementModal(props) {
         setInviteUsername("");
         setInviteStatusMsg(null);
         setPromptedToKick(null);
-        props.onClose();
+        onClose();
     }
 
-    return <Modal title="Manage Family" isOpen={props.isOpen} onClose={closeModal}>
+    return <Modal title="Manage Family" isOpen={isOpen} onClose={closeModal}>
         <h2 className="text-xl font-bold">Add New User</h2>
         <form>
             <input type="text" name="inv_username"
@@ -90,7 +105,7 @@ function FamilyManagementModal(props) {
         <h2 className="text-xl font-bold">Current Users</h2>
         <ul className='flex flex-col gap-y-5 overflow-y-scroll'>
             {members.map(u => <UserListItem key={u.id} user={u} showKickPrompt={u === promptedToKick}/>)}
-            {members.length == 0 && <li>No invites</li>}
+            {members.length == 0 && <li>No family members. Add some here!</li>}
         </ul>
     </Modal>
 }

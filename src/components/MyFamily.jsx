@@ -12,18 +12,9 @@ import Members from "./Members";
 
 
 function MyFamily() {
+    //TODO:
   const { statusChecked, userName, FamilyName, Head } = useLoginCheck({ redirect: '/login', shouldBeLoggedOut: false });
 
-  useLoginCheck({
-    redirect: "/Login",
-  });
-
-    const authPassed = useLoginCheck({
-        redirect: "/Login"
-    });
-
-    
-  
   const { addFamily, fetchFamilies} = useFetchFamilies();
 
   
@@ -74,7 +65,7 @@ function MyFamily() {
     }
   };
 
-  return (authPassed &&
+  return (statusChecked &&
     <div>
       <TopNav />
 {/*       
