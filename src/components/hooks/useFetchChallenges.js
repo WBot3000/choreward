@@ -53,6 +53,9 @@ const useFetchChallenges = () => {
     try {
       const currentChallengeData = await fetchChallengeById(id);
       const updatedChallenge = { ...currentChallengeData, ...newData };
+      delete updatedChallenge.createdAt;
+      delete updatedChallenge.updatedAt;
+      delete updatedChallenge.__typename;
       await API.graphql(graphqlOperation(updateChallenges, { input: updatedChallenge }));
       fetchChallenges(); // Refresh the challenges list
     } catch (err) {

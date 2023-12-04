@@ -49,6 +49,9 @@ const useFetchFamilies = () => {
     try {
       const currentFamilyData = await fetchFamilyById(id);
       const updatedFamily = { ...currentFamilyData, ...newData };
+      delete updatedFamily.createdAt;
+      delete updatedFamily.updatedAt;
+      delete updatedFamily.__typename;
       await API.graphql(graphqlOperation(updateFamilies, { input: updatedFamily }));
       fetchFamilies(); // Refresh the Familys list
     } catch (err) {

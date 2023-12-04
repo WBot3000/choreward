@@ -65,6 +65,9 @@ const useFetchThreads = () => {
     try {
       const currentThreadData = await fetchThreadById(id);
       const updatedThread = { ...currentThreadData, ...newData };
+      delete updatedThread.createdAt;
+      delete updatedThread.updatedAt;
+      delete updatedThread.__typename;
       await API.graphql(graphqlOperation(updateThreads, { input: updatedThread }));
       await fetchThreads(); // Refresh the Threads list
     } catch (err) {
