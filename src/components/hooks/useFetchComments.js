@@ -14,25 +14,6 @@ const useFetchComments = () => {
       console.error('Error fetching Comments:', err);
     }
   };
-
-  //Split Comments up into those the family is participating in, and those that they aren't
-  const splitComments = (familyName) => {
-    if(!familyName) {
-        return [[], comments];
-    }
-    const myComments = []
-    const otherComments = []
-        for(let Comment of comments) {
-            if(Comment.Family1 == familyName || Comment.Family2 == familyName) {
-                myComments.push(Comment);
-            }
-            else {
-                otherComments.push(Comment);
-            }
-        }
-    return [myComments, otherComments]; //Returns sorted Comments
-  }
-
   const addComment = async (Comment) => {
     try {
       await API.graphql(graphqlOperation(createComments, { input: Comment }));
