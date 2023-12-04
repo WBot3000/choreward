@@ -11,20 +11,14 @@ import WeeklyTasks from './components/WeeklyTasks';
 import MyFamily from './components/MyFamily';
 import FamilyFights from './components/FamilyFights';
 
-import { useContext } from 'react';
-import { ThreadContext } from './components/contexts/ThreadContext';
-import useFetchThreads from './components/hooks/useFetchThreads';
-
 Amplify.configure(awsmobile);
 // This is a mock authentication function.
 // You can replace this with your authentication logic.
 
 function App() {
 
-    const threadPackage = useFetchThreads();
-
     return (
-        <ThreadContext.Provider value={threadPackage}>
+        <>
             <Router>
                 <Routes>  
                     <Route path='*' element={<DashboardLayout/>} />
@@ -40,7 +34,7 @@ function App() {
                     {/* <Route path='/contacts' element={<Contacts isAuthenticated={isAuthenticated} />} /> */}
                 </Routes>
             </Router>
-        </ThreadContext.Provider>
+        </>
     );
 }
 

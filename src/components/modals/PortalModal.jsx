@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState, useContext } from 'react'
-import { ThreadContext } from '../contexts/ThreadContext';
+import { useEffect, useState } from 'react'
 import Modal from './Modal'
 import VideoModal from './VideoModal'
 import VideoLink from '../VideoLink';
+import useFetchThreads from '../hooks/useFetchThreads';
 
 
 function PortalModal({ isOpen, onClose, title, filter }) {
@@ -11,12 +11,21 @@ function PortalModal({ isOpen, onClose, title, filter }) {
     const [allVideos, setAllVideos] = useState([]);
     const [selectedVidData, setSelectedVidData] = useState(null);
 
-    const {threads, getThreadsByTaskType} = useContext(ThreadContext);
+    const {threads, fetchThreads, getThreadsByTaskType} = useFetchThreads();
 
     useEffect(() => {
        const vidsInCategory = getThreadsByTaskType(filter);
        setAllVideos(vidsInCategory)
     }, [filter, threads]) //Change threads if you're looking at a new category, or new threads have been posted
+
+    useEffect(() => {
+        async function updateThreadPool() {
+            if(isOpen) {
+                await fetchThreads();
+            }
+        }
+        updateThreadPool();
+    }, [isOpen]); //Makes it so that the user gets all the most recent threads when they open up the modal
 
 
     //Responsible for closing the modal. 
@@ -36,7 +45,7 @@ function PortalModal({ isOpen, onClose, title, filter }) {
     </Modal>
 
     <VideoModal isOpen={selectedVidData != null} onClose={() => {setSelectedVidData(null)}}
-        videoData={selectedVidData}/>
+        videoId={selectedVidData?.id}/>
     </>
 }
 

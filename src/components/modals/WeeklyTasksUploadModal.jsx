@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Modal from "./Modal";
 import { Storage } from 'aws-amplify';
 import { API, graphqlOperation } from 'aws-amplify';
@@ -6,16 +6,13 @@ import { updateThreads } from '../../graphql/mutations'; // import the mutation
 import useFetchThreads from '../hooks/useFetchThreads';
 
 import useLoginCheck from "../hooks/useLoginCheck";
-// import { ThreadContext } from "../contexts/ThreadContext";
 
 function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
 
     const [uploadName, setUploadName] = useState("");
     const [selectedFile, setSelectedFile] = useState(null);
     const [uploadStatusMessage, setUploadStatusMessage] = useState("");
-    const [ threads, addThread,fetchThreads, updateThreadById,fetchThreadById,deleteThreadById] = useFetchThreads();
-
-    // const { addThread } = useContext(ThreadContext);
+    const { addThread, deleteThreadById } = useFetchThreads();
 
     //Used so we don't have to drill the username, redirect shouldn't ever occur, but here just in case
     const userId = useLoginCheck({
@@ -29,54 +26,24 @@ function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
     }
 
 
-    async function updateThreadWithVideoURL(videoUrl) {
+    async function updateThreadWithVideoURL(threadId, videoUrl) {
         const threadDetails = {
-            id: '1234', // replace with actual thread ID
-            videoURL: videoUrl
+            id: threadId,
+            VideoURL: videoUrl
         };
     
         try {
             await API.graphql(graphqlOperation(updateThreads, { input: threadDetails }));
             console.log('Thread updated with video URL');
+            setUploadStatusMessage("Video successfully uploaded!");
         } catch (error) {
             console.error('Error updating thread:', error);
-
+            deleteThreadById(threadId); //Clean up "lingering metadata" (data without a respective video)
+            //TODO: Also delete the S3 resource
+            setUploadStatusMessage("Error uploading video:" + error.message);
         }
     }
-
-    //Responsible for uploading the file
-    //TODO: Connect to backend and provide any possible safety checks (ex. file type validation)
-    async function uploadFile(event) {
-        event.preventDefault();
-        if(!selectedFile) {
-            setUploadStatusMessage("Please provide a file to upload.");
-        }
-        else {
-            try {
-            //TODO: We're going to need to store the file using S3 Buckets
-                await addThread({
-                    ThreadTitles: uploadName.trim(),
-                    ThreadTypes: submissionFor,
-                    UserID: userId,
-                    Likes: 0,
-                    LikedUsers: "",
-                    VideoURL: "https://s3.us-east-2.amazonaws.com/chorewardthreadvideos234141-staging/some-object.txt", //TODO: Update this with actual video data
-                    Description: "",
-                    //Comment Content
-                    /*
-                        Date: new Date().toISOString().slice(0, 10),
-                        UserID: userId,
-                        Content: "Hello World!"
-                    */
-                    Comments: ""
-                })
-                setUploadStatusMessage("File sent to upload.");
-            }
-            catch(e) {
-                setUploadStatusMessage(e.message);
-            }
-        }
-    }
+    
 
     //Responsible for uploading the file
     //TODO: Connect to backend and provide any possible safety checks (ex. file type validation)
@@ -90,26 +57,58 @@ function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
     async function handleVideoUpload() {
         if (!selectedFile) {
             console.error('No file selected');
+            setUploadStatusMessage('No file selected');
             return;
         }
 
-        const filename = `${Date.now()}-${selectedFile.name}`;
+        const threadId = await addThread({
+            ThreadTitles: uploadName.trim(),
+            ThreadTypes: submissionFor,
+            UserID: userId,
+            Likes: 0,
+            LikedUsers: "",
+            VideoURL: "https://s3.us-east-2.amazonaws.com/chorewardthreadvideos234141-staging/some-object.txt", //TODO: Update this with actual video data
+            Description: "",
+            //Comment Content
+            /*
+                Date: new Date().toISOString().slice(0, 10),
+                UserID: userId,
+                Content: "Hello World!"
+            */
+            Comments: ""
+        })
 
-        try {
-            await Storage.put(filename, selectedFile, {
-                contentType: selectedFile.type
-            });
+        if(threadId) {
+            const filename = `${Date.now()}-${selectedFile.name}`;
+            try {
+                await Storage.put(filename, selectedFile, {
+                    contentType: selectedFile.type
+                });
 
-            const videoUrl = await Storage.get(filename);
-            updateThreadWithVideoURL(videoUrl);
-        } catch (error) {
-            console.error('Error uploading video:', error);
+                const videoUrl = await Storage.get(filename);
+                updateThreadWithVideoURL(threadId, videoUrl);
+            } catch (error) {
+                console.error('Error uploading video:', error);
+                deleteThreadById(threadId); //Clean up "lingering metadata" (data without a respective video)
+                setUploadStatusMessage(error.message);
+            }
+        }
+        else {
+            console.error("Error uploading video: Video metadata could not be created");
+            setUploadStatusMessage("Error uploading video: Video metadata could not be created");
         }
     }
 
+
     return (
         <Modal title={`Upload for ${submissionFor}`} isOpen={isOpen} onClose={closeModal}>
+            <span>
+                <label htmlFor="upload_name" className="mr-4">Upload Name</label>
+                <input type="text" name="upload_name" id="upload_name" value={uploadName}
+                    onChange={e => {setUploadName(e.target.value)}}/>
+            </span>
             <input type="file" accept="video/*" onChange={handleFileChange} />
+            {uploadStatusMessage && <p>{uploadStatusMessage}</p>}
             <button onClick={handleVideoUpload}>Upload Video</button>
             {/* ... [rest of your component] */}
         </Modal>

@@ -47,16 +47,20 @@ const useFetchThreads = () => {
 
   const addThread = async (thread) => {
     try {
-      await API.graphql(graphqlOperation(createThreads, { input: thread }));
+      const result = await API.graphql(graphqlOperation(createThreads, { input: thread }));
+      const newId = result.data.createThreads.id;
       await fetchThreads();
+      return newId;
     } catch (err) {
       console.error('Error creating a thread:', err);
+      return null;
     }
   };
   const fetchThreadById = async (id) => {
     try {
       const ThreadData = await API.graphql(graphqlOperation(getThreads, { id: id }));
-      return ThreadData.data.getThread;
+      //console.log(ThreadData);
+      return ThreadData.data.getThreads;
     } catch (err) {
       console.error('Error fetching Thread by ID:', err);
     }
@@ -68,6 +72,8 @@ const useFetchThreads = () => {
       delete updatedThread.createdAt;
       delete updatedThread.updatedAt;
       delete updatedThread.__typename;
+      //console.log("Old Data", currentThreadData)
+      //console.log("Updated Data", updatedThread)
       await API.graphql(graphqlOperation(updateThreads, { input: updatedThread }));
       await fetchThreads(); // Refresh the Threads list
     } catch (err) {

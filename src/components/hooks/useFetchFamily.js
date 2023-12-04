@@ -31,16 +31,19 @@ const useFetchFamilies = () => {
   // Function to add a new family
   const addFamily = async (family) => {
     try {
-      await API.graphql(graphqlOperation(createFamilies, { input: family }));
+      const result = await API.graphql(graphqlOperation(createFamilies, { input: family }));
+      const newId = result.data.createFamilies.id;
       fetchFamilies(); // Refresh the list after adding
+      return newId;
     } catch (err) {
       console.error('Error creating a family:', err);
+      return null;
     }
   };
   const fetchFamilyById = async (id) => {
     try {
       const FamilyData = await API.graphql(graphqlOperation(getFamilies, { id: id }));
-      return FamilyData.data.getFamily;
+      return FamilyData.data.getFamilies;
     } catch (err) {
       console.error('Error fetching Family by ID:', err);
     }

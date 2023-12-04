@@ -16,16 +16,19 @@ const useFetchComments = () => {
   };
   const addComment = async (Comment) => {
     try {
-      await API.graphql(graphqlOperation(createComments, { input: Comment }));
+      const result = await API.graphql(graphqlOperation(createComments, { input: Comment }));
+      const newId = result.data.createComments.id;
       fetchComments();
+      return newId;
     } catch (err) {
       console.error('Error creating a Comment:', err);
+      return null;
     }
   };
   const fetchCommentById = async (id) => {
     try {
       const CommentData = await API.graphql(graphqlOperation(getComments, { id: id }));
-      return CommentData.data.getComment;
+      return CommentData.data.getComments;
     } catch (err) {
       console.error('Error fetching Comment by ID:', err);
     }

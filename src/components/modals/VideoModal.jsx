@@ -1,40 +1,90 @@
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Modal from "./Modal"
 import { HeartIcon, ChatBubbleLeftIcon } from "@heroicons/react/24/outline"
 import { HeartIcon as HeartIconFilled } from "@heroicons/react/24/solid"
 import useLoginCheck from "../hooks/useLoginCheck";
-import { ThreadContext } from "../contexts/ThreadContext";
+import useFetchThreads from "../hooks/useFetchThreads";
+import useFetchComments from "../hooks/useFetchComments";
 
 
 //TODO: Need to have thread editing support from hook in order to have proper likeFn and commentFn
-function VideoModal({ isOpen, onClose, videoData }) {
+function VideoModal({ isOpen, onClose, videoId }) {
 
     const userId = useLoginCheck({redirect:null});
-    const { updateThreadById } = useContext(ThreadContext);
+    const { fetchThreadById, updateThreadById } = useFetchThreads();
+    const { addComment, fetchCommentById } = useFetchComments();
 
     //Used to resize the video based on the window size
     const [vidWidth, setVidWidth] = useState(window.innerWidth > 600 ? 550 : window.innerWidth - 25);
-    const [isLiked, setIsLiked] = useState(false);
+
+    const [videoData, setVideoData] = useState(null)
+    useEffect(() => {
+        async function fetchVideoData() {
+            if(!videoId) {
+                return;
+            }
+            const data = await fetchThreadById(videoId);
+            if(data) {
+                setVideoData(data);
+            }
+
+        }
+        fetchVideoData();
+    }, [videoId]);
+
+
+    //const [isLiked, setIsLiked] = useState(false);
     const [isLeavingComment, setIsLeavingComment] = useState(false);
     const [commentText, setCommentText] = useState("");
     const [commentError, setCommentError] = useState("");
     const [comments, setComments] = useState([]);
 
-    //Comments that are intiially displayed should be from the passed video data. However, if the user adds their own comment, this should be added to the display
-    useEffect(() => {
-        setComments(videoData?.comments ?? []);
-    }, [videoData]);
+    function commentIDStringToList() {
+        return (!videoData || !videoData.Comments) ? [] : videoData?.Comments?.split(",");
+    }
 
-    //TODO: Set isLiked to a value based on whether or not the user has actually liked the video
-    useEffect(() => {
-        const likesOnVideo = videoData?.LikedUsers?.split(",");
+    function likedUsersIDStringToList() {
+        return (!videoData || !videoData.LikedUsers) ? [] : videoData?.LikedUsers?.split(",");
+    }
+
+    function userHasLiked() {
+        const likesOnVideo = likedUsersIDStringToList();
         if(!likesOnVideo || !likesOnVideo.includes(userId)) {
-            setIsLiked(false);
+            return false;
         }
         else {
-            setIsLiked(true);
+            return true;
+        }
+    }
+
+    function getTitle() {
+        if(!videoData) {
+            return "Loading Title...";
+        }
+        return videoData?.ThreadTitles + " by " + videoData?.UserID
+    }
+
+    async function retrieveCommentData() {
+        const commentIds = commentIDStringToList();
+        const commentData = []
+        console.log(commentIds);
+        for(let id of commentIds) {
+            if(id) {
+                const data = await fetchCommentById(id);
+                if(data) {
+                    commentData.push(data);
+                }
+            }
+        }
+        setComments(commentData);
+    }
+
+    useEffect(() => {
+        if(isOpen) {
+            retrieveCommentData();
         }
     }, [videoData]);
+
 
     //Changes video size when the window is resized
     useEffect(() => {
@@ -50,8 +100,9 @@ function VideoModal({ isOpen, onClose, videoData }) {
     async function setLikedStatus() {
         try {
             const newVidData = {...videoData};
-            let newLikedList = videoData?.LikedUsers?.split(",") ?? [];
+            let newLikedList = likedUsersIDStringToList();
             const idxOfUser = newLikedList.indexOf(userId);
+            console.log(newLikedList, idxOfUser);
             if(idxOfUser > -1) { //Unlike the video by removing the user's name from the list
                 newLikedList.splice(idxOfUser, 1);
                 newVidData.Likes--;
@@ -61,15 +112,14 @@ function VideoModal({ isOpen, onClose, videoData }) {
                 newVidData.Likes++
             }
             newVidData.LikedUsers = newLikedList.join(",");
-            console.log(newVidData);
+            //console.log("New Likes", newVidData.LikedUsers);
             await updateThreadById(videoData.id, newVidData);
-            setIsLiked(!isLiked);
+            setVideoData(newVidData); 
+            //setIsLiked(!isLiked);
         }
         catch(e) {
             console.log("Error switching liked status on video:", e);
         }
-        //console.log(videoData);
-        await updateThreadById(videoData.id, videoData)
     }
 
     //Used when you don't actually want to leave a comment
@@ -90,20 +140,39 @@ function VideoModal({ isOpen, onClose, videoData }) {
         }
         else {
             try {
-                const newVidData = {...videoData};
-                let newCommentsList = JSON.parse(videoData?.Comments ?? "[]"); //Convert JSON string to object
-
-                newCommentsList.unshift({
-                    Date: new Date().toISOString(),
+                const newComment = {
+                    Date: new Date().toISOString().slice(0, 10),
                     UserID: userId,
                     Content: fixedCommentText
-                });
-                newVidData.Comments = JSON.stringify(newCommentsList);
-                await updateThreadById(videoData.id, newVidData);
+                }
+
+                const commentId = await addComment(newComment);
+
+                if(commentId) {
+                    const newVidData = {...videoData};
+                    newVidData.Comments += `,${commentId}`;
+                    await updateThreadById(videoData.id, newVidData);
+                    setVideoData(newVidData);
+                }
+                else {
+                    setCommentError("Error occured while adding comment to server");
+                }
+                
+
+
+                //let newCommentsList = JSON.parse(videoData?.Comments ?? "[]"); //Convert JSON string to object
+
+                //newCommentsList.unshift({
+                //    Date: new Date().toISOString(),
+                //    UserID: userId,
+                //    Content: fixedCommentText
+                //});
+                //newVidData.Comments = JSON.stringify(newCommentsList);
+                //await updateThreadById(videoData.id, newVidData);
 
                 // const newComments = [{
-                //     poster: userId,
-                //     comment: fixedCommentText
+                //     UserID: userId,
+                //     Content: fixedCommentText
                 // }]
                 // for(let comment of comments) {
                 //     newComments.push(comment);
@@ -117,13 +186,14 @@ function VideoModal({ isOpen, onClose, videoData }) {
         }
     }
 
+    const isLiked = userHasLiked();
 
-    return <Modal title={videoData?.ThreadTitles + " by " + videoData?.UserID} isOpen={isOpen} onClose={onClose}>
+    return <Modal title={getTitle()} isOpen={isOpen} onClose={onClose}>
         <div className="flex flex-wrap flex-col lg:flex-row">
             <iframe className="m-2" src="https://www.youtube.com/watch?v=8lM7f3O3Mko"
                 width={vidWidth} height={vidWidth*(9/16)}/>
             <div className="lg:w-1/2 grow m-2 bg-zinc-300 rounded border-2 border-zinc-400 overflow-y-scroll h-80">
-                {comments.map((cData) => <Comment key={cData.id} poster={cData.poster} comment={cData.comment}/>)}
+                {comments.map((cData) => <Comment key={cData.id} poster={cData.UserID} comment={cData.Content}/>)}
             </div>
         </div>
         <div>
