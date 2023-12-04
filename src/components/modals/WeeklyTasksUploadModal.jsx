@@ -41,12 +41,13 @@ function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
                     LikedUsers: "",
                     VideoURL: "https://s3.us-east-2.amazonaws.com/chorewardthreadvideos234141-staging/some-object.txt", //TODO: Update this with actual video data
                     Description: "",
-                    //TODO: Fix
-                    Comments: {
+                    //Comment Content
+                    /*
                         Date: new Date().toISOString().slice(0, 10),
                         UserID: userId,
                         Content: "Hello World!"
-                    }
+                    */
+                    Comments: ""
                 })
                 setUploadStatusMessage("File sent to upload.");
             }

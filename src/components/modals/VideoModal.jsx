@@ -46,17 +46,15 @@ function VideoModal({ isOpen, onClose, videoData }) {
         return () => window.removeEventListener("resize", resizeFunction);
     });
 
-    //TODO: Change this to incorporate Likes (the number value) and LikedUsers (the list as a string that Likes currently is here in this implementation)
+
     async function setLikedStatus() {
         try {
             const newVidData = {...videoData};
             let newLikedList = videoData?.LikedUsers?.split(",") ?? [];
-            if(isLiked) { //Unlike the video by removing the user's name from the list
-                const idxOfUser = newLikedList.indexOf(userId);
-                if(idxOfUser > -1) {
-                    newLikedList.splice(idxOfUser, 1);
-                    newVidData.Likes--;
-                }
+            const idxOfUser = newLikedList.indexOf(userId);
+            if(idxOfUser > -1) { //Unlike the video by removing the user's name from the list
+                newLikedList.splice(idxOfUser, 1);
+                newVidData.Likes--;
             }
             else { //Liking the video
                 newLikedList.push(userId);
@@ -103,14 +101,14 @@ function VideoModal({ isOpen, onClose, videoData }) {
                 newVidData.Comments = JSON.stringify(newCommentsList);
                 await updateThreadById(videoData.id, newVidData);
 
-                const newComments = [{
-                    poster: userId,
-                    comment: fixedCommentText
-                }]
-                for(let comment of comments) {
-                    newComments.push(comment);
-                }
-                setComments(newComments);
+                // const newComments = [{
+                //     poster: userId,
+                //     comment: fixedCommentText
+                // }]
+                // for(let comment of comments) {
+                //     newComments.push(comment);
+                // }
+                // setComments(newComments);
             }
             catch(e) {
                 console.log("Error adding comment to video:", e);

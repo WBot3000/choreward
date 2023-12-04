@@ -1,18 +1,13 @@
-type Comment {
-  Date: AWSDate
-  UserID: String
-  Content: String
-}
-
 type Threads @model @auth(rules: [{allow: public}]) {
   id: ID!
   ThreadTitles: String
   ThreadTypes: String
   UserID: String
+  LikedUsers: String
   Likes: Int
   VideoURL: AWSURL
   Description: String
-  Comments: Comment
+  Comments: String
 }
 
 type Challenges @model @auth(rules: [{allow: public}]) {
@@ -38,4 +33,11 @@ type Families @model @auth(rules: [{allow: public}]) {
   ThreadsID: String
   OnChanllengesID: String
   EarnedPoints: String
+}
+
+type Comments @model @auth(rules: [{allow: public}]){
+  id: ID!
+  Date: AWSDate
+  UserID: String
+  Content: String
 }
