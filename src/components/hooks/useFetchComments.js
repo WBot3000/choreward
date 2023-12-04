@@ -66,7 +66,7 @@ const useFetchComments = () => {
     fetchComments();
   }, []);
 
-  return { comments, splitComments, addComment, fetchComments, updateCommentsById,fetchCommentById,deleteCommentById };
+  return { comments, addComment, fetchComments, updateCommentsById,fetchCommentById,deleteCommentById };
 };
 
 export default useFetchComments;
