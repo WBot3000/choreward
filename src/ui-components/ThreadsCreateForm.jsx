@@ -63,7 +63,7 @@ export default function ThreadsCreateForm(props) {
     UserID: [],
     LikedUsers: [],
     Likes: [],
-    VideoURL: [{ type: "URL" }],
+    VideoURL: [],
     Description: [],
     Comments: [],
   };
