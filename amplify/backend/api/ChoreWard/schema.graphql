@@ -5,7 +5,7 @@ type Threads @model @auth(rules: [{allow: public}]) {
   UserID: String
   LikedUsers: String
   Likes: Int
-  VideoURL: AWSURL
+  VideoURL: String
   Description: String
   Comments: String
 }

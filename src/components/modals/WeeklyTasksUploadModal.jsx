@@ -38,7 +38,6 @@ function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
           contentType: selectedFile.type,
         });
 
-        const videoUrl = await Storage.get(filename);
         try {
           //TODO: We're going to need to store the file using S3 Buckets
           await addThread({
@@ -47,7 +46,7 @@ function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
             UserID: userName,
             Likes: 0,
             LikedUsers: "",
-            VideoURL: videoUrl, //TODO: Update this with actual video data
+            VideoURL: filename, //TODO: Update this with actual video data
             Description: "",
             Comments: "",
           });

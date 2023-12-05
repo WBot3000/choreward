@@ -84,7 +84,7 @@ export default function ThreadsUpdateForm(props) {
     UserID: [],
     LikedUsers: [],
     Likes: [],
-    VideoURL: [{ type: "URL" }],
+    VideoURL: [],
     Description: [],
     Comments: [],
   };
