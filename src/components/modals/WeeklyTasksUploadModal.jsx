@@ -14,7 +14,7 @@ function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
   } = useFetchThreads();
 
   //Used so we don't have to drill the username, redirect shouldn't ever occur, but here just in case
-  const userId = useLoginCheck({
+  const {userName} = useLoginCheck({
     redirect: "/Login",
   });
 
@@ -44,7 +44,7 @@ function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
           await addThread({
             ThreadTitles: uploadName.trim(),
             ThreadTypes: submissionFor,
-            UserID: userId,
+            UserID: userName,
             Likes: 0,
             LikedUsers: "",
             VideoURL: videoUrl, //TODO: Update this with actual video data
@@ -124,7 +124,6 @@ function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
               Cancel
             </button>
           </div>
-          {uploadStatusMessage && <p>{uploadStatusMessage}</p>}
         </form>
         {uploadStatusMessage && <p>{uploadStatusMessage}</p>}
       </div>
