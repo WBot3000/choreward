@@ -9,6 +9,8 @@ function RewardsDisplay() {
   const { families, fetchFamilies,fetchFamilyById } = useFetchFamilies();
   const [data, setData] = useState(null);
   const [Reward, setRewards] = useState("");
+  const updatedItems = null;
+  // const [UpdatedRewardList, setUpdatedRewardList] = useState();
   
 
   useEffect(() => {
@@ -50,6 +52,35 @@ function RewardsDisplay() {
         },
   ];
 
+  const [UpdatedRewardList, setUpdatedRewardList] = useState(items);
+  const [newReward, setNewReward] = useState({ RewardName: '', RewardCost: '' });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    console.log("These are the new rewards", name,value)
+    setNewReward({ ...newReward, [name]: value });
+  };
+
+  const handleAddReward = () => {
+    const { RewardName, RewardCost } = newReward;
+    console.log(newReward)
+    if (RewardName && RewardCost) {
+      const updatedItems = [
+        ...items,
+        {
+          text: RewardName,
+          points: parseInt(RewardCost), // convert to integer if needed
+          viewButton: <button>Redeem</button>,
+        },
+      ];
+      console.log("THESE ARE UPDATED", updatedItems)
+      setUpdatedRewardList(updatedItems)
+      setNewReward({ RewardName: '', RewardCost: '' });
+      // Update items with the new reward
+      // You might want to update the state or perform other actions here
+    }
+  };
+  console.log("THESE ARE UPDATED reward list", UpdatedRewardList)
     // const [modalOpen, setModalOpen] = useState(false);
   
     // const openModal = () => {
@@ -76,9 +107,9 @@ function RewardsDisplay() {
 
   return (
     <div>
-      {/* <div className="flex">
+      <div className="flex">
       <h2 className="mb-2 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl dark:text-white ml-10 mt-10">Rewards</h2>
-      <link></link>
+      {/* <link></link>
       <button onClick={openModal}>Add Rewards</button>
       <button className="ml-10" onClick={closeModal}> X </button>
       </div>
@@ -88,13 +119,14 @@ function RewardsDisplay() {
           <RewardsModal/>
           </div>
         </div>)} */}
+      </div>
 
 
 <div className = "pb-10">
 
 
     <div className="flex pb-10">
-    {items.map((item,index) => (
+    {UpdatedRewardList.map((item,index) => (
     <article key={index}>
            <div className="flex justify-center items-center pt-10 pl-10">
  <a href="#" className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
@@ -154,11 +186,11 @@ function RewardsDisplay() {
                   <form class="space-y-4 mt-5" action="#">
                     <div>
                         <label for="RewardName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Reward Name</label>
-                        <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Xbox" required />
+                        <input value={newReward.RewardName} onChange={handleInputChange} type="text" name="RewardName" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Xbox" required />
                     </div>
                     <div>
                         <label for="RewardCost" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Reward Cost</label>
-                        <input type="text" name="cost" id="cost" placeholder="2500" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
+                        <input value={newReward.RewardCost} onChange={handleInputChange} type="text" name="RewardCost" id="cost" placeholder="2500" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
                     </div>
                     </form>
 
@@ -166,7 +198,7 @@ function RewardsDisplay() {
                     <button
                       type="button"
                       className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={closeModal}
+                      onClick={handleAddReward} 
                     >
                       Add
                     </button>
@@ -177,7 +209,6 @@ function RewardsDisplay() {
           </div>
         </Dialog>
       </Transition>
-
     </div>
   )
 }
