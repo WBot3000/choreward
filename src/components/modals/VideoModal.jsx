@@ -180,7 +180,7 @@ function VideoModal({ isOpen, onClose, videoId }) {
     if (!videoUrl) return <div>Loading Video...</div>;
 
     return (
-      <video width="850" controls>
+      <video height= "400"width="400" controls>
         <source src={videoUrl} type="video/mp4" />
         Your browser does not support HTML5 video.
       </video>
