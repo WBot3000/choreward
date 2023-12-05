@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Modal from "./Modal";
 import { Storage } from "aws-amplify";
 import useFetchThreads from "../hooks/useFetchThreads";
@@ -57,6 +57,7 @@ function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
         }
       } catch (error) {
         console.error("Error uploading video:", error);
+        setUploadStatusMessage("Error uploading video: " + error.message)
       }
     }
   }

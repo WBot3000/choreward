@@ -13,6 +13,7 @@ import FamilyFights from './components/FamilyFights';
 import NotFamily from './components/NotFamily';
 import ViewInvites from './components/ViewInvites';
 
+
 Amplify.configure(awsmobile);
 // This is a mock authentication function.
 // You can replace this with your authentication logic.
@@ -34,7 +35,6 @@ function App() {
                 <Route path='/FamilyFights' element={<FamilyFights />} />
                 <Route path='/NotFamily' element={<NotFamily />} />
                 <Route path='/ViewInvites' element={<ViewInvites />} />
-                {/* <Route path='/contacts' element={<Contacts isAuthenticated={isAuthenticated} />} /> */}
             </Routes>
         </Router>
     </>

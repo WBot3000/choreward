@@ -11,7 +11,7 @@ function ValidatePage() {
     const [username, setUserName] = useState('');
     const [authenticationCode, setAuthenticationCode] = useState('');
 
-    const authFailed = useLoginCheck({
+    const {statusChecked} = useLoginCheck({
         redirect: "/WeeklyTasks",
         shouldBeLoggedOut: true
     });
@@ -34,7 +34,7 @@ function ValidatePage() {
         console.log('Form submitted with:');
       }
 
-    return (authFailed &&
+    return (statusChecked &&
         <>
           <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">

@@ -1,24 +1,24 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Modal from "./Modal";
 
 import useLoginCheck from "../hooks/useLoginCheck";
-import { ThreadContext } from "../contexts/ThreadContext";
+import useFetchThreads from "../hooks/useFetchThreads";
 
 const choreTypes = [
     "Take Out Trash",
     "Make the Bed"
 ]
 
-function FamilyFightsUploadModal({ fightId, isOpen, onClose, submissionFor, addFn }) {
+function FamilyFightsUploadModal({ fightId, isOpen, onClose, submissionFor }) {
 
     const [uploadType, setUploadType] = useState("")
     const [selectedFile, setSelectedFile] = useState("");
     const [uploadStatusMessage, setUploadStatusMessage] = useState("");
 
-    const { addThread } = useContext(ThreadContext)
+    const { addThread } = useFetchThreads()
 
     //Used so we don't have to drill the username, redirect shouldn't ever occur, but here just in case
-    const userId = useLoginCheck({
+    const {userName} = useLoginCheck({
         redirect: "/Login"
     });
 
@@ -42,19 +42,14 @@ function FamilyFightsUploadModal({ fightId, isOpen, onClose, submissionFor, addF
         else {
             try {
                 await addThread({
-                    ThreadTitles: `${userId} "${uploadType}" for ${submissionFor}`,
+                    ThreadTitles: `${userName} "${uploadType}" for ${submissionFor}`,
                     ThreadTypes: fightId,
-                    UserID: userId,
+                    UserID: userName,
                     Likes: 0,
                     LikedUsers: "",
                     VideoURL: "https://s3.us-east-2.amazonaws.com/chorewardthreadvideos234141-staging/some-object.txt", //TODO: Update this with actual video data
                     Description: "",
-                    //TODO: Fix
-                    Comments: {
-                        Date: new Date().toISOString().slice(0, 10),
-                        UserID: userId,
-                        Content: "Hello World!"
-                    }
+                    Comments: ""
                 })
                 setUploadStatusMessage("File sent to upload.");
             }

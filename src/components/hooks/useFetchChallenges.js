@@ -35,16 +35,19 @@ const useFetchChallenges = () => {
 
   const addChallenge = async (challenge) => {
     try {
-      await API.graphql(graphqlOperation(createChallenges, { input: challenge }));
+      const result = await API.graphql(graphqlOperation(createChallenges, { input: challenge }));
+      const newId = result.data.createChallenges.id;
       fetchChallenges();
+      return newId;
     } catch (err) {
       console.error('Error creating a challenge:', err);
+      return null;
     }
   };
   const fetchChallengeById = async (id) => {
     try {
       const challengeData = await API.graphql(graphqlOperation(getChallenges, { id: id }));
-      return challengeData.data.getChallenge;
+      return challengeData.data.getChallenges;
     } catch (err) {
       console.error('Error fetching challenge by ID:', err);
     }

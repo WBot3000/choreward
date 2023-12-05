@@ -15,14 +15,14 @@ import useFetchFamily from './hooks/useFetchFamily'
 //TODO: Incorporate functionality for upload modals
 function FamilyFights() {
 
-    const userId = useLoginCheck({
+    const {userName} = useLoginCheck({
         redirect: "/Login"
     });
 
     const {families, getFamilyByUser, getFamilyByName} = useFetchFamily();
     const {splitChallenges} = useFetchChallenges();
 
-    //const {isFamilyHead, userFamilyData} = useFetchUserFamily(userId);
+    //const {isFamilyHead, userFamilyData} = useFetchUserFamily(userName);
 
     //const [myFights, setMyFights] = useState(tempMyFights);
     //const [otherFights, setOtherFights] = useState(tempOtherFights);
@@ -42,7 +42,7 @@ function FamilyFights() {
 
     //Effectively disables family fights if the user isn't part of a family
     function switchToMyFights() {
-        if(userId != null) {
+        if(userName != null) {
             setViewingMyFights(true);
         }
     }
@@ -112,13 +112,13 @@ function FamilyFights() {
 
     // }
 
-    const userFamily = getFamilyByUser(userId);
+    const userFamily = getFamilyByUser(userName);
     const [myChallenges, otherChallenges] = splitChallenges(userFamily);
 
     
     
     //Need to figure out the size of the Family Fights container
-    return (userId &&
+    return (userName &&
         <div>
             <TopNav/>
             {/* <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
@@ -139,7 +139,7 @@ function FamilyFights() {
             </ul>
             </div>
 
-            {userFamily && (userFamily.FamilyHead == userId) && viewingMyFights && <>
+            {userFamily && (userFamily.FamilyHead == userName) && viewingMyFights && <>
                 <form className='flex flex-col justify-center gap-y-2 p-6 bg-gray-100 border border-gray-300 rounded-lg shadow md:max-w-xl hover:bg-gray-200 dark:border-gray-800 dark:bg-gray-900 dark:hover:bg-gray-800 mx-auto my-5'>
                     <label className="font-bold" htmlFor='family_to_challenge'>Challenge Family</label>
                     <input type="text" name="family_to_challenge" value={familyToChallenge}

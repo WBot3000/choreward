@@ -11,12 +11,21 @@ function PortalModal({ isOpen, onClose, title, filter }) {
     const [allVideos, setAllVideos] = useState([]);
     const [selectedVidData, setSelectedVidData] = useState(null);
 
-    const {threads, getThreadsByTaskType} = useFetchThreads();
+    const {threads, fetchThreads, getThreadsByTaskType} = useFetchThreads();
 
     useEffect(() => {
        const vidsInCategory = getThreadsByTaskType(filter);
        setAllVideos(vidsInCategory)
     }, [filter, threads]) //Change threads if you're looking at a new category, or new threads have been posted
+
+    useEffect(() => {
+        async function updateThreadPool() {
+            if(isOpen) {
+                await fetchThreads();
+            }
+        }
+        updateThreadPool();
+    }, [isOpen]); //Makes it so that the user gets all the most recent threads when they open up the modal
 
 
     //Responsible for closing the modal. 
@@ -36,7 +45,7 @@ function PortalModal({ isOpen, onClose, title, filter }) {
     </Modal>
 
     <VideoModal isOpen={selectedVidData != null} onClose={() => {setSelectedVidData(null)}}
-        videoData={selectedVidData}/>
+        videoId={selectedVidData?.id}/>
     </>
 }
 

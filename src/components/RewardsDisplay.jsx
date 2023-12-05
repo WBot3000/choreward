@@ -47,14 +47,14 @@ function RewardsDisplay() {
         },
   ];
 
-    const [modalOpen, setModalOpen] = useState(false);
+    const [formOpen, setFormOpen] = useState(false);
   
-    const openModal = () => {
-      setModalOpen(true);
+    const openForm = () => {
+      setFormOpen(true);
     };
   
-    const closeModal = () => {
-      setModalOpen(false);
+    const closeForm = () => {
+      setFormOpen(false);
     };
 
   return (
@@ -62,12 +62,12 @@ function RewardsDisplay() {
       <div className="flex">
       <h2 className="mb-2 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl dark:text-white ml-10 mt-10">Rewards</h2>
       <link></link>
-      <button onClick={openModal}>Add Rewards</button>
-      <button className="ml-10" onClick={closeModal}> X </button>
+      <button onClick={openForm}>Add Rewards</button>
+      <button className="ml-10" onClick={closeForm}> X </button>
       </div>
-      {modalOpen && (
-      <div className="modal">
-          <div className="modal-content">
+      {formOpen && (
+      <div>
+          <div>
           <RewardsForm/>
           </div>
         </div>)}
