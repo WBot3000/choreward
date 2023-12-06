@@ -47,9 +47,11 @@ function RecentUploads({familyId}) {
             const result = await fetchFamilyById(familyId);
             const allVideoData = [];
             for(let tID in (result?.ThreadsID ?? [])) {
-                const vidData = await fetchThreadById(tID);
-                if(vidData) {
-                    allVideoData.push(vidData);
+                if(tID != null) {
+                    const vidData = await fetchThreadById(tID);
+                    if(vidData) {
+                        allVideoData.push(vidData);
+                    }
                 }
             }
             setFamilyVidData(allVideoData);
