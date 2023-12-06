@@ -19,7 +19,8 @@ type Challenges @model @auth(rules: [{allow: public}]) {
   RwardPoints: Int
 }
 
-type Reward {
+type Rewards @model @auth(rules: [{allow: public}]){
+  id: ID!
   RewardName: String
   RewardCost: Int
 }
@@ -29,7 +30,7 @@ type Families @model @auth(rules: [{allow: public}]) {
   FamilyName: String
   Head: String
   Members: String
-  Rewards: Reward
+  Rewards:[ID]
   ThreadsID: String
   OnChanllengesID: String
   EarnedPoints: String

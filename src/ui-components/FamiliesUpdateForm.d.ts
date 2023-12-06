@@ -25,6 +25,7 @@ export declare type FamiliesUpdateFormInputValues = {
     FamilyName?: string;
     Head?: string;
     Members?: string;
+    Rewards?: string[];
     ThreadsID?: string;
     OnChanllengesID?: string;
     EarnedPoints?: string;
@@ -33,6 +34,7 @@ export declare type FamiliesUpdateFormValidationValues = {
     FamilyName?: ValidationFunction<string>;
     Head?: ValidationFunction<string>;
     Members?: ValidationFunction<string>;
+    Rewards?: ValidationFunction<string>;
     ThreadsID?: ValidationFunction<string>;
     OnChanllengesID?: ValidationFunction<string>;
     EarnedPoints?: ValidationFunction<string>;
@@ -43,6 +45,7 @@ export declare type FamiliesUpdateFormOverridesProps = {
     FamilyName?: PrimitiveOverrideProps<TextFieldProps>;
     Head?: PrimitiveOverrideProps<TextFieldProps>;
     Members?: PrimitiveOverrideProps<TextFieldProps>;
+    Rewards?: PrimitiveOverrideProps<TextFieldProps>;
     ThreadsID?: PrimitiveOverrideProps<TextFieldProps>;
     OnChanllengesID?: PrimitiveOverrideProps<TextFieldProps>;
     EarnedPoints?: PrimitiveOverrideProps<TextFieldProps>;

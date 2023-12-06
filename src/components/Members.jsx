@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import useFetchFamilies from "./hooks/useFetchFamily";
 import { getFamilies } from "../graphql/queries";
 
-function Members() {
-    const { families, fetchFamilies,fetchFamilyById } = useFetchFamilies();
+function Members({familyId}) {
+    const { fetchFamilyById } = useFetchFamilies();
     
     const [newMember, setNewMember] = useState("");
     // const [familyMembers, setFamilyMembers] = useState();
@@ -16,7 +16,7 @@ function Members() {
       // Assuming fetchData is a function that returns a Promise
       const fetchData = async () => {
         try {
-          const result = await fetchFamilyById("0699d2a6-38cb-4955-96ee-9978dc20d195");
+          const result = await fetchFamilyById(familyId);
           console.log("fetchByID", result)
           //setData(result.getFamilies);
           setFamilyMember(result.Members)
@@ -27,8 +27,10 @@ function Members() {
         }
       };
       
-      fetchData();
-    }, []);
+      if(familyId) {
+        fetchData();
+      }
+    }, [familyId]);
 
     // const {RewardName, RewardCost} = Rewards
     // console.log("famMembers", FamilyMember, "rewards", RewardName, RewardCost)

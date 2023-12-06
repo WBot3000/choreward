@@ -6,11 +6,177 @@
 
 /* eslint-disable */
 import * as React from "react";
-import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
+import {
+  Badge,
+  Button,
+  Divider,
+  Flex,
+  Grid,
+  Icon,
+  ScrollView,
+  Text,
+  TextField,
+  useTheme,
+} from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { API } from "aws-amplify";
 import { getFamilies } from "../graphql/queries";
 import { updateFamilies } from "../graphql/mutations";
+function ArrayField({
+  items = [],
+  onChange,
+  label,
+  inputFieldRef,
+  children,
+  hasError,
+  setFieldValue,
+  currentFieldValue,
+  defaultFieldValue,
+  lengthLimit,
+  getBadgeText,
+  runValidationTasks,
+  errorMessage,
+}) {
+  const labelElement = <Text>{label}</Text>;
+  const {
+    tokens: {
+      components: {
+        fieldmessages: { error: errorStyles },
+      },
+    },
+  } = useTheme();
+  const [selectedBadgeIndex, setSelectedBadgeIndex] = React.useState();
+  const [isEditing, setIsEditing] = React.useState();
+  React.useEffect(() => {
+    if (isEditing) {
+      inputFieldRef?.current?.focus();
+    }
+  }, [isEditing]);
+  const removeItem = async (removeIndex) => {
+    const newItems = items.filter((value, index) => index !== removeIndex);
+    await onChange(newItems);
+    setSelectedBadgeIndex(undefined);
+  };
+  const addItem = async () => {
+    const { hasError } = runValidationTasks();
+    if (
+      currentFieldValue !== undefined &&
+      currentFieldValue !== null &&
+      currentFieldValue !== "" &&
+      !hasError
+    ) {
+      const newItems = [...items];
+      if (selectedBadgeIndex !== undefined) {
+        newItems[selectedBadgeIndex] = currentFieldValue;
+        setSelectedBadgeIndex(undefined);
+      } else {
+        newItems.push(currentFieldValue);
+      }
+      await onChange(newItems);
+      setIsEditing(false);
+    }
+  };
+  const arraySection = (
+    <React.Fragment>
+      {!!items?.length && (
+        <ScrollView height="inherit" width="inherit" maxHeight={"7rem"}>
+          {items.map((value, index) => {
+            return (
+              <Badge
+                key={index}
+                style={{
+                  cursor: "pointer",
+                  alignItems: "center",
+                  marginRight: 3,
+                  marginTop: 3,
+                  backgroundColor:
+                    index === selectedBadgeIndex ? "#B8CEF9" : "",
+                }}
+                onClick={() => {
+                  setSelectedBadgeIndex(index);
+                  setFieldValue(items[index]);
+                  setIsEditing(true);
+                }}
+              >
+                {getBadgeText ? getBadgeText(value) : value.toString()}
+                <Icon
+                  style={{
+                    cursor: "pointer",
+                    paddingLeft: 3,
+                    width: 20,
+                    height: 20,
+                  }}
+                  viewBox={{ width: 20, height: 20 }}
+                  paths={[
+                    {
+                      d: "M10 10l5.09-5.09L10 10l5.09 5.09L10 10zm0 0L4.91 4.91 10 10l-5.09 5.09L10 10z",
+                      stroke: "black",
+                    },
+                  ]}
+                  ariaLabel="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    removeItem(index);
+                  }}
+                />
+              </Badge>
+            );
+          })}
+        </ScrollView>
+      )}
+      <Divider orientation="horizontal" marginTop={5} />
+    </React.Fragment>
+  );
+  if (lengthLimit !== undefined && items.length >= lengthLimit && !isEditing) {
+    return (
+      <React.Fragment>
+        {labelElement}
+        {arraySection}
+      </React.Fragment>
+    );
+  }
+  return (
+    <React.Fragment>
+      {labelElement}
+      {isEditing && children}
+      {!isEditing ? (
+        <>
+          <Button
+            onClick={() => {
+              setIsEditing(true);
+            }}
+          >
+            Add item
+          </Button>
+          {errorMessage && hasError && (
+            <Text color={errorStyles.color} fontSize={errorStyles.fontSize}>
+              {errorMessage}
+            </Text>
+          )}
+        </>
+      ) : (
+        <Flex justifyContent="flex-end">
+          {(currentFieldValue || isEditing) && (
+            <Button
+              children="Cancel"
+              type="button"
+              size="small"
+              onClick={() => {
+                setFieldValue(defaultFieldValue);
+                setIsEditing(false);
+                setSelectedBadgeIndex(undefined);
+              }}
+            ></Button>
+          )}
+          <Button size="small" variation="link" onClick={addItem}>
+            {selectedBadgeIndex !== undefined ? "Save" : "Add"}
+          </Button>
+        </Flex>
+      )}
+      {arraySection}
+    </React.Fragment>
+  );
+}
 export default function FamiliesUpdateForm(props) {
   const {
     id: idProp,
@@ -27,6 +193,7 @@ export default function FamiliesUpdateForm(props) {
     FamilyName: "",
     Head: "",
     Members: "",
+    Rewards: [],
     ThreadsID: "",
     OnChanllengesID: "",
     EarnedPoints: "",
@@ -34,6 +201,7 @@ export default function FamiliesUpdateForm(props) {
   const [FamilyName, setFamilyName] = React.useState(initialValues.FamilyName);
   const [Head, setHead] = React.useState(initialValues.Head);
   const [Members, setMembers] = React.useState(initialValues.Members);
+  const [Rewards, setRewards] = React.useState(initialValues.Rewards);
   const [ThreadsID, setThreadsID] = React.useState(initialValues.ThreadsID);
   const [OnChanllengesID, setOnChanllengesID] = React.useState(
     initialValues.OnChanllengesID
@@ -49,6 +217,8 @@ export default function FamiliesUpdateForm(props) {
     setFamilyName(cleanValues.FamilyName);
     setHead(cleanValues.Head);
     setMembers(cleanValues.Members);
+    setRewards(cleanValues.Rewards ?? []);
+    setCurrentRewardsValue("");
     setThreadsID(cleanValues.ThreadsID);
     setOnChanllengesID(cleanValues.OnChanllengesID);
     setEarnedPoints(cleanValues.EarnedPoints);
@@ -70,10 +240,13 @@ export default function FamiliesUpdateForm(props) {
     queryData();
   }, [idProp, familiesModelProp]);
   React.useEffect(resetStateValues, [familiesRecord]);
+  const [currentRewardsValue, setCurrentRewardsValue] = React.useState("");
+  const RewardsRef = React.createRef();
   const validations = {
     FamilyName: [],
     Head: [],
     Members: [],
+    Rewards: [],
     ThreadsID: [],
     OnChanllengesID: [],
     EarnedPoints: [],
@@ -107,6 +280,7 @@ export default function FamiliesUpdateForm(props) {
           FamilyName: FamilyName ?? null,
           Head: Head ?? null,
           Members: Members ?? null,
+          Rewards: Rewards ?? null,
           ThreadsID: ThreadsID ?? null,
           OnChanllengesID: OnChanllengesID ?? null,
           EarnedPoints: EarnedPoints ?? null,
@@ -173,6 +347,7 @@ export default function FamiliesUpdateForm(props) {
               FamilyName: value,
               Head,
               Members,
+              Rewards,
               ThreadsID,
               OnChanllengesID,
               EarnedPoints,
@@ -202,6 +377,7 @@ export default function FamiliesUpdateForm(props) {
               FamilyName,
               Head: value,
               Members,
+              Rewards,
               ThreadsID,
               OnChanllengesID,
               EarnedPoints,
@@ -231,6 +407,7 @@ export default function FamiliesUpdateForm(props) {
               FamilyName,
               Head,
               Members: value,
+              Rewards,
               ThreadsID,
               OnChanllengesID,
               EarnedPoints,
@@ -248,6 +425,57 @@ export default function FamiliesUpdateForm(props) {
         hasError={errors.Members?.hasError}
         {...getOverrideProps(overrides, "Members")}
       ></TextField>
+      <ArrayField
+        onChange={async (items) => {
+          let values = items;
+          if (onChange) {
+            const modelFields = {
+              FamilyName,
+              Head,
+              Members,
+              Rewards: values,
+              ThreadsID,
+              OnChanllengesID,
+              EarnedPoints,
+            };
+            const result = onChange(modelFields);
+            values = result?.Rewards ?? values;
+          }
+          setRewards(values);
+          setCurrentRewardsValue("");
+        }}
+        currentFieldValue={currentRewardsValue}
+        label={"Rewards"}
+        items={Rewards}
+        hasError={errors?.Rewards?.hasError}
+        runValidationTasks={async () =>
+          await runValidationTasks("Rewards", currentRewardsValue)
+        }
+        errorMessage={errors?.Rewards?.errorMessage}
+        setFieldValue={setCurrentRewardsValue}
+        inputFieldRef={RewardsRef}
+        defaultFieldValue={""}
+      >
+        <TextField
+          label="Rewards"
+          isRequired={false}
+          isReadOnly={false}
+          value={currentRewardsValue}
+          onChange={(e) => {
+            let { value } = e.target;
+            if (errors.Rewards?.hasError) {
+              runValidationTasks("Rewards", value);
+            }
+            setCurrentRewardsValue(value);
+          }}
+          onBlur={() => runValidationTasks("Rewards", currentRewardsValue)}
+          errorMessage={errors.Rewards?.errorMessage}
+          hasError={errors.Rewards?.hasError}
+          ref={RewardsRef}
+          labelHidden={true}
+          {...getOverrideProps(overrides, "Rewards")}
+        ></TextField>
+      </ArrayField>
       <TextField
         label="Threads id"
         isRequired={false}
@@ -260,6 +488,7 @@ export default function FamiliesUpdateForm(props) {
               FamilyName,
               Head,
               Members,
+              Rewards,
               ThreadsID: value,
               OnChanllengesID,
               EarnedPoints,
@@ -289,6 +518,7 @@ export default function FamiliesUpdateForm(props) {
               FamilyName,
               Head,
               Members,
+              Rewards,
               ThreadsID,
               OnChanllengesID: value,
               EarnedPoints,
@@ -318,6 +548,7 @@ export default function FamiliesUpdateForm(props) {
               FamilyName,
               Head,
               Members,
+              Rewards,
               ThreadsID,
               OnChanllengesID,
               EarnedPoints: value,

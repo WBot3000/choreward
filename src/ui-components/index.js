@@ -10,6 +10,8 @@ export { default as CommentsCreateForm } from "./CommentsCreateForm";
 export { default as CommentsUpdateForm } from "./CommentsUpdateForm";
 export { default as FamiliesCreateForm } from "./FamiliesCreateForm";
 export { default as FamiliesUpdateForm } from "./FamiliesUpdateForm";
+export { default as RewardsCreateForm } from "./RewardsCreateForm";
+export { default as RewardsUpdateForm } from "./RewardsUpdateForm";
 export { default as ThreadsCreateForm } from "./ThreadsCreateForm";
 export { default as ThreadsUpdateForm } from "./ThreadsUpdateForm";
 export { default as studioTheme } from "./studioTheme";
