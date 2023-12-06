@@ -1,3 +1,10 @@
+/**
+ * NOTE!
+ * 
+ * This component is very out of date. Bring it up to date by following what's been done in the WeeklyTasksUploadModal
+ * 
+ */
+
 import { useState } from "react";
 import Modal from "./Modal";
 

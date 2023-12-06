@@ -5,9 +5,8 @@ import React from "react";
 import useFetchFamilies from "./hooks/useFetchFamily";
 import useFetchRewards from "./hooks/useFetchRewards";
 
-function RewardsDisplay({ familyId }) {
-  const { families, fetchFamilies, fetchFamilyById, updateFamilyById } =
-    useFetchFamilies();
+function RewardsDisplay({ familyId, isHead }) {
+  const { families, fetchFamilies, fetchFamilyById, updateFamilyById } = useFetchFamilies();
   const [data, setData] = useState(null);
   const [Reward, setRewards] = useState("");
   const [EarnedPoints, setEarnedPoints] = useState(null);
@@ -244,6 +243,7 @@ function RewardsDisplay({ familyId }) {
         </div>
       </div>
 
+    {isHead &&
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
           <Transition.Child
@@ -337,6 +337,7 @@ function RewardsDisplay({ familyId }) {
           </div>
         </Dialog>
       </Transition>
+      }
     </div>
   );
 }
