@@ -42,18 +42,32 @@ function Members() {
   
 
 
+
     useEffect(() => {
       // Assuming fetchData is a function that returns a Promise
       const fetchData = async () => {
         try {
-          const result = await fetchFamilyById("0699d2a6-38cb-4955-96ee-9978dc20d195");
+          
+
+          // Demo if fetchFamilyById not working
+          const result = await families[17];
           console.log("fetchByID", result)
-          setData(result.getFamilies);
-          setFamilyMember(result.getFamilies.Members)
-          let mem = result.getFamilies.Members
+          setData(result);
+          setFamilyMember(result.Members)
+          let mem = result.Members
           let members = mem.split(',')
           setNewMember([...members]);
-          setFamName(result.getFamilies.FamilyName)
+          setFamName(result.FamilyName)
+
+          //uncomment when fetchFamilyById starts working
+          // const result = await fetchFamilyById("0699d2a6-38cb-4955-96ee-9978dc20d195");
+          // console.log("fetchByID", result.getFamilies)
+          // setData(result.getFamilies);
+          // setFamilyMember(result.getFamilies.Members)
+          // let mem = result.getFamilies.Members
+          // let members = mem.split(',')
+          // setNewMember([...members]);
+          // setFamName(result.getFamilies.FamilyName)
         } catch (error) {
           // Handle errors
           console.error('Error fetching data:', error);
