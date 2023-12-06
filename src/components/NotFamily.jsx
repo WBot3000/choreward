@@ -3,23 +3,29 @@ import TopNav from './TopNav'
 import BottomNav from './BottomNav'
 import useFetchFamilies from './hooks/useFetchFamily';
 import useLoginCheck from './hooks/useLoginCheck';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function NotFamily() {
     const navigate = useNavigate();
     const { statusChecked, userName } = useLoginCheck({ redirect: '/login', shouldBeLoggedOut: false });
-    const { addFamily, getFamilyByUser } = useFetchFamilies();
+    const { families, addFamily, fetchFamilies, getFamilyByUser } = useFetchFamilies();
 
     const [familyNameField, setFamilyNameField] = useState("");
 
     useEffect(() => {
-        if(userName) {
-            const userFamily = getFamilyByUser(userName);
-            if(userFamily) {
-                navigate("/MyFamily");
+        async function getFamily() {
+            console.log(families);
+            if(userName && families !== null) {
+                //await fetchFamilies();
+                const userFamily = getFamilyByUser(userName);
+                if(userFamily) {
+                    navigate("/MyFamily");
+                }
             }
         }
-      }, [userName]);
+
+        getFamily();
+      }, [families, userName]);
 
     
     // const toggleVisibility = () => {

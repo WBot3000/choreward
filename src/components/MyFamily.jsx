@@ -17,20 +17,25 @@ function MyFamily() {
   const navigate = useNavigate()
   const { statusChecked, userName } = useLoginCheck({ redirect: '/login', shouldBeLoggedOut: false });
 
-  const { getFamilyByUser } = useFetchFamilies();
+  const { families, fetchFamilies, getFamilyByUser } = useFetchFamilies();
   const [familyId, setFamilyId] = useState("");
 
   useEffect(() => {
-    if(userName) {
-        const userFamily = getFamilyByUser(userName);
-        if(!userFamily) {
-            navigate("/NotFamily");
-        }
-        else {
-            setFamilyId(userFamily.id);
+    async function getFamily() {
+        if(userName && families !== null) {
+            //await fetchFamilies();
+            const userFamily = getFamilyByUser(userName);
+            if(!userFamily) {
+                navigate("/NotFamily");
+            }
+            else {
+                setFamilyId(userFamily.id);
+            }
         }
     }
-  }, [userName]);
+
+    getFamily();
+  }, [families, userName]);
 
 
   return (statusChecked &&
