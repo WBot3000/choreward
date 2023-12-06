@@ -33,7 +33,7 @@ type Families @model @auth(rules: [{allow: public}]) {
   Rewards:[ID]
   ThreadsID: String
   OnChanllengesID: String
-  EarnedPoints: String
+  EarnedPoints: Int
 }
 
 type Comments @model @auth(rules: [{allow: public}]){
