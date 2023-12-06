@@ -11,7 +11,6 @@ const useFetchFamilies = () => {
     try {
       const familyData = await API.graphql(graphqlOperation(listFamilies));
       setFamilies(familyData.data.listFamilies.items);
-      console.log(familyData)
     } catch (err) {
       console.error('Error fetching families:', err);
     }
