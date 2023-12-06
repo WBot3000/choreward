@@ -2,7 +2,6 @@ import { useState, useEffect, Fragment } from "react";
 import { Dialog, Transition } from '@headlessui/react'
 // import { Fragment, useState } from 'react'
 import React from 'react'
-import RewardsModal from "./modals/RewardsModal";
 import useFetchFamilies from "./hooks/useFetchFamily";
 
 function RewardsDisplay() {
