@@ -10,15 +10,9 @@ import { Storage } from "aws-amplify";
 //TODO: Need to have thread editing support from hook in order to have proper likeFn and commentFn
 function VideoModal({ isOpen, onClose, videoId }) {
   const { userName } = useLoginCheck({ redirect: null });
-  const [videoUrl, setVideoUrl] = useState(null);
+  const [video, setVideo] = useState(null);
   const { fetchThreadById, updateThreadById } = useFetchThreads();
   const { addComment, fetchCommentById } = useFetchComments();
-
-  //Used to resize the video based on the window size
-  const [vidWidth, setVidWidth] = useState(
-    window.innerWidth > 600 ? 550 : window.innerWidth - 25
-  );
-
   const [videoData, setVideoData] = useState(null);
   const [isLeavingComment, setIsLeavingComment] = useState(false);
   const [commentText, setCommentText] = useState("");
@@ -34,21 +28,25 @@ function VideoModal({ isOpen, onClose, videoId }) {
     }
     fetchVideoData();
   }, [videoId]);
-  
+
   useEffect(() => {
     async function fetchVideoUrl() {
-      if (videoData?.VideoURL) {
+        console.log()
+      if (videoData?.VideoURL && !video) {
         const url = await Storage.get(videoData.VideoURL);
-        setVideoUrl(url);
+        setVideo(<VideoPlayer videoUrl={url} />);
+        //setVideoUrl(url);
       }
     }
     fetchVideoUrl();
   }, [videoData]);
 
-  useEffect(() => {
+
+  useEffect(() => { //Invalidate everything when the modal closes so new fresh data can be fetched
     if (!isOpen) {
       setVideoData(null);
       setComments(null);
+      setVideo(null);
     }
   }, [isOpen]);
 
@@ -101,15 +99,6 @@ function VideoModal({ isOpen, onClose, videoId }) {
     }
   }, [videoData]);
 
-  //Changes video size when the window is resized
-  useEffect(() => {
-    let resizeFunction = () => {
-      setVidWidth(window.innerWidth > 600 ? 550 : window.innerWidth - 25);
-    };
-    window.addEventListener("resize", resizeFunction);
-
-    return () => window.removeEventListener("resize", resizeFunction);
-  });
 
   async function setLikedStatus() {
     try {
@@ -187,12 +176,11 @@ function VideoModal({ isOpen, onClose, videoId }) {
   };
 
   const isLiked = userHasLiked();
-  console.log(videoUrl);
 
   return (
     <Modal title={getTitle()} isOpen={isOpen} onClose={onClose}>
     <div className="flex flex-wrap flex-col lg:flex-row">
-      <VideoPlayer videoUrl={videoUrl} />
+      {video}
         <div className="lg:w-1/2 grow m-2 bg-zinc-300 rounded border-2 border-zinc-400 overflow-y-scroll h-80">
           {comments == null && (
             <div className="m-2">

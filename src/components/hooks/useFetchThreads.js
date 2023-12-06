@@ -37,7 +37,7 @@ const useFetchThreads = () => {
         const filteredThreads = []
         if(familyData != null) { //Don't bother if there's no family data
             for(let thread of threads) {
-                if(thread.UserID == familyData.Head || family.Members.includes(thread.UserID)) {
+                if(thread.UserID == familyData.Head || familyData.Members.includes(thread.UserID)) {
                     filteredThreads.push(thread);
                 }
             }

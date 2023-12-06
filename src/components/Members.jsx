@@ -8,7 +8,7 @@ function Members() {
     const [newMember, setNewMember] = useState("");
     // const [familyMembers, setFamilyMembers] = useState();
     
-    const [data, setData] = useState(null);
+    //const [data, setData] = useState(null);
     const [FamilyMember, setFamilyMember] = useState("")
     const [famName, setFamName] = useState(null);
 
@@ -18,7 +18,7 @@ function Members() {
         try {
           const result = await fetchFamilyById("0699d2a6-38cb-4955-96ee-9978dc20d195");
           console.log("fetchByID", result)
-          setData(result.getFamilies);
+          //setData(result.getFamilies);
           setFamilyMember(result.Members)
           setFamName(result.FamilyName)
         } catch (error) {
