@@ -36,7 +36,7 @@ function RecentUploads() {
 
     const { threads, addThread,fetchThreads, updateThreadById,fetchThreadById,deleteThreadById  } = useFetchThreads();
     const [selectedVidData, setSelectedVidData] = useState(null);
-    const [thread, setThread] = useState([])
+    //const [thread, setThread] = useState([])
 
     const threadList = threads
 
@@ -46,7 +46,7 @@ function RecentUploads() {
         const fetchData = async () => {
           try {
             const data = await useFetchThreads();          
-            setThread(data);
+            //setThread(data);
           } catch (error) {
             // Handle errors
             console.error('Error fetching data:', error);

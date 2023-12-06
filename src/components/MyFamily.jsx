@@ -28,42 +28,42 @@ function MyFamily() {
     EarnedPoints: "",
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name.includes("Rewards.")) {
-      const field = name.split(".")[1];
-      setFamilyData((prevState) => ({
-        ...prevState,
-        Rewards: {
-          ...prevState.Rewards,
-          [field]: value,
-        },
-      }));
-    } else {
-      setFamilyData((prevState) => ({
-        ...prevState,
-        [name]: value,
-      }));
-    }
-  };
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//     if (name.includes("Rewards.")) {
+//       const field = name.split(".")[1];
+//       setFamilyData((prevState) => ({
+//         ...prevState,
+//         Rewards: {
+//           ...prevState.Rewards,
+//           [field]: value,
+//         },
+//       }));
+//     } else {
+//       setFamilyData((prevState) => ({
+//         ...prevState,
+//         [name]: value,
+//       }));
+//     }
+//   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await addFamily(familyData);
-      setFamilyData({
-        FamilyName: "",
-        Head: "",
-        Members: "",
-        Rewards: { RewardName: "", RewardCost: "" },
-        ThreadsID: "",
-        OnChanllengesID: "",
-        EarnedPoints: "",
-      });
-    } catch (error) {
-      console.error("Error adding family:", error);
-    }
-  };
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     try {
+//       await addFamily(familyData);
+//       setFamilyData({
+//         FamilyName: "",
+//         Head: "",
+//         Members: "",
+//         Rewards: { RewardName: "", RewardCost: "" },
+//         ThreadsID: "",
+//         OnChanllengesID: "",
+//         EarnedPoints: "",
+//       });
+//     } catch (error) {
+//       console.error("Error adding family:", error);
+//     }
+//   };
 
   return (statusChecked &&
     <div>

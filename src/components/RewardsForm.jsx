@@ -34,16 +34,16 @@ function RewardsForm() {
       fetchData();
     }, []);
     
-    const [familyData, setFamilyData] = useState();
+    //const [familyData, setFamilyData] = useState();
 
     const handleSubmit = (e) => {
-        let newReward = {
-                    rewardName: "NewNewReward",
-                    rewardCost: 10
-                }
+        // let newReward = {
+        //             rewardName: "NewNewReward",
+        //             rewardCost: 10
+        //         }
         deleteFamilyById("b250fb30-7850-42e4-a00f-c63145728f6f")
         const result = fetchFamilyById("42be5ffd-bc45-49d3-a5ab-8bcf26faaa09");
-        const fn = result.getFamilies;
+        //const fn = result.getFamilies;
 
 
         let familyMembers = data.getFamilies.Members.split(",")
