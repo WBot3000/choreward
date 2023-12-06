@@ -4,7 +4,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import React from 'react'
 import useFetchFamilies from "./hooks/useFetchFamily";
 
-function RewardsDisplay() {
+function RewardsDisplay({familyId}) {
   const { families, fetchFamilies,fetchFamilyById } = useFetchFamilies();
   const [data, setData] = useState(null);
   const [Reward, setRewards] = useState("");
@@ -17,7 +17,7 @@ function RewardsDisplay() {
     // Assuming fetchData is a function that returns a Promise
     const fetchData = async () => {
       try {
-        const result = await fetchFamilyById("0699d2a6-38cb-4955-96ee-9978dc20d195");
+        const result = await fetchFamilyById(familyId);
         // console.log("fetchByID", result)
         // setData(result.getFamilies);
         setRewards(result.Rewards)
@@ -28,8 +28,10 @@ function RewardsDisplay() {
       }
     };
     
-    fetchData();
-  }, []);
+    if(familyId) {
+        fetchData();
+    }
+  }, [familyId]);
 
     const {RewardName, RewardCost} = Reward
     const PointsEarned = EarnedPoints

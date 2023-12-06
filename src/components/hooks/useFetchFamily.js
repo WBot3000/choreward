@@ -4,7 +4,7 @@ import { listFamilies, getFamilies } from '../../graphql/queries'; // Import the
 import { createFamilies, updateFamilies, deleteFamilies } from '../../graphql/mutations'; // Import the mutation from your Amplify generated files
 
 const useFetchFamilies = () => {
-  const [families, setFamilies] = useState([]);
+  const [families, setFamilies] = useState(null);
 
   // Function to fetch families
   const fetchFamilies = async () => {
@@ -18,7 +18,7 @@ const useFetchFamilies = () => {
 
   //Function to get a specific family from the families that have been fetched
   const getFamilyByUser = (userId) => {
-    for(let family of families) {
+    for(let family of (families ?? [])) {
         let membersList = family?.Members?.split(",") ?? []
         if(family.Head == userId || membersList.includes(userId)) {
             return family;
