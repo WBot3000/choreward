@@ -6,7 +6,7 @@ import useFetchFamilies from "./hooks/useFetchFamily";
 import useFetchRewards from "./hooks/useFetchRewards"
 
 function RewardsDisplay({ familyId }) {
-  const { families, fetchFamilies, fetchFamilyById } = useFetchFamilies();
+  const { families, fetchFamilies, fetchFamilyById,updateFamilyById } = useFetchFamilies();
   const [data, setData] = useState(null);
   const [Reward, setRewards] = useState("");
   const [EarnedPoints, setEarnedPoints] = useState(null);
@@ -72,6 +72,18 @@ function RewardsDisplay({ familyId }) {
     setNewReward({ ...newReward, [name]: value });
   };
 
+  const updateFamilyRewards = (family, newRewardId) => {
+    // Copy the existing Rewards array or initialize it if it's not an array
+    const updatedRewards = Array.isArray(family.Rewards) ? [...family.Rewards] : [];
+  
+    // Remove any placeholder values like empty strings
+    const cleanedRewards = updatedRewards.filter(rewardId => rewardId.trim() !== '');
+  
+    // Add the new Reward ID
+    cleanedRewards.push(newRewardId);
+  
+    return { ...family, Rewards: cleanedRewards };
+  };
 
   const handleAddReward = async () => {
     const { RewardName, RewardCost } = newReward;
@@ -85,11 +97,15 @@ function RewardsDisplay({ familyId }) {
       if (newRewardId) {
         console.log('Reward added successfully with ID:', newRewardId);
       }
-      
+      const updatedFamily = updateFamilyRewards(FamilyData, newRewardId);
+      setFamilyData(updatedFamily);
+      await updateFamilyById(FamilyData.id,updatedFamily)
+
     } catch (error) {
       console.error('Failed to add reward:', error);
     }
   };
+ 
   console.log("THESE ARE UPDATED reward list", UpdatedRewardList);
 
   let [isOpen, setIsOpen] = useState(false);
