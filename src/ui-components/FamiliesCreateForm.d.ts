@@ -28,7 +28,7 @@ export declare type FamiliesCreateFormInputValues = {
     Rewards?: string[];
     ThreadsID?: string;
     OnChanllengesID?: string;
-    EarnedPoints?: string;
+    EarnedPoints?: number;
 };
 export declare type FamiliesCreateFormValidationValues = {
     FamilyName?: ValidationFunction<string>;
@@ -37,7 +37,7 @@ export declare type FamiliesCreateFormValidationValues = {
     Rewards?: ValidationFunction<string>;
     ThreadsID?: ValidationFunction<string>;
     OnChanllengesID?: ValidationFunction<string>;
-    EarnedPoints?: ValidationFunction<string>;
+    EarnedPoints?: ValidationFunction<number>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type FamiliesCreateFormOverridesProps = {
