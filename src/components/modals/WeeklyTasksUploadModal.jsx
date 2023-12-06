@@ -1,22 +1,43 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "./Modal";
 import { Storage } from "aws-amplify";
 import useFetchThreads from "../hooks/useFetchThreads";
+import useFetchFamilies from "../hooks/useFetchFamily";
 
 import useLoginCheck from "../hooks/useLoginCheck";
 
 function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
+  
   const [uploadName, setUploadName] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadStatusMessage, setUploadStatusMessage] = useState("");
   const {
     addThread,
   } = useFetchThreads();
+  const {
+    families, 
+    fetchFamilyById, 
+    updateFamilyById,
+  } = useFetchFamilies();
+  const [userFamily, setUserFamily] = useState(null);
 
   //Used so we don't have to drill the username, redirect shouldn't ever occur, but here just in case
   const {userName} = useLoginCheck({
     redirect: "/Login",
   });
+
+  useEffect(() => {
+    async function getFamily() {
+        if(userName && families !== null) {
+            const family = getFamilyByUser(userName);
+            if(family) {
+                setUserFamily(family);
+            }
+        }
+    }
+
+    getFamily();
+  }, [families, userName]);
 
   //Function responsible for closing the modal, also nullifies the currently selected file
   function closeModal() {
@@ -40,7 +61,7 @@ function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
 
         try {
           //TODO: We're going to need to store the file using S3 Buckets
-          await addThread({
+          const uploadID = await addThread({
             ThreadTitles: uploadName.trim(),
             ThreadTypes: submissionFor,
             UserID: userName,
@@ -50,6 +71,22 @@ function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
             Description: "",
             Comments: "",
           });
+
+          if(!uploadID) {
+            throw new Error("Upload metadata could not be created");
+          }
+
+          const upToDateFamilyData = await fetchFamilyById(userFamily.id);
+          let newThreadsID = upToDateFamilyData.ThreadsID;
+          if(!newThreadsID) {
+            newThreadsID = uploadID;
+          }
+          else {
+            newThreadsID += `,${uploadID}`;
+          }
+
+          await updateFamilyById(upToDateFamilyData.id, {ThreadsID: newThreadsID});
+
           setUploadStatusMessage("File sent to upload.");
         } catch (e) {
           setUploadStatusMessage(e.message);
@@ -114,6 +151,7 @@ function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
               onClick={(e) => {
                 uploadFile(e);
               }}
+              disabled={!userFamily}
             >
               Upload Video
             </button>
