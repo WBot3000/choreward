@@ -11,8 +11,8 @@ function RewardsDisplay({ familyId }) {
   const [Reward, setRewards] = useState("");
   const [EarnedPoints, setEarnedPoints] = useState(null);
   const [FamilyData,setFamilyData] = useState({})
-  const { addReward } = useFetchRewards()
-  const updatedItems = null;
+  const { addReward,fetchRewardById } = useFetchRewards()
+
   // const [UpdatedRewardList, setUpdatedRewardList] = useState();
 
   useEffect(() => {
@@ -22,7 +22,7 @@ function RewardsDisplay({ familyId }) {
         const result = await fetchFamilyById(
           familyId
         );
-        console.log(result.id);
+        console.log(result);
         setFamilyData(result)
         console.log("result",FamilyData.id)
         // console.log("fetchByID", result)
@@ -40,24 +40,19 @@ function RewardsDisplay({ familyId }) {
     }
   }, [familyId]);
 
-  
+
   const { RewardName, RewardCost } = Reward;
   const PointsEarned = EarnedPoints;
   // console.log("These are the points",PointsEarned)
   // console.log("rewards HERE", RewardName, RewardCost)
-
+  useEffect(() => {
+    updateRewardsList();
+  }, [FamilyData.Rewards]);
+  
   const items = [
     {
-      text: "Ice-cream",
-      points: 500,
-    },
-    {
-      text: "Video Game",
-      points: 2500,
-    },
-    {
-      text: RewardName,
-      points: RewardCost,
+      text: "XBox",
+      points: 123,
     },
   ];
   const [UpdatedRewardList, setUpdatedRewardList] = useState(items);
@@ -71,6 +66,46 @@ function RewardsDisplay({ familyId }) {
     console.log("These are the new rewards", name, value);
     setNewReward({ ...newReward, [name]: value });
   };
+
+  const formatRewardsData = (rewards) => {
+    return rewards.map(reward => {
+      return {
+        text: reward.RewardName,
+        points: reward.RewardCost
+      };
+    });
+  };
+  const updateRewardsList = async () => {
+    try {
+      // Assuming you have an array of reward IDs
+      const rewardIds = FamilyData.Rewards // Replace this with your actual array of reward IDs
+  
+      // Fetch each reward by its ID
+      const fetchedRewards = await Promise.all(
+        rewardIds.map(async (id) => {
+          try {
+            return await fetchRewardById(id);
+          } catch (error) {
+            console.error(`Error fetching reward with ID ${id}:`, error);
+            return null; // Return null or appropriate default value on error
+          }
+        })
+      );
+  
+      // Filter out any null values (failed fetches)
+      const validRewards = fetchedRewards.filter(reward => reward !== null);
+  
+      // Format the rewards data (assuming the formatRewardsData function exists)
+      const formattedRewards = formatRewardsData(validRewards);
+  
+      // Update the state with the formatted rewards
+      setUpdatedRewardList(formattedRewards);
+    } catch (error) {
+      console.error('Error fetching rewards:', error);
+    }
+  };
+
+  //code level proccessing to add new Reward to existin Family Data
 
   const updateFamilyRewards = (family, newRewardId) => {
     // Copy the existing Rewards array or initialize it if it's not an array
@@ -87,19 +122,27 @@ function RewardsDisplay({ familyId }) {
 
   const handleAddReward = async () => {
     const { RewardName, RewardCost } = newReward;
+
+    if (!RewardName || !RewardCost) {
+      console.error('Please fill in all fields');
+      return;
+    }
+  
     const rewardData = {
-      RewardName: "Xbox",
-      RewardCost: 1000
+      RewardName,
+      RewardCost: parseInt(RewardCost), // Ensure RewardCost is an integer
     };
   
     try {
       const newRewardId = await addReward(rewardData);
       if (newRewardId) {
-        console.log('Reward added successfully with ID:', newRewardId);
-      }
+      console.log('Reward added successfully with ID:', newRewardId);
       const updatedFamily = updateFamilyRewards(FamilyData, newRewardId);
       setFamilyData(updatedFamily);
-      await updateFamilyById(FamilyData.id,updatedFamily)
+      await updateFamilyById(FamilyData.id, updatedFamily);
+      // Optionally reset the input fields after successful addition
+      setNewReward({ RewardName: '', RewardCost: '' });
+    }
 
     } catch (error) {
       console.error('Failed to add reward:', error);
