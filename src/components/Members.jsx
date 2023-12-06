@@ -6,7 +6,7 @@ function Members() {
     const { families, fetchFamilies,fetchFamilyById } = useFetchFamilies();
     
     const [newMember, setNewMember] = useState("");
-    const [familyMembers, setFamilyMembers] = useState();
+    // const [familyMembers, setFamilyMembers] = useState();
     
     const [data, setData] = useState(null);
     const [FamilyMember, setFamilyMember] = useState("")
@@ -19,9 +19,8 @@ function Members() {
           const result = await fetchFamilyById("0699d2a6-38cb-4955-96ee-9978dc20d195");
           console.log("fetchByID", result)
           setData(result.getFamilies);
-          setFamilyMember(result.getFamilies.Members)
-        //   setRewards(result.getFamilies.Rewards)
-          setFamName(result.getFamilies.FamilyName)
+          setFamilyMember(result.Members)
+          setFamName(result.FamilyName)
         } catch (error) {
           // Handle errors
           console.error('Error fetching data:', error);
@@ -39,13 +38,18 @@ function Members() {
     console.log(familyname)
     const handleAddMember = (e) => {
         e.preventDefault();
+        console.log("val",e)
         if (newMember.trim() !== "") {
-          setFamilyMembers([...familyMembers, newMember]);
+          setFamilyMembers([...members, newMember]);
           setNewMember("");
         }
       };
+      console.log("members",members)
 
-
+      const handleSubmit = () => {
+        console.log(FamilyMember)
+      }
+      console.log("45",FamilyMember)
   return (
     
     <div>
@@ -61,7 +65,7 @@ function Members() {
         </div>
         <input type="text" id="search" className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Add Members" value={newMember}
             onChange={(e) => setNewMember(e.target.value)} required />
-        <button type="submit" className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add</button>
+        <button onClick={handleSubmit} type="submit" className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add</button>
     </div>
 </form>
 <h2 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white flex justify-center pt-10">Family Members: </h2>

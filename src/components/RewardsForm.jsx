@@ -42,16 +42,18 @@ function RewardsForm() {
                     rewardCost: 10
                 }
         deleteFamilyById("b250fb30-7850-42e4-a00f-c63145728f6f")
-        const result = fetchFamilyById("4023a389-b13f-4dbc-9458-663055ddb70d");
+        const result = fetchFamilyById("42be5ffd-bc45-49d3-a5ab-8bcf26faaa09");
         const fn = result.getFamilies;
 
 
         let familyMembers = data.getFamilies.Members.split(",")
         const {RewardName, RewardCost} = data.getFamilies.Rewards
+        const Head = data.getFamilies.Head
         console.log("famMemebers", familyMembers, "rewards", RewardName, RewardCost)
+        console.log("FamHead", Head)
         
         // console.log("result", data.getFamilies, {...data.getFamilies, ...{Head: "Ruchi"}})
-        // updateFamilyById("4023a389-b13f-4dbc-9458-663055ddb70d", {...data.getFamilies, ...{Head: "Ruch"}})
+        updateFamilyById("42be5ffd-bc45-49d3-a5ab-8bcf26faaa09", {...data.getFamilies, ...{Head: "Ruch"}})
     }
 
   return (
