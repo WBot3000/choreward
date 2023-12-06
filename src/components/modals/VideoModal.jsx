@@ -14,11 +14,13 @@ function VideoModal({ isOpen, onClose, videoId }) {
   const { fetchThreadById, updateThreadById } = useFetchThreads();
   const { addComment, fetchCommentById } = useFetchComments();
   const [videoData, setVideoData] = useState(null);
+  const [isLeavingComment, setIsLeavingComment] = useState(false);
+  const [commentText, setCommentText] = useState("");
+  const [commentError, setCommentError] = useState("");
+  const [comments, setComments] = useState(null);
+
   useEffect(() => {
     async function fetchVideoData() {
-      if (!videoId) {
-        return;
-      }
       const data = await fetchThreadById(videoId);
       if (data) {
         setVideoData(data);
@@ -26,11 +28,6 @@ function VideoModal({ isOpen, onClose, videoId }) {
     }
     fetchVideoData();
   }, [videoId]);
-
-  const [isLeavingComment, setIsLeavingComment] = useState(false);
-  const [commentText, setCommentText] = useState("");
-  const [commentError, setCommentError] = useState("");
-  const [comments, setComments] = useState(null);
 
   useEffect(() => {
     async function fetchVideoUrl() {
@@ -43,6 +40,7 @@ function VideoModal({ isOpen, onClose, videoId }) {
     }
     fetchVideoUrl();
   }, [videoData]);
+
 
   useEffect(() => { //Invalidate everything when the modal closes so new fresh data can be fetched
     if (!isOpen) {

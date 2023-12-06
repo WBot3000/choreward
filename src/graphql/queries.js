@@ -83,6 +83,38 @@ export const listChallenges = /* GraphQL */ `
     }
   }
 `;
+export const getRewards = /* GraphQL */ `
+  query GetRewards($id: ID!) {
+    getRewards(id: $id) {
+      id
+      RewardName
+      RewardCost
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const listRewards = /* GraphQL */ `
+  query ListRewards(
+    $filter: ModelRewardsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listRewards(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        RewardName
+        RewardCost
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
 export const getFamilies = /* GraphQL */ `
   query GetFamilies($id: ID!) {
     getFamilies(id: $id) {
@@ -90,11 +122,7 @@ export const getFamilies = /* GraphQL */ `
       FamilyName
       Head
       Members
-      Rewards {
-        RewardName
-        RewardCost
-        __typename
-      }
+      Rewards
       ThreadsID
       OnChanllengesID
       EarnedPoints
@@ -116,6 +144,7 @@ export const listFamilies = /* GraphQL */ `
         FamilyName
         Head
         Members
+        Rewards
         ThreadsID
         OnChanllengesID
         EarnedPoints

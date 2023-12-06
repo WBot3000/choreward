@@ -15,11 +15,17 @@
       "auth": {
         "choreward3599fc80": {}
       },
-      "api": {
-        "ChoreWard": {}
-      },
       "storage": {
         "ThreadVideo": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d2rezxn1tditn7",
+          "type": "cicd"
+        }
+      },
+      "api": {
+        "ChoreWard": {}
       }
     }
   }
