@@ -24,7 +24,7 @@ export declare type ValidationFunction<T> = (value: T, validationResponse: Valid
 export declare type FamiliesCreateFormInputValues = {
     FamilyName?: string;
     Head?: string;
-    Members?: string;
+    Members?: string[];
     Rewards?: string[];
     ThreadsID?: string;
     OnChanllengesID?: string;

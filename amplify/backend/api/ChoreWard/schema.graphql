@@ -29,7 +29,7 @@ type Families @model @auth(rules: [{allow: public}]) {
   id: ID!
   FamilyName: String
   Head: String
-  Members: String
+  Members: [String]
   Rewards:[ID]
   ThreadsID: String
   OnChanllengesID: String
