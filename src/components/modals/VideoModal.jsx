@@ -20,11 +20,13 @@ function VideoModal({ isOpen, onClose, videoId }) {
   );
 
   const [videoData, setVideoData] = useState(null);
+  const [isLeavingComment, setIsLeavingComment] = useState(false);
+  const [commentText, setCommentText] = useState("");
+  const [commentError, setCommentError] = useState("");
+  const [comments, setComments] = useState(null);
+
   useEffect(() => {
     async function fetchVideoData() {
-      if (!videoId) {
-        return;
-      }
       const data = await fetchThreadById(videoId);
       if (data) {
         setVideoData(data);
@@ -32,11 +34,7 @@ function VideoModal({ isOpen, onClose, videoId }) {
     }
     fetchVideoData();
   }, [videoId]);
-
-  const [isLeavingComment, setIsLeavingComment] = useState(false);
-  const [commentText, setCommentText] = useState("");
-  const [commentError, setCommentError] = useState("");
-  const [comments, setComments] = useState(null);
+  
   useEffect(() => {
     async function fetchVideoUrl() {
       if (videoData?.VideoURL) {
@@ -46,6 +44,7 @@ function VideoModal({ isOpen, onClose, videoId }) {
     }
     fetchVideoUrl();
   }, [videoData]);
+
   useEffect(() => {
     if (!isOpen) {
       setVideoData(null);

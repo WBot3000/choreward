@@ -118,6 +118,51 @@ export const deleteChallenges = /* GraphQL */ `
     }
   }
 `;
+export const createRewards = /* GraphQL */ `
+  mutation CreateRewards(
+    $input: CreateRewardsInput!
+    $condition: ModelRewardsConditionInput
+  ) {
+    createRewards(input: $input, condition: $condition) {
+      id
+      RewardName
+      RewardCost
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const updateRewards = /* GraphQL */ `
+  mutation UpdateRewards(
+    $input: UpdateRewardsInput!
+    $condition: ModelRewardsConditionInput
+  ) {
+    updateRewards(input: $input, condition: $condition) {
+      id
+      RewardName
+      RewardCost
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const deleteRewards = /* GraphQL */ `
+  mutation DeleteRewards(
+    $input: DeleteRewardsInput!
+    $condition: ModelRewardsConditionInput
+  ) {
+    deleteRewards(input: $input, condition: $condition) {
+      id
+      RewardName
+      RewardCost
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
 export const createFamilies = /* GraphQL */ `
   mutation CreateFamilies(
     $input: CreateFamiliesInput!
@@ -128,11 +173,7 @@ export const createFamilies = /* GraphQL */ `
       FamilyName
       Head
       Members
-      Rewards {
-        RewardName
-        RewardCost
-        __typename
-      }
+      Rewards
       ThreadsID
       OnChanllengesID
       EarnedPoints
@@ -152,11 +193,7 @@ export const updateFamilies = /* GraphQL */ `
       FamilyName
       Head
       Members
-      Rewards {
-        RewardName
-        RewardCost
-        __typename
-      }
+      Rewards
       ThreadsID
       OnChanllengesID
       EarnedPoints
@@ -176,11 +213,7 @@ export const deleteFamilies = /* GraphQL */ `
       FamilyName
       Head
       Members
-      Rewards {
-        RewardName
-        RewardCost
-        __typename
-      }
+      Rewards
       ThreadsID
       OnChanllengesID
       EarnedPoints
