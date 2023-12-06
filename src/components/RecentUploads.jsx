@@ -17,10 +17,12 @@ function RecentUploads({familyId}) {
         const fetchData = async () => {
           try {
             const result = await fetchFamilyById(familyId);
-            const allVideoData = [];
-            for(let tID of (result?.ThreadsID ?? [])) {
-                if(tID != null) {
+            const allVideoData = result?.ThreadsID.split(",");
+            for(let tID of (allVideoData ?? [])) {
+                if(tID != null && tID != "") {
+                    //console.log(tID)
                     const vidData = await fetchThreadById(tID);
+                    //console.log("VIDEO DATA", vidData)
                     if(vidData) {
                         allVideoData.push(vidData);
                     }
