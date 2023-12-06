@@ -106,6 +106,42 @@ export const onDeleteChallenges = /* GraphQL */ `
     }
   }
 `;
+export const onCreateRewards = /* GraphQL */ `
+  subscription OnCreateRewards($filter: ModelSubscriptionRewardsFilterInput) {
+    onCreateRewards(filter: $filter) {
+      id
+      RewardName
+      RewardCost
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateRewards = /* GraphQL */ `
+  subscription OnUpdateRewards($filter: ModelSubscriptionRewardsFilterInput) {
+    onUpdateRewards(filter: $filter) {
+      id
+      RewardName
+      RewardCost
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteRewards = /* GraphQL */ `
+  subscription OnDeleteRewards($filter: ModelSubscriptionRewardsFilterInput) {
+    onDeleteRewards(filter: $filter) {
+      id
+      RewardName
+      RewardCost
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
 export const onCreateFamilies = /* GraphQL */ `
   subscription OnCreateFamilies($filter: ModelSubscriptionFamiliesFilterInput) {
     onCreateFamilies(filter: $filter) {
@@ -113,11 +149,7 @@ export const onCreateFamilies = /* GraphQL */ `
       FamilyName
       Head
       Members
-      Rewards {
-        RewardName
-        RewardCost
-        __typename
-      }
+      Rewards
       ThreadsID
       OnChanllengesID
       EarnedPoints
@@ -134,11 +166,7 @@ export const onUpdateFamilies = /* GraphQL */ `
       FamilyName
       Head
       Members
-      Rewards {
-        RewardName
-        RewardCost
-        __typename
-      }
+      Rewards
       ThreadsID
       OnChanllengesID
       EarnedPoints
@@ -155,11 +183,7 @@ export const onDeleteFamilies = /* GraphQL */ `
       FamilyName
       Head
       Members
-      Rewards {
-        RewardName
-        RewardCost
-        __typename
-      }
+      Rewards
       ThreadsID
       OnChanllengesID
       EarnedPoints
