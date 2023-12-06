@@ -4,7 +4,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import React from 'react'
 import useFetchFamilies from "./hooks/useFetchFamily";
 
-function RewardsDisplay({familyId}) {
+function RewardsDisplay({familyId, isHead}) {
   const { families, fetchFamilies,fetchFamilyById } = useFetchFamilies();
   const [data, setData] = useState(null);
   const [Reward, setRewards] = useState("");
@@ -130,15 +130,16 @@ function RewardsDisplay({familyId}) {
 
     </div>
 
-
+{isHead &&
 <div className = "ml-10 pb-10">
       <button onClick={openModal} data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" className="mb-50 block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mb-100 pb-100" type="button" id="addRewardButton">
       Add Reward
     </button>
 </div>
+}
 </div>
 
-
+{isHead &&
 <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
           <Transition.Child
@@ -197,6 +198,7 @@ function RewardsDisplay({familyId}) {
           </div>
         </Dialog>
       </Transition>
+      }
     </div>
   )
 }

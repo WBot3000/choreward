@@ -19,6 +19,7 @@ function MyFamily() {
 
   const { families, fetchFamilies, getFamilyByUser } = useFetchFamilies();
   const [familyId, setFamilyId] = useState("");
+  const [isHead, setIsHead] = useState(false);
 
   useEffect(() => {
     async function getFamily() {
@@ -30,6 +31,12 @@ function MyFamily() {
             }
             else {
                 setFamilyId(userFamily.id);
+                if(userFamily.Head == userName) {
+                    setIsHead(true);
+                }
+                else {
+                    setIsHead(false);
+                }
             }
         }
     }
@@ -41,9 +48,9 @@ function MyFamily() {
   return (statusChecked &&
     <div>
       <TopNav />
-      <Members familyId={familyId}/>
+      <Members familyId={familyId} isHead={isHead}/>
       <RecentUploads familyId={familyId}/>
-      <RewardsDisplay familyId={familyId}/>
+      <RewardsDisplay familyId={familyId} isHead={isHead}/>
       <BottomNav />
     </div>
   );
