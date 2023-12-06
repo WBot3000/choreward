@@ -85,7 +85,8 @@ function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
           else {
             newThreadsID += `,${uploadID}`;
           }
-
+          console.log(upToDateFamilyData);
+          console.log(newThreadsID);
           await updateFamilyById(upToDateFamilyData.id, {ThreadsID: newThreadsID});
 
           setUploadStatusMessage("File sent to upload.");
