@@ -3,15 +3,15 @@ import { Dialog, Transition } from "@headlessui/react";
 // import { Fragment, useState } from 'react'
 import React from "react";
 import useFetchFamilies from "./hooks/useFetchFamily";
-import useFetchRewards from "./hooks/useFetchRewards"
+import useFetchRewards from "./hooks/useFetchRewards";
 
 function RewardsDisplay({ familyId, isHead }) {
-  const { families, fetchFamilies, fetchFamilyById,updateFamilyById } = useFetchFamilies();
+  const { families, fetchFamilies, fetchFamilyById, updateFamilyById } = useFetchFamilies();
   const [data, setData] = useState(null);
   const [Reward, setRewards] = useState("");
   const [EarnedPoints, setEarnedPoints] = useState(null);
-  const [FamilyData,setFamilyData] = useState({})
-  const { addReward,fetchRewardById } = useFetchRewards()
+  const [FamilyData, setFamilyData] = useState({});
+  const { addReward, fetchRewardById } = useFetchRewards();
 
   // const [UpdatedRewardList, setUpdatedRewardList] = useState();
 
@@ -19,12 +19,10 @@ function RewardsDisplay({ familyId, isHead }) {
     // Assuming fetchData is a function that returns a Promise
     const fetchData = async () => {
       try {
-        const result = await fetchFamilyById(
-          familyId
-        );
+        const result = await fetchFamilyById(familyId);
         console.log(result);
-        setFamilyData(result)
-        console.log("result",FamilyData.id)
+        setFamilyData(result);
+        console.log("result", FamilyData.id);
         // console.log("fetchByID", result)
         // setData(result.getFamilies);
         setRewards(result.Rewards);
@@ -40,7 +38,6 @@ function RewardsDisplay({ familyId, isHead }) {
     }
   }, [familyId]);
 
-
   const { RewardName, RewardCost } = Reward;
   const PointsEarned = EarnedPoints;
   // console.log("These are the points",PointsEarned)
@@ -48,17 +45,12 @@ function RewardsDisplay({ familyId, isHead }) {
   useEffect(() => {
     updateRewardsList();
   }, [FamilyData.Rewards]);
-  
-  const items = [
-    {
-      text: "XBox",
-      points: 123,
-    },
-  ];
+
+  const items = [{}];
   const [UpdatedRewardList, setUpdatedRewardList] = useState(items);
   const [newReward, setNewReward] = useState({
     RewardName: "",
-    RewardCost: "",
+    RewardCost: 0,
   });
 
   const handleInputChange = (e) => {
@@ -68,18 +60,18 @@ function RewardsDisplay({ familyId, isHead }) {
   };
 
   const formatRewardsData = (rewards) => {
-    return rewards.map(reward => {
+    return rewards.map((reward) => {
       return {
         text: reward.RewardName,
-        points: reward.RewardCost
+        points: reward.RewardCost,
       };
     });
   };
   const updateRewardsList = async () => {
     try {
       // Assuming you have an array of reward IDs
-      const rewardIds = FamilyData.Rewards // Replace this with your actual array of reward IDs
-  
+      const rewardIds = FamilyData.Rewards; // Replace this with your actual array of reward IDs
+
       // Fetch each reward by its ID
       const fetchedRewards = await Promise.all(
         rewardIds.map(async (id) => {
@@ -91,17 +83,17 @@ function RewardsDisplay({ familyId, isHead }) {
           }
         })
       );
-  
+
       // Filter out any null values (failed fetches)
-      const validRewards = fetchedRewards.filter(reward => reward !== null);
-  
+      const validRewards = fetchedRewards.filter((reward) => reward !== null);
+
       // Format the rewards data (assuming the formatRewardsData function exists)
       const formattedRewards = formatRewardsData(validRewards);
-  
+
       // Update the state with the formatted rewards
       setUpdatedRewardList(formattedRewards);
     } catch (error) {
-      console.error('Error fetching rewards:', error);
+      console.error("Error fetching rewards:", error);
     }
   };
 
@@ -109,14 +101,18 @@ function RewardsDisplay({ familyId, isHead }) {
 
   const updateFamilyRewards = (family, newRewardId) => {
     // Copy the existing Rewards array or initialize it if it's not an array
-    const updatedRewards = Array.isArray(family.Rewards) ? [...family.Rewards] : [];
-  
+    const updatedRewards = Array.isArray(family.Rewards)
+      ? [...family.Rewards]
+      : [];
+
     // Remove any placeholder values like empty strings
-    const cleanedRewards = updatedRewards.filter(rewardId => rewardId.trim() !== '');
-  
+    const cleanedRewards = updatedRewards.filter(
+      (rewardId) => rewardId.trim() !== ""
+    );
+
     // Add the new Reward ID
     cleanedRewards.push(newRewardId);
-  
+
     return { ...family, Rewards: cleanedRewards };
   };
 
@@ -124,32 +120,52 @@ function RewardsDisplay({ familyId, isHead }) {
     const { RewardName, RewardCost } = newReward;
 
     if (!RewardName || !RewardCost) {
-      console.error('Please fill in all fields');
+      console.error("Please fill in all fields");
       return;
     }
-  
+
     const rewardData = {
       RewardName,
       RewardCost: parseInt(RewardCost), // Ensure RewardCost is an integer
     };
-  
+
     try {
       const newRewardId = await addReward(rewardData);
       if (newRewardId) {
-      console.log('Reward added successfully with ID:', newRewardId);
-      const updatedFamily = updateFamilyRewards(FamilyData, newRewardId);
-      setFamilyData(updatedFamily);
-      await updateFamilyById(FamilyData.id, updatedFamily);
-      // Optionally reset the input fields after successful addition
-      setNewReward({ RewardName: '', RewardCost: '' });
-    }
-
+        console.log("Reward added successfully with ID:", newRewardId);
+        const updatedFamily = updateFamilyRewards(FamilyData, newRewardId);
+        setFamilyData(updatedFamily);
+        await updateFamilyById(FamilyData.id, updatedFamily);
+        // Optionally reset the input fields after successful addition
+        setNewReward({ RewardName: "", RewardCost: "" });
+      }
     } catch (error) {
-      console.error('Failed to add reward:', error);
+      console.error("Failed to add reward:", error);
     }
   };
- 
+
   console.log("THESE ARE UPDATED reward list", UpdatedRewardList);
+
+  const handleRedeem = async (rewardCost) => {
+    if (EarnedPoints < rewardCost) {
+      alert("Not enough points to redeem this reward.");
+      return;
+    }
+
+    try {
+      const updatedEarnedPoints = EarnedPoints - rewardCost;
+      setEarnedPoints(updatedEarnedPoints); // Update local state
+
+      const updatedFamilyData = {
+        ...FamilyData,
+        EarnedPoints: updatedEarnedPoints,
+      };
+
+      await updateFamilyById(FamilyData.id, updatedFamilyData); // Update in database
+    } catch (error) {
+      console.error("Error redeeming reward:", error);
+    }
+  };
 
   let [isOpen, setIsOpen] = useState(false);
   let [isClose, setIsClose] = useState(true);
@@ -171,17 +187,17 @@ function RewardsDisplay({ familyId, isHead }) {
   return (
     <div>
       {/* <button type="button" className="ml-10 mt-10 mb-2 text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-10 py-5 text-center me-2 mb-2">Earned Points {parseInt(EarnedPoints)+1000}</button> */}
-      <button
-        type="button"
-        className="ml-10 mt-10 mb-2 text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-10 py-5 text-center me-2"
-      >
-        Earned Points {parseInt(EarnedPoints)}
-      </button>
       <div className="flex">
         <h2 className="mb-2 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl dark:text-white ml-10 mt-10">
           Rewards
         </h2>
       </div>
+                          <button
+                      type="button"
+                      className="ml-10 mt-10 mb-2 text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-10 py-5 text-center me-2"
+                    >
+                      Your Earned Points {EarnedPoints}
+                    </button>
 
       <div className="pb-10">
         <div className="flex pb-10">
@@ -300,12 +316,19 @@ function RewardsDisplay({ familyId, isHead }) {
                   </form>
 
                   <div className="mt-4">
+
                     <button
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 mr-40"
                       onClick={handleAddReward}
                     >
                       Add
+                    </button>
+                    <button
+                      type="button"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-gray-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                    >
+                      Earned Points {EarnedPoints}
                     </button>
                   </div>
                 </Dialog.Panel>

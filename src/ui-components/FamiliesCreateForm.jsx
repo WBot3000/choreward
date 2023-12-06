@@ -521,9 +521,13 @@ export default function FamiliesCreateForm(props) {
         label="Earned points"
         isRequired={false}
         isReadOnly={false}
+        type="number"
+        step="any"
         value={EarnedPoints}
         onChange={(e) => {
-          let { value } = e.target;
+          let value = isNaN(parseInt(e.target.value))
+            ? e.target.value
+            : parseInt(e.target.value);
           if (onChange) {
             const modelFields = {
               FamilyName,
