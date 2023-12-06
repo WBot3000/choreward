@@ -18,7 +18,7 @@ function RecentUploads({familyId}) {
           try {
             const result = await fetchFamilyById(familyId);
             const allVideoData = [];
-            for(let tID in (result?.ThreadsID ?? [])) {
+            for(let tID of (result?.ThreadsID ?? [])) {
                 if(tID != null) {
                     const vidData = await fetchThreadById(tID);
                     if(vidData) {

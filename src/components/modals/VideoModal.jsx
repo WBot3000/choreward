@@ -26,7 +26,10 @@ function VideoModal({ isOpen, onClose, videoId }) {
         setVideoData(data);
       }
     }
-    fetchVideoData();
+    
+    if(videoId) {
+        fetchVideoData();
+    }
   }, [videoId]);
 
   useEffect(() => {

@@ -15,7 +15,8 @@ function WeeklyTasksUploadModal({ isOpen, onClose, submissionFor }) {
     addThread,
   } = useFetchThreads();
   const {
-    families, 
+    families,
+    getFamilyByUser,
     fetchFamilyById, 
     updateFamilyById,
   } = useFetchFamilies();
