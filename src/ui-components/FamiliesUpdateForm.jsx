@@ -192,7 +192,7 @@ export default function FamiliesUpdateForm(props) {
   const initialValues = {
     FamilyName: "",
     Head: "",
-    Members: [],
+    Members: "",
     Rewards: [],
     ThreadsID: "",
     OnChanllengesID: "",
@@ -216,8 +216,7 @@ export default function FamiliesUpdateForm(props) {
       : initialValues;
     setFamilyName(cleanValues.FamilyName);
     setHead(cleanValues.Head);
-    setMembers(cleanValues.Members ?? []);
-    setCurrentMembersValue("");
+    setMembers(cleanValues.Members);
     setRewards(cleanValues.Rewards ?? []);
     setCurrentRewardsValue("");
     setThreadsID(cleanValues.ThreadsID);
@@ -241,8 +240,6 @@ export default function FamiliesUpdateForm(props) {
     queryData();
   }, [idProp, familiesModelProp]);
   React.useEffect(resetStateValues, [familiesRecord]);
-  const [currentMembersValue, setCurrentMembersValue] = React.useState("");
-  const MembersRef = React.createRef();
   const [currentRewardsValue, setCurrentRewardsValue] = React.useState("");
   const RewardsRef = React.createRef();
   const validations = {
@@ -398,57 +395,36 @@ export default function FamiliesUpdateForm(props) {
         hasError={errors.Head?.hasError}
         {...getOverrideProps(overrides, "Head")}
       ></TextField>
-      <ArrayField
-        onChange={async (items) => {
-          let values = items;
+      <TextField
+        label="Members"
+        isRequired={false}
+        isReadOnly={false}
+        value={Members}
+        onChange={(e) => {
+          let { value } = e.target;
           if (onChange) {
             const modelFields = {
               FamilyName,
               Head,
-              Members: values,
+              Members: value,
               Rewards,
               ThreadsID,
               OnChanllengesID,
               EarnedPoints,
             };
             const result = onChange(modelFields);
-            values = result?.Members ?? values;
+            value = result?.Members ?? value;
           }
-          setMembers(values);
-          setCurrentMembersValue("");
+          if (errors.Members?.hasError) {
+            runValidationTasks("Members", value);
+          }
+          setMembers(value);
         }}
-        currentFieldValue={currentMembersValue}
-        label={"Members"}
-        items={Members}
-        hasError={errors?.Members?.hasError}
-        runValidationTasks={async () =>
-          await runValidationTasks("Members", currentMembersValue)
-        }
-        errorMessage={errors?.Members?.errorMessage}
-        setFieldValue={setCurrentMembersValue}
-        inputFieldRef={MembersRef}
-        defaultFieldValue={""}
-      >
-        <TextField
-          label="Members"
-          isRequired={false}
-          isReadOnly={false}
-          value={currentMembersValue}
-          onChange={(e) => {
-            let { value } = e.target;
-            if (errors.Members?.hasError) {
-              runValidationTasks("Members", value);
-            }
-            setCurrentMembersValue(value);
-          }}
-          onBlur={() => runValidationTasks("Members", currentMembersValue)}
-          errorMessage={errors.Members?.errorMessage}
-          hasError={errors.Members?.hasError}
-          ref={MembersRef}
-          labelHidden={true}
-          {...getOverrideProps(overrides, "Members")}
-        ></TextField>
-      </ArrayField>
+        onBlur={() => runValidationTasks("Members", Members)}
+        errorMessage={errors.Members?.errorMessage}
+        hasError={errors.Members?.hasError}
+        {...getOverrideProps(overrides, "Members")}
+      ></TextField>
       <ArrayField
         onChange={async (items) => {
           let values = items;
