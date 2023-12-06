@@ -188,6 +188,7 @@ function VideoModal({ isOpen, onClose, videoId }) {
   };
 
   const isLiked = userHasLiked();
+  console.log(videoUrl);
 
   return (
     <Modal title={getTitle()} isOpen={isOpen} onClose={onClose}>

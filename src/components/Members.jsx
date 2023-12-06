@@ -19,8 +19,8 @@ function Members() {
           const result = await fetchFamilyById("0699d2a6-38cb-4955-96ee-9978dc20d195");
           console.log("fetchByID", result)
           setData(result.getFamilies);
-          setFamilyMember(result.getFamilies.Members)
-          setFamName(result.getFamilies.FamilyName)
+          setFamilyMember(result.Members)
+          setFamName(result.FamilyName)
         } catch (error) {
           // Handle errors
           console.error('Error fetching data:', error);

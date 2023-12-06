@@ -20,8 +20,8 @@ function RewardsDisplay() {
         const result = await fetchFamilyById("0699d2a6-38cb-4955-96ee-9978dc20d195");
         // console.log("fetchByID", result)
         // setData(result.getFamilies);
-        setRewards(result.getFamilies.Rewards)
-        setEarnedPoints(result.getFamilies.EarnedPoints)
+        setRewards(result.Rewards)
+        setEarnedPoints(result.EarnedPoints)
       } catch (error) {
         // Handle errors
         console.error('Error fetching data:', error);
@@ -95,13 +95,14 @@ function RewardsDisplay() {
   }
 
   const handleRedeem = (points) => {
-    const updatedPoints = parseInt(EarnedPoints) + points; // Update earned points
+    //TODO: Prevent people from spending points they don't have
+    const updatedPoints = parseInt(EarnedPoints) - points; // Update earned points
     setEarnedPoints(updatedPoints);
   };
   return (
     <div>
       {/* <button type="button" class="ml-10 mt-10 mb-2 text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-10 py-5 text-center me-2 mb-2">Earned Points {parseInt(EarnedPoints)+1000}</button> */}
-      <button type="button" class="ml-10 mt-10 mb-2 text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-10 py-5 text-center me-2 mb-2">Earned Points {parseInt(EarnedPoints)}</button>
+      <button type="button" class="ml-10 mt-10 mb-2 text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-10 py-5 text-center me-2">Earned Points {parseInt(EarnedPoints)}</button>
       <div class="flex">
       <h2 class="mb-2 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl dark:text-white ml-10 mt-10">Rewards</h2>
       </div>
